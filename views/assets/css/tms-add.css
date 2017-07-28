@@ -1,0 +1,67 @@
+.tmstpl-add-container{
+	margin-top:30px;
+	margin:0 auto;
+	display:flex;
+	width:1020px;
+	height:300px;
+	border:1px solid #ccc;
+	flex-direction:row;
+	justify-content:center;
+}
+
+.tmstpl-add-left{
+	border-top:0px solid #ccc;
+	border-left:0px solid #ccc;
+	border-right:1px solid #ccc;
+	border-bottom:0px solid #ccc;
+	width: 600px;
+	margin: 0px;
+	padding:0px 5px;
+}
+
+.tmstpl-add-right{
+	border-top:0px solid #ccc;
+	border-left:0px solid #ccc;
+	border-right:0px solid #ccc;
+	border-bottom:0px solid #ccc;
+	width: 420px;
+	margin: 0px;
+	padding:0px 5px;
+}
+
+.tmstpl-add-row{
+	margin-top:5px;
+}
+
+.tmstpl-add-container .info-bar{
+	font: 14px/1.5 Tahoma,Helvetica,Arial,'ËÎÌå',sans-serif;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	height:30px;
+	color:white;
+}
+.tmstpl-add-container .color-orange{
+	background-color:#FF9900;
+}
+/*»ÒÉ«*/
+.tmstpl-add-container .color-gray{
+	background-color:#B8B8B8;
+}
+.tmstpl-form-group, .tmstpl-form-group-2{
+	display:flex;
+}
+
+.tmstpl-form-group > label, .tmstpl-form-group-2 >label{
+	font-weight:normal;
+	width:100px;
+	text-align:left;
+}
+
+.tmstpl-form-group > input, .tmstpl-form-group > div {
+	width:180px;
+}
+
+.tmstpl-form-group-2 > input, .tmstpl-form-group-2 > div {
+	width:487px;
+}
