@@ -2,16 +2,16 @@
 
 	$r = new Router();
 	$r->dispatch();
-	
+
 	class Router{
-		
+
 		private $uriParams = array();
 
 		public function dispatch(){
 			$this->getUriParams();
 			$this->invoke();
 		}
-		
+
 		private function invoke() {
 			if(empty($this->uriParams)){
 				//跳转到默认页
@@ -43,7 +43,7 @@
 					//TODO 跳转到404
 					echo "error 404!";die();
 				}else{
-					$instance = $rc->newInstance();
+					$instance = $rc->newInstance($ClassName, $methodName);
 					//var_dump($instance);
 					$method = $rc->getMethod($methodName);
 					$method->invokeArgs($instance, $params);
@@ -65,7 +65,7 @@
 			$ma = array();
 			if($request_uri != ""){
 				//[^\/]表示非/的字符 +加号表示匹配的次数是1次或多次，\/?\??直到发现反斜杠或问号一次或0次结束
-				
+
 				//preg_match_all("/[^\/]+\/?/", $request_uri, $ma);
 				//preg_match_all("/[^\/]+[\/?\??]/", $request_uri, $ma);
 				preg_match_all("/[^\/]+\/?\??/", $request_uri, $ma);
@@ -82,7 +82,6 @@
 			$this->uriParams = $ma;
 		}
 	}
-	
 
 
 
@@ -91,7 +90,8 @@
 
 
 
-	
+
+
 
 
 ?>

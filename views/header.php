@@ -64,29 +64,29 @@
 						<div class="row">
 
 							<div class="col-sm-12 text-center line-height-2">
-								<a class="btn btn-info btn-app  no-radius" href="#">
-									<i class="ace-icon fa fa-pencil-square-o bigger-230"></i>
-									订单管理
-									<!--<span class="label label-light arrowed-in-right badge-left">11</span>-->
-								</a>
+								<?php
+									 $arrBigMenu = $arrCommonData['arrBigMenu'];
+									 //print_r($arrBigMenu);
+									 foreach($arrBigMenu as $bigMenu){
+										 	$url = '/phptms/'.$bigMenu['strController'].'/'.$bigMenu['strAction'];
+										 	if($bigMenu['selected'] == '1'){
+													?>
+														<a class="btn btn-info btn-app  no-radius" href="<?php echo $url;?>">
+															<i class="ace-icon fa fa-pencil-square-o bigger-230"></i>
+															<?php echo $bigMenu['strName'];?>
+														</a>&nbsp; &nbsp;
+													<?php
+											}else{
+												?>
+													<a class="btn btn-app btn-light no-radius" href="<?php echo $url;?>">
+														<i class="ace-icon fa fa-print bigger-230"></i>
+														<?php echo $bigMenu['strName'];?>
+													</a>&nbsp; &nbsp;
+												<?php
+											}
+									 }
+								?>
 
-								&nbsp; &nbsp;
-								<a class="btn btn-app btn-light no-radius" href="#">
-									<i class="ace-icon fa fa-print bigger-230"></i>
-									运费管理
-								</a>
-								
-								&nbsp; &nbsp;
-								<a class="btn btn-purple btn-app no-radius" href="#">
-									<i class="ace-icon fa fa-cog bigger-230"></i>
-									运输管理
-								</a>
-
-								&nbsp; &nbsp;
-								<a class="btn btn-app btn-light no-radius" href="#">
-									<i class="ace-icon fa fa-print bigger-230"></i>
-									仓储管理
-								</a>
 							</div>
 						</div>
 					</div>

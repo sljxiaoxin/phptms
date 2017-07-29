@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-07-28 11:00:26
--- 服务器版本： 10.1.16-MariaDB
--- PHP Version: 5.6.24
+-- Generation Time: 2017-07-29 08:12:10
+-- 服务器版本： 10.1.19-MariaDB
+-- PHP Version: 5.6.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_action`
+-- 表的结构 `tbl_menu_action`
 --
 
-CREATE TABLE `tbl_action` (
+CREATE TABLE `tbl_menu_action` (
   `PK` int(11) NOT NULL,
   `intLeftmenuPK` int(11) NOT NULL,
   `intTablePK` int(11) NOT NULL,
@@ -36,65 +36,68 @@ CREATE TABLE `tbl_action` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tbl_action`
+-- 转存表中的数据 `tbl_menu_action`
 --
 
-INSERT INTO `tbl_action` (`PK`, `intLeftmenuPK`, `intTablePK`, `strName`, `strController`, `strAction`) VALUES
-(1, 5, 1, '分公司查询', 'basedata', 'index'),
-(2, 6, 1, '分公司新增', 'basedata', 'add');
+INSERT INTO `tbl_menu_action` (`PK`, `intLeftmenuPK`, `intTablePK`, `strName`, `strController`, `strAction`) VALUES
+(1, 4, 1, '分公司查询', 'sheet_subcompany', 'index'),
+(2, 5, 1, '分公司新增', 'sheet_subcompany', 'add'),
+(3, 12, 10, '查询', 'sheet_order', 'index'),
+(4, 13, 10, '新增', 'sheet_order', 'add');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_bigmenu`
+-- 表的结构 `tbl_menu_big`
 --
 
-CREATE TABLE `tbl_bigmenu` (
+CREATE TABLE `tbl_menu_big` (
   `PK` int(11) NOT NULL,
   `strName` varchar(50) NOT NULL,
-  `intDefaultActionPK` int(11) NOT NULL
+  `intDefaultActionPK` int(11) NOT NULL,
+  `strLeftPK` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='大导航图菜单表';
 
 --
--- 转存表中的数据 `tbl_bigmenu`
+-- 转存表中的数据 `tbl_menu_big`
 --
 
-INSERT INTO `tbl_bigmenu` (`PK`, `strName`, `intDefaultActionPK`) VALUES
-(1, '基础数据', 1);
+INSERT INTO `tbl_menu_big` (`PK`, `strName`, `intDefaultActionPK`, `strLeftPK`) VALUES
+(1, '基础数据', 1, '1,2,3'),
+(2, '订单管理', 3, '10,11');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_leftmenu`
+-- 表的结构 `tbl_menu_left`
 --
 
-CREATE TABLE `tbl_leftmenu` (
+CREATE TABLE `tbl_menu_left` (
   `PK` int(11) NOT NULL,
+  `intTopParent` int(11) NOT NULL,
   `intParentPK` int(11) NOT NULL,
   `strName` varchar(250) NOT NULL,
   `intLevel` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='左侧导航夹名称';
 
 --
--- 转存表中的数据 `tbl_leftmenu`
+-- 转存表中的数据 `tbl_menu_left`
 --
 
-INSERT INTO `tbl_leftmenu` (`PK`, `intParentPK`, `strName`, `intLevel`) VALUES
-(1, 0, '基础数据', 1),
-(2, 1, '分公司管理', 2),
-(3, 1, '发货方管理', 2),
-(4, 1, '收货方管理', 2),
-(5, 2, '查询', 3),
-(6, 2, '新增', 3),
-(7, 3, '查询', 3),
-(8, 3, '新增', 3),
-(9, 4, '查询', 3),
-(10, 4, '新增', 3),
-(11, 0, '订单管理', 1),
-(12, 11, '订单', 2),
-(13, 11, '客服管理', 2),
-(14, 12, '查询', 3),
-(15, 12, '新增', 3);
+INSERT INTO `tbl_menu_left` (`PK`, `intTopParent`, `intParentPK`, `strName`, `intLevel`) VALUES
+(1, 1, 0, '分公司管理', 1),
+(2, 2, 0, '发货方管理', 1),
+(3, 3, 0, '收货方管理', 1),
+(4, 1, 1, '查询', 2),
+(5, 1, 1, '新增', 2),
+(6, 2, 2, '查询', 2),
+(7, 2, 2, '新增', 2),
+(8, 3, 3, '查询', 2),
+(9, 3, 3, '新增', 2),
+(10, 10, 0, '订单管理', 1),
+(11, 11, 0, '客服管理', 1),
+(12, 10, 10, '查询', 2),
+(13, 10, 10, '新增', 2);
 
 -- --------------------------------------------------------
 
@@ -114,21 +117,21 @@ CREATE TABLE `user` (
 --
 
 --
--- Indexes for table `tbl_action`
+-- Indexes for table `tbl_menu_action`
 --
-ALTER TABLE `tbl_action`
+ALTER TABLE `tbl_menu_action`
   ADD PRIMARY KEY (`PK`);
 
 --
--- Indexes for table `tbl_bigmenu`
+-- Indexes for table `tbl_menu_big`
 --
-ALTER TABLE `tbl_bigmenu`
+ALTER TABLE `tbl_menu_big`
   ADD PRIMARY KEY (`PK`);
 
 --
--- Indexes for table `tbl_leftmenu`
+-- Indexes for table `tbl_menu_left`
 --
-ALTER TABLE `tbl_leftmenu`
+ALTER TABLE `tbl_menu_left`
   ADD PRIMARY KEY (`PK`);
 
 --
@@ -143,20 +146,20 @@ ALTER TABLE `user`
 --
 
 --
--- 使用表AUTO_INCREMENT `tbl_action`
+-- 使用表AUTO_INCREMENT `tbl_menu_action`
 --
-ALTER TABLE `tbl_action`
+ALTER TABLE `tbl_menu_action`
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `tbl_menu_big`
+--
+ALTER TABLE `tbl_menu_big`
   MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- 使用表AUTO_INCREMENT `tbl_bigmenu`
+-- 使用表AUTO_INCREMENT `tbl_menu_left`
 --
-ALTER TABLE `tbl_bigmenu`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- 使用表AUTO_INCREMENT `tbl_leftmenu`
---
-ALTER TABLE `tbl_leftmenu`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+ALTER TABLE `tbl_menu_left`
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- 使用表AUTO_INCREMENT `user`
 --

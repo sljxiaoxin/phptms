@@ -54,6 +54,7 @@
 					</li>
 
 					<?php
+						$arrSysMenu = $arrCommonData['arrLeftMenu'];
 						function createMenu($arrSysMenu, $menu){
 								if(!empty($menu['children'])){
 										$class = $menu['isOpen'] == 1?'open':'';
@@ -93,52 +94,8 @@
 								$arrTopMenu = $arrSysMenu['detail'][$topMenuPK];
 								//$strOpen = $arrTopMenu['isOpen'] == 1?'open':'';
 								createMenu($arrSysMenu, $arrTopMenu);
-								/*
-								echo '<li class="'.$strOpen.'">';
-								echo '<a href="#" class="dropdown-toggle">';
-								echo ' <i class="menu-icon fa fa-desktop"></i>';
-								echo ' <span class="menu-text"> '.$arrTopMenu['strName'].' </span>';
-								echo ' <b class="arrow fa fa-angle-down"></b>';
-								echo '</a>';
-								echo '<b class="arrow"></b>';
-								createMenu($arrTopMenu);
-								echo '</li>';
-								*/
 						}
 					?>
-					<!--
-					<li class="open">
-						<a href="#" class="dropdown-toggle">
-							<i class="menu-icon fa fa-desktop"></i>
-							<span class="menu-text"> 订单管理 </span>
-
-							<b class="arrow fa fa-angle-down"></b>
-						</a>
-
-						<b class="arrow"></b>
-
-						<ul class="submenu">
-							<li class="active">
-								<a href="elements.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									查询
-								</a>
-
-								<b class="arrow"></b>
-							</li>
-
-							<li class="">
-								<a href="buttons.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									新增
-								</a>
-
-								<b class="arrow"></b>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			-->
 				<!-- /.nav-list -->
 
 				<!-- #section:basics/sidebar.layout.minimize -->
