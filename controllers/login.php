@@ -1,8 +1,7 @@
 <?php
 	class login extends BaseController{
-		function __construct(){
-			//echo 1111;
-			parent::__construct();
+		function __construct($controller, $method){
+			parent::__construct($controller, $method, 0);  //10 is tablePK
 		}
 
 		public function index(){
@@ -13,12 +12,12 @@
 			}
 			$this->display('login');
 		}
-		
+
 		public function logout(){
 			session_destroy();
 			header("Location:/".APP_FOLDER."/login");
 		}
-		
+
 		public function getToken(){
 			$token = md5(session_id().time());
 			Tms_Session::setGlobal('token', $token);

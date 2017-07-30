@@ -45,7 +45,7 @@
 
 				<ul class="nav nav-list">
 					<li class="">
-						<a href="index.html">
+						<a href="/phptms/main">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> 仪表板 </span>
 						</a>
@@ -56,6 +56,12 @@
 					<?php
 						$arrSysMenu = $arrCommonData['arrLeftMenu'];
 						function createMenu($arrSysMenu, $menu){
+								$url = "#";
+								$classToggle = "dropdown-toggle";
+								if(isset($menu['strController'])){
+										$url = "/phptms/".$menu['strController']."/".$menu['strAction'];
+										$classToggle = "";
+								}
 								if(!empty($menu['children'])){
 										$class = $menu['isOpen'] == 1?'open':'';
 								}else{
@@ -67,7 +73,7 @@
 										$iClass = 'fa-caret-right';
 								}
 								echo '<li class="'.$class.'">';
-								echo '	<a href="#" class="dropdown-toggle">';
+								echo '	<a href="'.$url.'" class="'.$classToggle.'">';
 								echo '		<i class="menu-icon fa '.$iClass.'"></i>';
 								if(!empty($menu['children'])){
 										echo '<span class="menu-text"> '.$menu['strName'].' </span>';

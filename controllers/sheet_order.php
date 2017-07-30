@@ -8,5 +8,9 @@
 		public function index(){
 				$this->display('order_v', $data);
 		}
+
+		public function add(){
+				$this->display('order_v', $data);
+		}
 	}
 ?>

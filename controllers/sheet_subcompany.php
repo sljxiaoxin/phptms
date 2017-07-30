@@ -8,5 +8,9 @@
 		public function index(){
 				$this->display('subcompany_v', $data);
 		}
+
+		public function add(){
+				$this->display('subcompany_v', $data);
+		}
 	}
 ?>

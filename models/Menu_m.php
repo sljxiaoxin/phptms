@@ -1,5 +1,6 @@
 <?php
 	class Menu_m extends BaseModel{
+		private $_defaultBigMenuPK = 2;
 		function __construct(){
 			parent::__construct();
 		}
@@ -56,22 +57,43 @@
 				return $arrBig;
 		}
 
+		public function getMenuAction(){
+				$sql = "select * from tbl_menu_action";
+				$data = $this->db->query($sql);
+				$arrMap = array();
+				for($i=0;$i<count($data);$i++){
+						$arrMap[$data[$i]['intLeftmenuPK']] = $data[$i];
+				}
+				return $arrMap;
+		}
+
 		public function getMenuByAction($tablePK, $controller, $action){
-				$sql = "select * from tbl_menu_action where intTablePK='".$tablePK."' and strController ='".$controller."' and  strAction = '".$action."'";
-				$arrAction = $this->db->query($sql);
-				$intActionPK = $arrAction[0]['intLeftmenuPK'];
-				//echo $sql;
-				$arrBigInfo = $this->getBigByLeft($intActionPK);
-				$strLeftTopMenus = $arrBigInfo['strLeftPK'];
+			  if($tablePK == 0){
+						$sql = "select * from tbl_menu_big where PK = '".$this->_defaultBigMenuPK."'";
+						$data = $this->db->query($sql);
+						$strLeftTopMenus = $data[0]['strLeftPK'];
+						$intActionPK = NULL;
+				}else{
+						$sql = "select * from tbl_menu_action where intTablePK='".$tablePK."' and strController ='".$controller."' and  strAction = '".$action."'";
+						$arrAction = $this->db->query($sql);
+						$intActionPK = $arrAction[0]['intLeftmenuPK'];
+						//echo $sql;
+						$arrBigInfo = $this->getBigByLeft($intActionPK);
+						$strLeftTopMenus = $arrBigInfo['strLeftPK'];
+				}
 				$arrLeftMenu = $this->getLeftMenu(array("intTopParent in (".$strLeftTopMenus.")"));
 				//print_r($arrLeftMenu);
-
+				$arrAllMenuActionInfo = $this->getMenuAction();
 				$arrMap = array();
 				$arrTopMenu = array();
 				for($i=0;$i<count($arrLeftMenu);$i++){
 						$arrMap[$arrLeftMenu[$i]['PK']] = $arrLeftMenu[$i];
 						$arrMap[$arrLeftMenu[$i]['PK']]['children'] = array();
 						$arrMap[$arrLeftMenu[$i]['PK']]['isOpen'] = 0;
+						if(isset($arrAllMenuActionInfo[$arrLeftMenu[$i]['PK']])){
+								$arrMap[$arrLeftMenu[$i]['PK']]['strController'] = $arrAllMenuActionInfo[$arrLeftMenu[$i]['PK']]['strController'];
+								$arrMap[$arrLeftMenu[$i]['PK']]['strAction'] = $arrAllMenuActionInfo[$arrLeftMenu[$i]['PK']]['strAction'];
+						}
 				}
 				foreach($arrMap as $key => $val){
 						if($val['intParentPK'] != '0'){
