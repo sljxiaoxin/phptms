@@ -5,6 +5,7 @@ error_reporting(E_ERROR | E_WARNING);
 define("BASE_URL", "");    //网站网址
 define("APP_FOLDER", basename(dirname(__FILE__))); //网址后到app根
 define("APP_PATH", $_SERVER["DOCUMENT_ROOT"]."/".APP_FOLDER);
+define("BASE_ROOT", "/phptms/");   //如果直接放htdocs目录下则置为 "/"
 
 define("TMS_DEBUG", true);
 

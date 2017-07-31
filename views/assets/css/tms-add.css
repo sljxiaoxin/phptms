@@ -34,7 +34,7 @@
 }
 
 .tmstpl-add-container .info-bar{
-	font: 14px/1.5 Tahoma,Helvetica,Arial,'ËÎÌå',sans-serif;
+	font: 14px/1.5 Tahoma,Helvetica,Arial,'å®‹ä½“',sans-serif;
 	display:flex;
 	flex-direction:column;
 	justify-content:center;
@@ -44,7 +44,7 @@
 .tmstpl-add-container .color-orange{
 	background-color:#FF9900;
 }
-/*»ÒÉ«*/
+/*ç°è‰²*/
 .tmstpl-add-container .color-gray{
 	background-color:#B8B8B8;
 }

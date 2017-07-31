@@ -10,7 +10,7 @@
 		}
 
 		public function add(){
-				$this->display('subcompany_v', $data);
+				$this->display('subcompany_add_v', $data);
 		}
 	}
 ?>

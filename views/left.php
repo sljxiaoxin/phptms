@@ -45,7 +45,7 @@
 
 				<ul class="nav nav-list">
 					<li class="">
-						<a href="/phptms/main">
+						<a href="<?php echo BASE_ROOT;?>main">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> 仪表板 </span>
 						</a>
@@ -59,7 +59,7 @@
 								$url = "#";
 								$classToggle = "dropdown-toggle";
 								if(isset($menu['strController'])){
-										$url = "/phptms/".$menu['strController']."/".$menu['strAction'];
+										$url = BASE_ROOT.$menu['strController']."/".$menu['strAction'];
 										$classToggle = "";
 								}
 								if(!empty($menu['children'])){

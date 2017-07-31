@@ -1,24 +1,28 @@
 <?php
 	require_once("header.php");
 	$arrPageJs = array(
-		'dashboard' => array(
-							'<script src="/'.APP_FOLDER.'/views/assets/js/moment-with-locales.min.js"></script> ',
-							'<script src="/'.APP_FOLDER.'/views/assets/js/bootstrap-datetimepicker.min.js"></script>  '
-					)
+			'dashboard' => array(
+						'<script src="/'.APP_FOLDER.'/views/assets/js/moment-with-locales.min.js"></script> ',
+						'<script src="/'.APP_FOLDER.'/views/assets/js/bootstrap-datetimepicker.min.js"></script>  '
+				),
+				'subcompany_v' => array(
+					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
+	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
+				)
 	);
 ?>
 		<!-- /section:basics/navbar.layout -->
 		<div class="main-container" id="main-container">
 			<?php
-				require_once("left.php");	
+				require_once("left.php");
 			?>
 			<div class="main-content">
 				<?php
-					require_once("breadcrumbs.php");	
+					require_once("breadcrumbs.php");
 				?>
 				<div class="page-content">
 					<?php
-						require_once("pages/" . LOADING_VIEWNAME . ".php");	
+						require_once("pages/" . LOADING_VIEWNAME . ".php");
 					?>
 				</div><!-- /.page-content -->
 			</div><!-- /.main-content -->
@@ -65,14 +69,14 @@
 		<script src="/<?=APP_FOLDER?>/views/assets/js/src/ace.settings-skin.js"></script>
 		<script src="/<?=APP_FOLDER?>/views/assets/js/src/ace.widget-on-reload.js"></script>
 		<script src="/<?=APP_FOLDER?>/views/assets/js/src/ace.searchbox-autocomplete.js"></script>
-		
+
 		<?php
 			if(!empty($arrPageJs[LOADING_VIEWNAME])){
 				echo implode(' ', $arrPageJs[LOADING_VIEWNAME]);
 			}
 		?>
-		
-		
+
+
 		<script>
 			$('.aside').ace_aside();
 			$('#header_logout').on('click', function(){

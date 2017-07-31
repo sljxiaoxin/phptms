@@ -3,7 +3,12 @@
 		'dashboard' => array(
 							'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/tms-add.css"  />',
 							'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/bootstrap-datetimepicker.min.css"  />'
-					)
+					),
+		 'subcompany_v' => array(
+			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jquery-ui/jquery-ui.css" />',
+			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/bootstrap-datetimepicker.min.css"  />',
+			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jqgrid/ui.jqgrid.css" />'
+		 )
 	);
 ?>
 <!DOCTYPE html>
@@ -20,7 +25,11 @@
 		<link rel="stylesheet" href="/<?=APP_FOLDER?>/views/components/font-awesome/css/font-awesome.css" />
 
 		<!-- page specific plugin styles -->
-
+		<?php
+			if(!empty($arrPageCss[LOADING_VIEWNAME])){
+				echo implode(' ', $arrPageCss[LOADING_VIEWNAME]);
+			}
+		?>
 		<!-- text fonts -->
 		<link rel="stylesheet" href="/<?=APP_FOLDER?>/views/assets/css/ace-fonts.css" />
 
@@ -48,11 +57,7 @@
 		<script src="/<?=APP_FOLDER?>/views/components/html5shiv/dist/html5shiv.min.js"></script>
 		<script src="/<?=APP_FOLDER?>/views/components/respond/dest/respond.min.js"></script>
 		<![endif]-->
-		<?php
-			if(!empty($arrPageCss[LOADING_VIEWNAME])){
-				echo implode(' ', $arrPageCss[LOADING_VIEWNAME]);
-			}
-		?>
+
 	</head>
 
 	<body class="no-skin">
@@ -68,7 +73,7 @@
 									 $arrBigMenu = $arrCommonData['arrBigMenu'];
 									 //print_r($arrBigMenu);
 									 foreach($arrBigMenu as $bigMenu){
-										 	$url = '/phptms/'.$bigMenu['strController'].'/'.$bigMenu['strAction'];
+										 	$url = BASE_ROOT.$bigMenu['strController'].'/'.$bigMenu['strAction'];
 										 	if($bigMenu['selected'] == '1'){
 													?>
 														<a class="btn btn-info btn-app  no-radius" href="<?php echo $url;?>">
