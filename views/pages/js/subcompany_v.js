@@ -24,7 +24,36 @@
 				data: grid_data,
 				datatype: "local",
 				height: 250,
-				colNames:[' ', 'ID','Last Sales','Name', 'Stock', 'Ship via','Notes'],
+				colNames:['<input type="button" value="新增" />', 'PK','名称','联系人','日期'],
+				colModel :[
+						{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+							formatter:'actions',
+							formatoptions:{
+								keys:true,
+								delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+								delbutton: true,
+								editbutton:true,
+								editformbutton:false   //弹出dialog
+							}
+						},
+						{name:'PK',index:'PK', width:60, sorttype:"int", editable: false,hidden:true, valueType : 1},
+						{name:'strName',index:'strName', width:150,editable: true,edittype: "custom",
+						editoptions: {
+													 custom_value: getFreightElementValue,
+													 custom_element: createFreightEditElement
+											 },
+						formatter:freightFormatter,
+						unformat:unfreightFormatter,
+						valueType : 5
+						},
+						{name:'strLinkMan',index:'strLinkMan', width:150,editable: true,edittype: "text",
+						editoptions: {size:10,maxlength:20},
+						valueType : 2
+						},
+						{name:'sdate',index:'sdate',width:90, editable:true, sorttype:"date",unformat: pickDate, valueType:3}
+
+				],
+				/*
 				colModel:[
 					{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 						formatter:'actions',
@@ -37,11 +66,18 @@
 					},
 					{name:'id',index:'id', width:60, sorttype:"int", editable: false},
 					{name:'sdate',index:'sdate',width:90, editable:true, sorttype:"date",unformat: pickDate},
-					{name:'name',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+					{name:'name',index:'name', width:150,editable: true,edittype: "custom",
+					editoptions: {
+												 custom_value: getFreightElementValue,
+												 custom_element: createFreightEditElement
+										 },
+					valueType : 5
+					},
 					{name:'stock',index:'stock', width:70, editable: true,edittype:"checkbox",editoptions: {value:"Yes:No"},unformat: aceSwitch},
 					{name:'ship',index:'ship', width:90, editable: true,edittype:"select",editoptions:{value:"FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX"}},
 					{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}
 				],
+				*/
 
 				viewrecords : true,  // 显示总条数
 				rowNum:20,
@@ -63,8 +99,8 @@
 					}, 0);
 				},
 
-				editurl: "../dummy.php",//nothing is saved
-				caption: "分公司列表"
+				editurl: "../dummy.php"//nothing is saved
+				//,caption: "分公司列表"
 
 			});
 			$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
@@ -74,7 +110,93 @@
 			//enable search/filter toolbar
 			//$(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
 			//$(grid_selector).filterToolbar({});
+			function freightFormatter(cellvalue, options, rowObject){
+					console.log(cellvalue);
+					console.log(options);
+					console.log(rowObject);
+					var arrValues = cellvalue.split('|');
+					var textValue = arrValues[1];
+					var realValue = arrValues[0];
+					return "<span pk='"+realValue+"'>"+textValue+"</span>";//"<span>"+textValue+"</span><input type='hidden' value='"+realValue+"'>aa";
+			}
+			function unfreightFormatter(cellvalue, options, cell){
+					console.log("***********unfreightFormatter*************");
+					console.log(cellvalue);
+					console.log(options);
+					console.log(cell.innerHTML);
+					//var rowDatas = $(grid_selector).jqGrid('getRowData', 1);
+					//console.log(rowDatas);
+					var textValue = $(cell).find("span").html();
+					var realValue = $(cell).find("span").attr("pk");
+					return realValue+"|"+textValue;
+			}
+			function createFreightEditElement(value, editOptions) {
+					console.log('###################createFreightEditElement###################');
+					console.log(value);
+					console.log(editOptions);
+					var columnArray = $(grid_selector).jqGrid('getGridParam','colModel');
+					var obj = null;
+					for(var i=0;i<columnArray.length;i++){
+							if(columnArray[i].name == editOptions.name){
+									obj = columnArray[i];
+							}
+					}
+					console.log(obj.valueType);
+					var arrValues = value.split('|');
+					var textValue = arrValues[1];
+					var realValue = arrValues[0];
+					var span = $("<span />");
+					var elGroup = $("<div />", {style : "width:200px;", class:"input-group date"});
+					var elInput = $("<input>", {type:"text", readOnly:true, value:textValue, class:"form-control input-sm"});
+					var elBtn = $('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>');
+					var elHidden = $("<input>", {type:"hidden", value:realValue});
+					elBtn.click(function(){
+							alert("realValue:"+realValue);
+							elHidden.val(55);
+							elInput.val("青岛分公司");
+					});
+					span.append(elGroup.append(elInput).append(elBtn),elHidden);
+					/*
+					var html = '<div style="width:200px;" class="input-group date" id="clientNo">';
+						  html += '<input type="text"  class="form-control input-sm" />';
+						  html += '<span class="input-group-addon">';
+							html += '<span class="glyphicon glyphicon-search"></span></span></div>';
+					span.append(html);
+					*/
+					return span;
 
+
+					/*
+          var span = $("<span />");
+          var label = $("<span />", { html: "0" });
+          var radio = $("<input>", { type: "radio", value: "0", name: "freight", id: "zero", checked: (value != 25 && value != 50 && value != 100) });
+          var label1 = $("<span />", { html: "25" });
+          var radio1 = $("<input>", { type: "radio", value: "25", name: "freight", id: "fifty", checked: value == 25 });
+          var label2 = $("<span />", { html: "50" });
+          var radio2 = $("<input>", { type: "radio", value: "50", name: "freight", id: "fifty", checked: value == 50 });
+          var label3 = $("<span />", { html: "100" });
+          var radio3 = $("<input>", { type: "radio", value: "100", name: "freight", id: "hundred", checked: value == 100 });
+          span.append(label).append(radio).append(label1).append(radio1).append(label2).append(radio2).append(label3).append(radio3);
+          return span;
+					*/
+      }
+
+			function getFreightElementValue(elem, oper, value) {
+					console.log('-----------getFreightElementValue-----------------');
+					console.log(elem, oper, value);
+          if (oper === "set") {
+              var radioButton = $(elem).find("input:radio[value='" + value + "']");
+              if (radioButton.length > 0) {
+                  radioButton.prop("checked", true);
+              }
+          }
+
+          if (oper === "get") {
+							var textValue = $(elem).find("input:text").val();
+							var realValue = $(elem).find("input:hidden").val();
+              return realValue+"|"+textValue;
+          }
+      }
 
 			//switch element when editing inline
 			function aceSwitch( cellvalue, options, cell ) {
@@ -88,12 +210,11 @@
 			}
 			//enable datepicker
 			function pickDate( cellvalue, options, cell ) {
+				//console.log(cellvalue, options, cell);
 				setTimeout(function(){
-					$(cell) .find('input[type=text]')
-						.datepicker({format:'yyyy-mm-dd' , autoclose:true});
+					$(cell).find('input[type=text]').datepicker({format:'yyyy-mm-dd' , autoclose:true});
 				}, 0);
 			}
-
 
 			function style_delete_form(form) {
 				var buttons = form.next().find('.EditButton .fm-button');
@@ -140,5 +261,11 @@
 			$(document).one('ajaxloadstart.page', function(e) {
 				$.jgrid.gridDestroy(grid_selector);
 				$('.ui-jqdialog').remove();
+			});
+
+			$("#btn_getall").click(function(){
+					var rowDatas = $(grid_selector).jqGrid('getRowData');
+					console.log("-----------rowDatas--------------");
+					console.log(rowDatas);
 			});
 	});

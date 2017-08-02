@@ -5,8 +5,10 @@
 							'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/bootstrap-datetimepicker.min.css"  />'
 					),
 		 'subcompany_v' => array(
+			 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/tms-add.css"  />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jquery-ui/jquery-ui.css" />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/bootstrap-datetimepicker.min.css"  />',
+				'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jqgrid/ui.jqgrid.css" />'
 		 )
 	);

@@ -6,6 +6,7 @@
 						'<script src="/'.APP_FOLDER.'/views/assets/js/bootstrap-datetimepicker.min.js"></script>  '
 				),
 				'subcompany_v' => array(
+					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>',
 					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
 	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
 				)

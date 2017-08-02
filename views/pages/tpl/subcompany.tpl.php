@@ -8,7 +8,7 @@
 		<table id="grid-table"></table>
 
 		<div id="grid-pager"></div>
-
+		<input id="btn_getall" type="button" value="获取grid所有行值"/>
 		<!-- PAGE CONTENT ENDS -->
 	</div><!-- /.col -->
 </div><!-- /.row -->
