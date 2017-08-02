@@ -24,7 +24,7 @@
 				data: grid_data,
 				datatype: "local",
 				height: 250,
-				colNames:['<input type="button" value="新增" />', 'PK','名称','联系人','日期'],
+				colNames:['<input type="button" value="新增" onclick="addRow()" />', 'PK','名称','联系人','日期'],
 				colModel :[
 						{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 							formatter:'actions',
@@ -114,9 +114,15 @@
 					console.log(cellvalue);
 					console.log(options);
 					console.log(rowObject);
-					var arrValues = cellvalue.split('|');
-					var textValue = arrValues[1];
-					var realValue = arrValues[0];
+					if(cellvalue == ""){
+						var textValue = '';
+						var realValue = '';
+					}else{
+						var arrValues = cellvalue.split('|');
+						var textValue = arrValues[1];
+						var realValue = arrValues[0];
+					}
+
 					return "<span pk='"+realValue+"'>"+textValue+"</span>";//"<span>"+textValue+"</span><input type='hidden' value='"+realValue+"'>aa";
 			}
 			function unfreightFormatter(cellvalue, options, cell){
@@ -268,4 +274,35 @@
 					console.log("-----------rowDatas--------------");
 					console.log(rowDatas);
 			});
+
+
 	});
+
+	function addRow()
+	{
+	 var ids = jQuery("#grid-table").jqGrid('getDataIDs');
+	 //获得当前最大行号（数据编号）
+	 var rowid = Math.max.apply(Math,ids);
+	 //获得新添加行的行号（数据编号）
+	 var newrowid = rowid+1;
+			var dataRow = {
+			 PK: "",
+			 strName:"",
+			 strLinkMan:'',
+			 sdate:''
+			};
+
+			//将新添加的行插入到第一列
+			$("#grid-table").jqGrid("addRowData", newrowid, dataRow, "first");
+			//设置grid单元格不可编辑
+			$("#grid-table").setGridParam({cellEdit:false});
+			//设置grid单元格可编辑
+			$("#grid-table").jqGrid('editRow', newrowid, false);
+			//确定按钮可用
+		 // $("#confirm_btn").attr("disabled",false);
+			//给添加的列加选择按钮
+		 // var $zoneInput = $("#"+newrowid+"_zoneName");
+		 // $zoneInput.attr("disabled",true).css("width",100);
+		//	$zoneInput.after("<input type='button' value='选择' onclick='fnCallDialogForEidt()' />");
+
+	}
