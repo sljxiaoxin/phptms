@@ -12,5 +12,10 @@
 		public function add(){
 				$this->display('subcompany_add_v', $data);
 		}
+
+		public function save(){
+				print_r($_POST);
+				print_r($_GET);
+		}
 	}
 ?>

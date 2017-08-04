@@ -367,6 +367,20 @@
 	function actionDo(obj, oprate, rowId){
 			console.log("actionDo:",oprate,",",rowId);
 			$(obj).tooltip('hide');
+			if(oprate == "save"){
+					var parameter = {
+						url : "/phptms/sheet_subcompany/save", //代替jqgrid中的editurl
+						mtype : "POST",
+						extraparam : { // 额外 提交到后台的数据
+										"param1" : "1",
+										"param2" : "2"
+						 },
+						successfunc : function(XHR) { //在成功请求后触发;事件参数为XHR对象，需要返回true/false;
+								alert(XHR.responseText);//接收后台返回的数据
+						}//end successfunc
+				 };//end paramenter
+				jQuery('#grid-table').saveRow(rowId, parameter);
+			}
 			if(oprate == "delCancel"){
 					$('#grid-table').jqGrid('delRowData',rowId);
 			}
