@@ -18,7 +18,46 @@
 					}, 20);
 				}
 			});
+			function formatOptions(cellValue, options, rawObject){
+				  console.log("--------------formatOptions-------------------");
+					console.log("cellValue",cellValue);
+					console.log("options",options);
+					console.log("rawObject",rawObject);
+					var arrButtons = [];
+					if(cellValue == ""){
+							arrButtons.push('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>');
+							arrButtons.push('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
+					}else{
+						arrButtons.push('<div opType="edit" title="编辑" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'edit\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-pencil"></span></div>');
+						arrButtons.push('<div opType="del" title="删除" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'del\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-trash"></span></div>');
+						//arrButtons.push('<button class="btn btn-white btn-warning btn-bold"><i class="ace-icon fa fa-trash-o bigger-120 orange"></i>Delete</button>');
 
+					}
+					arrButtons.push("<input type='hidden' value='"+options.rowId+"'>");
+					return arrButtons.join("&nbsp;&nbsp;");
+		}
+
+		function unformatOptions(cellvalue, options, cell){
+				console.log("---------unformatOptions-------------");
+				console.log("cellvalue:",cellvalue);
+				console.log(cell.innerHTML);
+				var val = $(cell).find("input:hidden").val();
+				var elEdit = $(cell).find("div[opType='edit']");
+				var elDel = $(cell).find("div[opType='del']");
+				console.log("elEdit:",elEdit.html());
+				console.log("val= ",val);
+				console.log("rowId",options.rowId);
+				//$(cell).html("");
+				elEdit.html('<span class="ui-icon ui-icon-disk"></span>');
+				elEdit.attr("onclick","actionDo(this,'save'," + options.rowId + ")");
+				elEdit.attr("data-original-title","保存");
+				elEdit.tooltip('hide');
+				elDel.html('<span class="ui-icon ui-icon-cancel"></span>');
+				elDel.attr("onclick","actionDo(this,'cancel'," + options.rowId + ")");
+				elDel.attr("data-original-title","取消");
+				elDel.tooltip('hide');
+				return val;
+		}
 			//dataGrid初始化
 			$(grid_selector).jqGrid({
 				data: grid_data,
@@ -26,15 +65,23 @@
 				height: 250,
 				colNames:['<input type="button" value="新增" onclick="addRow()" />', 'PK','名称','联系人','日期'],
 				colModel :[
-						{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-							formatter:'actions',
+						{name:'myac',index:'myac', width:80, fixed:true, sortable:false, resize:false,
+							formatter:formatOptions,
+							unformat : unformatOptions
+							/*
+							editoptions: {
+									 custom_value: getOptionsElementValue,
+									 custom_element: createOptionsEditElement
+							 }
+							 */
+							/*formatter:'actions',
 							formatoptions:{
 								keys:true,
 								delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
 								delbutton: true,
 								editbutton:true,
 								editformbutton:false   //弹出dialog
-							}
+							}*/
 						},
 						{name:'PK',index:'PK', width:60, sorttype:"int", editable: false,hidden:true, valueType : 1},
 						{name:'strName',index:'strName', width:150,editable: true,edittype: "custom",
@@ -98,7 +145,6 @@
 						enableTooltips(table);
 					}, 0);
 				},
-
 				editurl: "../dummy.php"//nothing is saved
 				//,caption: "分公司列表"
 
@@ -286,6 +332,7 @@
 	 //获得新添加行的行号（数据编号）
 	 var newrowid = rowid+1;
 			var dataRow = {
+			 myac:"",
 			 PK: "",
 			 strName:"",
 			 strLinkMan:'',
@@ -304,5 +351,45 @@
 		 // var $zoneInput = $("#"+newrowid+"_zoneName");
 		 // $zoneInput.attr("disabled",true).css("width",100);
 		//	$zoneInput.after("<input type='button' value='选择' onclick='fnCallDialogForEidt()' />");
+
+	}
+
+	function actionDo(obj, oprate, rowId){
+			console.log("actionDo:",oprate,",",rowId);
+			$(obj).tooltip('hide');
+			if(oprate == "delCancel"){
+					$('#grid-table').jqGrid('delRowData',rowId);
+			}
+			if(oprate == "cancel"){
+					//$('#grid-table').jqGrid('restoreRow',rowId);
+					//var html =$(this).html();
+					$("#grid-table").trigger("reloadGrid");
+			}
+			if(oprate == 'edit'){
+				$('#grid-table').jqGrid('editRow',rowId,{
+							keys : false,        //这里按[enter]保存
+							url: "",
+							mtype : "POST",
+							restoreAfterError: true,
+							extraparam: {
+									"ware.id": rowId,
+									"ware.warename": "aa",
+									"ware.createDate": "bb",
+									"ware.number": '2',
+									"ware.valid": 'cc'
+							},
+							oneditfunc: function(rowid){
+									console.log("oneditfunc:",rowid);
+							},
+							succesfunc: function(response){
+									alert("save success");
+									return true;
+							},
+							errorfunc: function(rowid, res){
+									console.log(rowid);
+									console.log(res);
+							}
+					});
+			}
 
 	}
