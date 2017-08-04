@@ -25,15 +25,15 @@
 					console.log("rawObject",rawObject);
 					var arrButtons = [];
 					if(cellValue == ""){
-							arrButtons.push('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>');
-							arrButtons.push('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
+							//arrButtons.push('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>');
+							//arrButtons.push('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
 					}else{
 						arrButtons.push('<div opType="edit" title="编辑" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'edit\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-pencil"></span></div>');
 						arrButtons.push('<div opType="del" title="删除" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'del\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-trash"></span></div>');
 						//arrButtons.push('<button class="btn btn-white btn-warning btn-bold"><i class="ace-icon fa fa-trash-o bigger-120 orange"></i>Delete</button>');
-
+						arrButtons.push("<input type='hidden' value='"+options.rowId+"'>");
 					}
-					arrButtons.push("<input type='hidden' value='"+options.rowId+"'>");
+
 					return arrButtons.join("&nbsp;&nbsp;");
 		}
 
@@ -41,21 +41,31 @@
 				console.log("---------unformatOptions-------------");
 				console.log("cellvalue:",cellvalue);
 				console.log(cell.innerHTML);
-				var val = $(cell).find("input:hidden").val();
 				var elEdit = $(cell).find("div[opType='edit']");
 				var elDel = $(cell).find("div[opType='del']");
-				console.log("elEdit:",elEdit.html());
-				console.log("val= ",val);
-				console.log("rowId",options.rowId);
-				//$(cell).html("");
-				elEdit.html('<span class="ui-icon ui-icon-disk"></span>');
-				elEdit.attr("onclick","actionDo(this,'save'," + options.rowId + ")");
-				elEdit.attr("data-original-title","保存");
-				elEdit.tooltip('hide');
-				elDel.html('<span class="ui-icon ui-icon-cancel"></span>');
-				elDel.attr("onclick","actionDo(this,'cancel'," + options.rowId + ")");
-				elDel.attr("data-original-title","取消");
-				elDel.tooltip('hide');
+				var val = "";
+				console.log("elEdit:",elEdit);
+				if(elEdit.length > 0){
+						var val = $(cell).find("input:hidden").val();
+						console.log("elEdit:",elEdit.html());
+						console.log("val= ",val);
+						console.log("rowId",options.rowId);
+						//$(cell).html("");
+						elEdit.html('<span class="ui-icon ui-icon-disk"></span>');
+						elEdit.attr("onclick","actionDo(this,'save'," + options.rowId + ")");
+						elEdit.attr("data-original-title","保存");
+						elEdit.tooltip('hide');
+						elDel.html('<span class="ui-icon ui-icon-cancel"></span>');
+						elDel.attr("onclick","actionDo(this,'cancel'," + options.rowId + ")");
+						elDel.attr("data-original-title","取消");
+						elDel.tooltip('hide');
+				}else{
+						var elSave = $('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>&nbsp;&nbsp;');
+						var elCancel = $('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="actionDo(this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
+						$(cell).append(elSave).append(elCancel);
+						elSave.tooltip();
+						elCancel.tooltip();
+				}
 				return val;
 		}
 			//dataGrid初始化
