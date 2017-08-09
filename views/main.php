@@ -9,40 +9,46 @@
 					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>',
 					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
 	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
+				),
+				'client_v' => array(
+					'<script src="/'.APP_FOLDER.'/views/assets/js/jqGridEdit.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
+	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
 				)
 	);
 ?>
-		<!-- /section:basics/navbar.layout -->
-		<div class="main-container" id="main-container">
-			<?php
-				require_once("left.php");
-			?>
-			<div class="main-content">
-				<?php
-					require_once("breadcrumbs.php");
-				?>
-				<div class="page-content">
-					<?php
-						require_once("pages/" . LOADING_VIEWNAME . ".php");
-					?>
-				</div><!-- /.page-content -->
-			</div><!-- /.main-content -->
-		</div><!-- /.main-container -->
+<!-- basic scripts -->
 
-		<!-- basic scripts -->
+<!--[if !IE]> -->
+<script src="/<?=APP_FOLDER?>/views/components/jquery/dist/jquery.js"></script>
 
-		<!--[if !IE]> -->
-		<script src="/<?=APP_FOLDER?>/views/components/jquery/dist/jquery.js"></script>
+<!-- <![endif]-->
 
-		<!-- <![endif]-->
-
-		<!--[if IE]>
+<!--[if IE]>
 <script src="/<?=APP_FOLDER?>/views/components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
-		<script type="text/javascript">
-			if('ontouchstart' in document.documentElement) document.write("<script src='/<?=APP_FOLDER?>/views/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
-		</script>
-		<script src="/<?=APP_FOLDER?>/views/components/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript">
+	if('ontouchstart' in document.documentElement) document.write("<script src='/<?=APP_FOLDER?>/views/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
+</script>
+<script src="/<?=APP_FOLDER?>/views/components/bootstrap/dist/js/bootstrap.js"></script>
+
+	<!-- /section:basics/navbar.layout -->
+	<div class="main-container" id="main-container">
+		<?php
+			require_once("left.php");
+		?>
+		<div class="main-content">
+			<?php
+				require_once("breadcrumbs.php");
+			?>
+			<div class="page-content">
+				<?php
+					require_once("pages/" . LOADING_VIEWNAME . ".php");
+				?>
+			</div><!-- /.page-content -->
+		</div><!-- /.main-content -->
+	</div><!-- /.main-container -->
 
 		<!-- page specific plugin scripts -->
 
