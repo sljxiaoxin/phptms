@@ -1,12 +1,15 @@
 jqGridEdit = {
+		gridCommData : {
+
+		},
 		createGrid : function(setting){
 				console.log('--------------------------setting---------------------------->');
 				console.log(setting);
 				var grid_selector  = setting.grid_selector;//"#grid-table";
 				var pager_selector = setting.pager_selector;//"#grid-pager";
-
+				jqGridEdit.gridCommData[grid_selector] = {};
 				var colNames = (function(colNamesBase){
-						colNamesBase.splice(0, 0, '<input type="button" value="新增" onclick="jqGridEdit.addRow()" />');
+						colNamesBase.splice(0, 0, '<input type="button" value="新增" onclick="jqGridEdit.addRow(\''+grid_selector+'\')" />');
 						return colNamesBase;
 				})(setting.colNamesBase);
 				var formaters = {
@@ -83,12 +86,15 @@ jqGridEdit = {
 				};
 				var colModel = (function(colModelBase){
 						var modelRet = [];
+						var emptyRow = {};
 						modelRet.push({
 							name:'myac',index:'myac', width:80, fixed:true, sortable:false, resize:false,
 							formatter: formaters.formatOptions,
 							unformat : formaters.unformatOptions
 						});
+						emptyRow['myac'] = "";
 						for(var i=0;i<colModelBase.length;i++){
+								emptyRow[colModelBase[i]['id']] = "";
 								var obj = {
 										name  : colModelBase[i]['id'],
 										index : colModelBase[i]['id'],
@@ -113,6 +119,8 @@ jqGridEdit = {
 								}
 								modelRet.push(obj);
 						}
+						jqGridEdit.gridCommData[grid_selector]['emptyRow'] = emptyRow;
+						console.log(modelRet);
 						return modelRet;
 				})(setting.colModelBase);
 				var helperFn = {
@@ -153,7 +161,10 @@ jqGridEdit = {
 					}
 				});
 				$(grid_selector).jqGrid({
-						data: [],
+						data: [
+		  				{myac:"1", "TBC_PK":"1","TBC_intSubCompanyPK":"2|天津分公司", "TBC_strName":"我的客户1","TBC_strPhone":"13820052732","TBC_intSaveStatus":"1","TBC_strSubCompanyLinkman":"杨建新"},
+		          {myac:"3", "TBC_PK":"3","TBC_intSubCompanyPK":"3|北京分公司", "TBC_strName":"我的客户2","TBC_strPhone":"13820052732","TBC_intSaveStatus":"1","TBC_strSubCompanyLinkman":"王艳芳"}
+		  			],
 						datatype: "local",
 						height: 250,
 						colNames : colNames,
@@ -192,7 +203,28 @@ jqGridEdit = {
 						}
 				};
 		},
-		addRow : function(){},
+		addRow : function(grid_selector){
+				var ids = jQuery(grid_selector).jqGrid('getDataIDs');
+			  //获得当前最大行号（数据编号）
+			  var rowid = Math.max.apply(Math,ids);
+			  //获得新添加行的行号（数据编号）
+		 		var newrowid = rowid+1;
+				var dataRow = jqGridEdit.gridCommData[grid_selector]['emptyRow'];
+				/*{
+				 myac:"",
+				 PK: "",
+				 strName:"",
+				 strLinkMan:'',
+				 sdate:''
+				};
+				*/
+				//将新添加的行插入到第一列
+				$(grid_selector).jqGrid("addRowData", newrowid, dataRow, "first");
+				//设置grid单元格不可编辑
+				$(grid_selector).setGridParam({cellEdit:false});
+				//设置grid单元格可编辑
+				$(grid_selector).jqGrid('editRow', newrowid, false);
+		},
 		actionDo : function(){}
 
 };

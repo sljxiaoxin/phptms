@@ -14,8 +14,8 @@ foreach($arrFieldsMain as $val){
   //数据准备，js初始化和页面调用
   var grid_data =
   			[
-  				{myac:"1", PK:"1",strName:"2|天津分公司",strLinkMan:"杨建新",sdate:"2007-12-03"},
-          {myac:"3", PK:"3",strName:"3|北京分公司",strLinkMan:"王艳芳",sdate:"2012-11-15"}
+  				{myac:"1", "TBC_PK":"1","TBC_intSubCompanyPK":"2|天津分公司", "TBC_strName":"我的客户1","TBC_strPhone":"13820052732","TBC_intSaveStatus":"1","TBC_strSubCompanyLinkman":"杨建新"},
+          {myac:"3", "TBC_PK":"3","TBC_intSubCompanyPK":"3|北京分公司", "TBC_strName":"我的客户2","TBC_strPhone":"13820052732","TBC_intSaveStatus":"1","TBC_strSubCompanyLinkman":"王艳芳"}
   			];
   $(function($) {
       var setting = {
