@@ -18,8 +18,8 @@ jqGridEdit = {
 								if(cellValue == ""){
 										//cellValue一般都是赋予PK的值 myac : 1，代表如果没有赋值则不出编辑删除按钮
 								}else{
-										arrButtons.push('<div opType="edit" title="编辑" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(this,\'edit\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-pencil"></span></div>');
-										arrButtons.push('<div opType="del" title="删除" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(this,\'del\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-trash"></span></div>');
+										arrButtons.push('<div opType="edit" title="编辑" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'edit\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-pencil"></span></div>');
+										arrButtons.push('<div opType="del" title="删除" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'del\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-trash"></span></div>');
 										arrButtons.push("<input type='hidden' value='"+options.rowId+"'>");
 								}
 								return arrButtons.join("&nbsp;&nbsp;");
@@ -32,17 +32,17 @@ jqGridEdit = {
 										//数据库获取过来的数据，点击编辑按钮，需要出下面的按钮
 										var val = $(cell).find("input:hidden").val();
 										elEdit.html('<span class="ui-icon ui-icon-disk"></span>');
-										elEdit.attr("onclick","jqGridEdit.actionDo(this,'save'," + options.rowId + ")");
+										elEdit.attr("onclick","jqGridEdit.actionDo('"+grid_selector+"',this,'save'," + options.rowId + ")");
 										elEdit.attr("data-original-title","保存");
 										elEdit.tooltip('hide');
 										elDel.html('<span class="ui-icon ui-icon-cancel"></span>');
-										elDel.attr("onclick","jqGridEdit.actionDo(this,'cancel'," + options.rowId + ")");
+										elDel.attr("onclick","jqGridEdit.actionDo('"+grid_selector+"',this,'cancel'," + options.rowId + ")");
 										elDel.attr("data-original-title","取消");
 										elDel.tooltip('hide');
 								}else{
 										//点击新增按钮，出下面的
-										var elSave = $('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>&nbsp;&nbsp;');
-										var elCancel = $('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
+										var elSave = $('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>&nbsp;&nbsp;');
+										var elCancel = $('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
 										$(cell).append(elSave).append(elCancel);
 										elSave.tooltip();
 										elCancel.tooltip();
@@ -82,6 +82,22 @@ jqGridEdit = {
 										var realValue = $(elem).find("input:hidden").val();
 										return realValue+"|"+textValue;
 								}
+						},
+						type5Formatter : function(cellvalue, options, rowObject){
+								if(cellvalue == ""){
+									var textValue = '';
+									var realValue = '';
+								}else{
+									var arrValues = cellvalue.split('|');
+									var textValue = arrValues[1];
+									var realValue = arrValues[0];
+								}
+								return "<span pk='"+realValue+"'>"+textValue+"</span>";
+						},
+						untype5Formatter : function(cellvalue, options, cell){
+								var textValue = $(cell).find("span").html();
+								var realValue = $(cell).find("span").attr("pk");
+								return realValue+"|"+textValue;
 						}
 				};
 				var colModel = (function(colModelBase){
@@ -113,6 +129,8 @@ jqGridEdit = {
 												custom_value : formaters.getType5ElementValue,
 												custom_element : formaters.createType5Element
 										};
+										obj['formatter'] =  formaters.type5Formatter;
+										obj['unformat'] =  formaters.untype5Formatter
 								}else{
 										obj['edittype'] = 'text';
 										obj['editoptions'] = {size:20,maxlength:20};
@@ -225,6 +243,56 @@ jqGridEdit = {
 				//设置grid单元格可编辑
 				$(grid_selector).jqGrid('editRow', newrowid, false);
 		},
-		actionDo : function(){}
+		actionDo : function(grid_selector, obj, oprate, rowId){
+				$(obj).tooltip('hide');
+				if(oprate == "save"){
+						var parameter = {
+							url : "/phptms/sheet_subcompany/save", //代替jqgrid中的editurl
+							mtype : "POST",
+							extraparam : { // 额外 提交到后台的数据
+											"param1" : "1",
+											"param2" : "2"
+							 },
+							successfunc : function(XHR) { //在成功请求后触发;事件参数为XHR对象，需要返回true/false;
+									alert(XHR.responseText);//接收后台返回的数据
+							}//end successfunc
+					 };//end paramenter
+					jQuery(grid_selector).saveRow(rowId, parameter);
+				}
+				if(oprate == "delCancel"){
+						$(grid_selector).jqGrid('delRowData',rowId);
+				}
+				if(oprate == "cancel"){
+						//$('#grid-table').jqGrid('restoreRow',rowId);
+						//var html =$(this).html();
+						$(grid_selector).trigger("reloadGrid");
+				}
+				if(oprate == 'edit'){
+					$(grid_selector).jqGrid('editRow',rowId,{
+								keys : false,        //这里按[enter]保存
+								url: "",
+								mtype : "POST",
+								restoreAfterError: true,
+								extraparam: {
+										"ware.id": rowId,
+										"ware.warename": "aa",
+										"ware.createDate": "bb",
+										"ware.number": '2',
+										"ware.valid": 'cc'
+								},
+								oneditfunc: function(rowid){
+										console.log("oneditfunc:",rowid);
+								},
+								succesfunc: function(response){
+										alert("save success");
+										return true;
+								},
+								errorfunc: function(rowid, res){
+										console.log(rowid);
+										console.log(res);
+								}
+						});
+				}
+		}
 
 };
