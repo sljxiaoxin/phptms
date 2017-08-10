@@ -72,6 +72,10 @@
 				//print_r($ma);
 				if(!empty($ma)){
 					$ma = array_map(function($str){
+									if(strpos($str, "?") !== false){
+											$arrStr = explode("?", $str);
+											$str = $arrStr[0];
+									}
 									$str = rtrim($str, "?");
 									return trim($str,"/");
 								}, $ma[0]

@@ -6,9 +6,63 @@
 			}
 
 			//根据intTablePK和元数据获取单据存储的数据
-			public function getData($intTablePK){
+			public function getData($intTablePK, $arrSetting=array()){
 					//根据getFields返回的数据结构，拼接获取数据sql，并执行。
 					//TODO
+					$start = null;
+					$limit = null;
+					$order = null;
+					$where = null;
+					if(isset($arrSetting['start'])){
+							$start = $arrSetting['start'];
+							$limit = 10;
+							if(isset($arrSetting['limit'])){
+									$limit = $arrSetting['limit'];
+							}
+					}
+					//echo "start=".$start;
+					$arrFields = $this->getFields($intTablePK);
+					//print_r($arrFields);
+					$strMainTable = $arrFields['mainTable']['tableName'];
+					$strMainTableAbbr = $arrFields['mainTable']['abbr'];
+					$arrQueryFields = array();
+					$arrJoinTable = array();
+					$strMainKey = "";   //主键字段标识
+					foreach ($arrFields['mainTable']['fields'] as $key => $val) {
+							$arrQueryFields[] = $strMainTableAbbr.".".$val['strField']." as ".$key;
+							if($val['intType'] == '8'){
+									$strMainKey = $key;
+									if($order === null){
+											$order = " order by ".$strMainTableAbbr.".".$val['strField']." desc ";
+									}
+							}
+					}
+					foreach ($arrFields['joinTables'] as $key => $val) {
+							$arrJoinTable[] = " left join ".$key." as ".$val['abbr']." on ".$val['joinField'];
+							//所有关联表的
+							foreach($val['fields'] as $key2 => $val2){
+									$arrQueryFields[] = $val['abbr'].".".$val2['strField']." as ".$key2;
+							}
+					}
+					$sql  = "select ";
+					$sql .= implode(",", $arrQueryFields);
+					$sql .= " from ".$strMainTable." as ".$strMainTableAbbr;
+					$sql .= implode(" ", $arrJoinTable);
+					$sql .= " where 1 ";
+					if($order !== null){
+							$sql .= $order;
+					}
+					if($start !== null){
+							$sql .= " limit ".$start.",".$limit;
+					}
+					//echo $sql;
+					$data = $this->db->query($sql);
+					//print_r($data);
+					return array(
+							'strMainKey' => $strMainKey,
+							'rows' => $data
+					);
+
 			}
 
 			//根据intTablePK获取单据的描述数据，元数据
@@ -45,7 +99,7 @@
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = $refTableAbbr."_".$data[$i]['strFileldShow_Ref'];
 									$back['joinTables'][$refTable] = array(
 											'abbr' => $refTableAbbr,
-											'joinField' => $mainTableAbbr.".".$mainTableAbbr."_".$data[$i]['strField']." = ".$refTableAbbr.".".$refTableAbbr."_".$data[$i]['strField_Ref'],
+											'joinField' => $mainTableAbbr.".".$data[$i]['strField']." = ".$refTableAbbr.".".$data[$i]['strField_Ref'],
 											'fields' => array()
 									);
 									$fields = array();

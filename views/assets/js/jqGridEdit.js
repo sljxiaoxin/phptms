@@ -1,17 +1,24 @@
 jqGridEdit = {
 		gridCommData : {
-
+				//以grid_selector为key放置外部函数需要访问的数据，防止污染全局空间
 		},
 		createGrid : function(setting){
 				console.log('--------------------------setting---------------------------->');
 				console.log(setting);
 				var grid_selector  = setting.grid_selector;//"#grid-table";
 				var pager_selector = setting.pager_selector;//"#grid-pager";
-				jqGridEdit.gridCommData[grid_selector] = {};
+				var url = typeof setting.url == 'undefined'?"":setting.url;
+				var editurl = typeof setting.editurl == 'undefined'?"":setting.editurl;
+				var datatype = typeof setting.datatype == 'undefined'?"local":setting.datatype;
+				jqGridEdit.gridCommData[grid_selector] = {
+						editurl : editurl
+				};
 				var colNames = (function(colNamesBase){
-						colNamesBase.splice(0, 0, '<input type="button" value="新增" onclick="jqGridEdit.addRow(\''+grid_selector+'\')" />');
+						colNamesBase.splice(0, 0, '<span class="ui-action-span" style="margin-left: 10px;" title="新增" onclick="jqGridEdit.addRow(\''+grid_selector+'\')"><i class="ace-icon fa fa-plus  bigger-150 blue" ></i></span>');
 						return colNamesBase;
 				})(setting.colNamesBase);
+
+				//所有类型的formater集中放置
 				var formaters = {
 						formatOptions : function(cellValue, options, rawObject){
 								var arrButtons = [];
@@ -44,8 +51,8 @@ jqGridEdit = {
 										var elSave = $('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>&nbsp;&nbsp;');
 										var elCancel = $('<div title="取消" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'delCancel\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-cancel"></span></div>');
 										$(cell).append(elSave).append(elCancel);
-										elSave.tooltip();
-										elCancel.tooltip();
+										elSave.tooltip({container:'body'});
+										elCancel.tooltip({container:'body'});
 								}
 								return val;
 						},
@@ -67,8 +74,8 @@ jqGridEdit = {
 								var elHidden = $("<input>", {type:"hidden", value:realValue});
 								elBtn.click(function(){
 										alert("realValue:"+realValue);
-										elHidden.val(55);
-										elInput.val("青岛分公司");
+										elHidden.val(1);
+										elInput.val("北京分公司");
 								});
 								span.append(elGroup.append(elInput).append(elBtn),elHidden);
 								return span;
@@ -100,6 +107,7 @@ jqGridEdit = {
 								return realValue+"|"+textValue;
 						}
 				};
+				//Model生成
 				var colModel = (function(colModelBase){
 						var modelRet = [];
 						var emptyRow = {};
@@ -117,6 +125,7 @@ jqGridEdit = {
 										valueType : colModelBase[i]['intType'],
 										width : 80,
 										editable : true
+										//,editrules : {required:true}
 
 								};
 								if(colModelBase[i]['intType'] == 8){
@@ -141,6 +150,8 @@ jqGridEdit = {
 						console.log(modelRet);
 						return modelRet;
 				})(setting.colModelBase);
+
+				//辅助函数
 				var helperFn = {
 						updatePagerIcons : function(table) {
 								var replacement =
@@ -160,6 +171,7 @@ jqGridEdit = {
 						enableTooltips : function(table){
 							$('.navtable .ui-pg-button').tooltip({container:'body'});
 							$(table).find('.ui-pg-div').tooltip({container:'body'});
+							$(".ui-jqgrid-htable").find('.ui-action-span').tooltip({container:'body'});
 						}
 				};
 				////////////////////////////////////////////////////////////////////////////////////
@@ -179,16 +191,13 @@ jqGridEdit = {
 					}
 				});
 				$(grid_selector).jqGrid({
-						data: [
-		  				{myac:"1", "TBC_PK":"1","TBC_intSubCompanyPK":"2|天津分公司", "TBC_strName":"我的客户1","TBC_strPhone":"13820052732","TBC_intSaveStatus":"1","TBC_strSubCompanyLinkman":"杨建新"},
-		          {myac:"3", "TBC_PK":"3","TBC_intSubCompanyPK":"3|北京分公司", "TBC_strName":"我的客户2","TBC_strPhone":"13820052732","TBC_intSaveStatus":"1","TBC_strSubCompanyLinkman":"王艳芳"}
-		  			],
-						datatype: "local",
+						url : url,//组件创建完成之后请求数据的url
+						datatype : datatype,
 						height: 250,
 						colNames : colNames,
 						colModel : colModel,
 						viewrecords : true,  // 显示总条数
-						rowNum:20,
+						rowNum:15,
 						height : '400px',
 						rowList:[10,20,30],
 						pager : pager_selector,
@@ -205,7 +214,7 @@ jqGridEdit = {
 								helperFn.enableTooltips(table);
 							}, 0);
 						},
-						editurl: "../dummy.php"//nothing is saved
+						editurl: ""//nothing is saved
 						//,caption: "分公司列表"
 					});
 					$(window).triggerHandler('resize.jqGrid');
@@ -245,18 +254,28 @@ jqGridEdit = {
 		},
 		actionDo : function(grid_selector, obj, oprate, rowId){
 				$(obj).tooltip('hide');
+				console.log(oprate);
+				console.log(rowId);
 				if(oprate == "save"){
+						var rowDatas = $(grid_selector).jqGrid('getRowData', rowId);
+						console.log("rowDatas:---------------->");
+						console.log(rowDatas);
+						var myac = rowDatas['myac'];
+						var op = "edit";
+						if(myac == ""){
+								op = "add";
+						}
 						var parameter = {
-							url : "/phptms/sheet_subcompany/save", //代替jqgrid中的editurl
+							url : jqGridEdit.gridCommData[grid_selector].editurl, //代替jqgrid中的editurl
 							mtype : "POST",
 							extraparam : { // 额外 提交到后台的数据
-											"param1" : "1",
-											"param2" : "2"
+										"op" : op
 							 },
 							successfunc : function(XHR) { //在成功请求后触发;事件参数为XHR对象，需要返回true/false;
 									alert(XHR.responseText);//接收后台返回的数据
-							}//end successfunc
-					 };//end paramenter
+									$(grid_selector).trigger("reloadGrid");
+							}
+					 };
 					jQuery(grid_selector).saveRow(rowId, parameter);
 				}
 				if(oprate == "delCancel"){
@@ -272,25 +291,7 @@ jqGridEdit = {
 								keys : false,        //这里按[enter]保存
 								url: "",
 								mtype : "POST",
-								restoreAfterError: true,
-								extraparam: {
-										"ware.id": rowId,
-										"ware.warename": "aa",
-										"ware.createDate": "bb",
-										"ware.number": '2',
-										"ware.valid": 'cc'
-								},
-								oneditfunc: function(rowid){
-										console.log("oneditfunc:",rowid);
-								},
-								succesfunc: function(response){
-										alert("save success");
-										return true;
-								},
-								errorfunc: function(rowid, res){
-										console.log(rowid);
-										console.log(res);
-								}
+								restoreAfterError: true
 						});
 				}
 		}
