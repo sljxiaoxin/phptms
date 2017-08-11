@@ -1,3 +1,4 @@
+
 jqGridEdit = {
 		gridCommData : {
 				//以grid_selector为key放置外部函数需要访问的数据，防止污染全局空间
@@ -10,7 +11,9 @@ jqGridEdit = {
 				var url = typeof setting.url == 'undefined'?"":setting.url;
 				var editurl = typeof setting.editurl == 'undefined'?"":setting.editurl;
 				var datatype = typeof setting.datatype == 'undefined'?"local":setting.datatype;
+
 				jqGridEdit.gridCommData[grid_selector] = {
+						editingRowId : -1,
 						editurl : editurl
 				};
 				var colNames = (function(colNamesBase){
@@ -21,6 +24,7 @@ jqGridEdit = {
 				//所有类型的formater集中放置
 				var formaters = {
 						formatOptions : function(cellValue, options, rawObject){
+								console.log('------------------formatOptions---------------------->');
 								var arrButtons = [];
 								if(cellValue == ""){
 										//cellValue一般都是赋予PK的值 myac : 1，代表如果没有赋值则不出编辑删除按钮
@@ -32,6 +36,7 @@ jqGridEdit = {
 								return arrButtons.join("&nbsp;&nbsp;");
 						},
 						unformatOptions : function(cellvalue, options, cell){
+								console.log('------------------unformatOptions---------------------->');
 								var elEdit = $(cell).find("div[opType='edit']");
 								var elDel = $(cell).find("div[opType='del']");
 								var val = "";
@@ -57,6 +62,7 @@ jqGridEdit = {
 								return val;
 						},
 						createType5Element : function(value, editOptions){
+								console.log('------------------createType5Element---------------------->');
 								var columnArray = $(grid_selector).jqGrid('getGridParam','colModel');
 								var obj = null;
 								for(var i=0;i<columnArray.length;i++){
@@ -68,7 +74,7 @@ jqGridEdit = {
 								var textValue = arrValues[1];
 								var realValue = arrValues[0];
 								var span = $("<span />");
-								var elGroup = $("<div />", {style : "width:200px;", class:"input-group date"});
+								var elGroup = $("<div />", {style : "width:200px;", class:"btnGroupEditable input-group date"});
 								var elInput = $("<input>", {type:"text", readOnly:true, value:textValue, class:"form-control input-sm"});
 								var elBtn = $('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>');
 								var elHidden = $("<input>", {type:"hidden", value:realValue});
@@ -81,6 +87,7 @@ jqGridEdit = {
 								return span;
 						},
 						getType5ElementValue : function(elem, oper, value){
+								console.log('------------------getType5ElementValue---------------------->');
 								if (oper === "set") {
 
 								}
@@ -91,6 +98,7 @@ jqGridEdit = {
 								}
 						},
 						type5Formatter : function(cellvalue, options, rowObject){
+								console.log('------------------type5Formatter---------------------->');
 								if(cellvalue == ""){
 									var textValue = '';
 									var realValue = '';
@@ -102,6 +110,7 @@ jqGridEdit = {
 								return "<span pk='"+realValue+"'>"+textValue+"</span>";
 						},
 						untype5Formatter : function(cellvalue, options, cell){
+								console.log('------------------untype5Formatter---------------------->');
 								var textValue = $(cell).find("span").html();
 								var realValue = $(cell).find("span").attr("pk");
 								return realValue+"|"+textValue;
@@ -124,29 +133,83 @@ jqGridEdit = {
 										index : colModelBase[i]['id'],
 										valueType : colModelBase[i]['intType'],
 										width : 80,
-										editable : true
-										//,editrules : {required:true}
-
+										editable : colModelBase[i]['isEditable']=='1'?true:false
 								};
-								if(colModelBase[i]['intType'] == 8){
+								if(colModelBase[i]['intType'] == 1 || colModelBase[i]['intType'] == 2){
+										//数字 文本
+										obj['edittype'] = 'text';
+										obj['editoptions'] = {size:20,maxlength:20};
+										var rules = {};
+										if(colModelBase[i]['isMustHave'] == '1'){
+												rules['required'] = true;
+										}
+										if(colModelBase[i]['intType'] == 1){
+												//数字相关
+												rules['number'] = true;
+												rules['minValue'] = colModelBase[i]['intMinValue'];
+												rules['maxValue'] = colModelBase[i]['intMaxValue'];
+										}
+										obj['editrules'] = rules;
+								}else if(colModelBase[i]['intType'] == 3 || colModelBase[i]['intType'] == '4'){
+										//日期
+
+
+								}else if(colModelBase[i]['intType'] == 8){
+										//主键类型
 										obj['hidden'] = true;
 										obj['editable'] = false;
 								}else if(colModelBase[i]['intType'] == 5){
+										//引用类型
 										obj['width'] = 150;
 										obj['edittype'] = 'custom';
 										obj['editoptions'] = {
 												custom_value : formaters.getType5ElementValue,
 												custom_element : formaters.createType5Element
 										};
+										var modelBase = colModelBase[i];
 										obj['formatter'] =  formaters.type5Formatter;
-										obj['unformat'] =  formaters.untype5Formatter
+										obj['unformat'] =  formaters.untype5Formatter;
+										obj['editrules'] = {
+												custom: true,
+												custom_func: function (val, nm, valref) {
+														console.log('----------editrules--------->>>');
+														if(modelBase.isEditable == '1' && modelBase.isMustHave=='1' && val == '|'){
+																return [false, "请填写"+modelBase.strName+"!"];
+														}
+														return [true, ""];
+												}
+										};
+								}else if(colModelBase[i]['intType'] == 11){
+										//固定下拉
+										obj['edittype'] = 'select';
+										obj['formatter'] = 'select';
+										var arrSelectText = colModelBase[i]['strSelectText'].split(',');
+										var arrSelectValue = colModelBase[i]['strSelectValue'].split(',');
+										var strDefaultValue = colModelBase[i]['strDefaultValue'];
+										var eo = {};
+										for(var j=0;j<arrSelectValue.length;j++){
+												eo[arrSelectValue[j]] = arrSelectText[j];
+										}
+										var vals = [];
+										var firstItem = "";
+										for(var key in eo){
+												if(strDefaultValue != key){
+														vals.push(key+":"+eo[key]);
+												}else{
+														firstItem = key+":"+eo[key];
+												}
+										}
+										vals.splice(0,0,firstItem);
+										obj['editoptions'] = {value:vals.join(";")};
 								}else{
 										obj['edittype'] = 'text';
 										obj['editoptions'] = {size:20,maxlength:20};
+										obj['editrules'] = {required:true};
 								}
 								modelRet.push(obj);
 						}
 						jqGridEdit.gridCommData[grid_selector]['emptyRow'] = emptyRow;
+						console.log('--------------model inited----------------');
 						console.log(modelRet);
 						return modelRet;
 				})(setting.colModelBase);
@@ -217,6 +280,60 @@ jqGridEdit = {
 						editurl: ""//nothing is saved
 						//,caption: "分公司列表"
 					});
+
+					/*
+						高亮显示错误项，经过部分修改，因为链接里面的版本可能跟我用的不一样
+						https://stackoverflow.com/questions/5988767/highlight-error-cell-or-input-when-validation-fails-in-jqgrid
+					*/
+					var originalCheckValues = $.jgrid.checkValues,
+                originalHideModal = $.jgrid.hideModal,
+                iColWithError = 0;
+            $.jgrid.checkValues = function(val, valref, customobject, nam) {
+								console.log("-------$.jgrid.checkValues-----------");
+								console.log(val, valref, g, customobject, nam);
+								var g=this;
+                var tr,td,
+                    ret = originalCheckValues.call(this,val, valref, customobject, nam);
+                if (!ret[0]) {
+                    tr = g.rows.namedItem(jqGridEdit.gridCommData[grid_selector]['editingRowId']);
+                    if (tr) {
+                        $(tr).children('td').children('input.editable[type="text"]').removeClass("input-warning");
+												$(tr).children('td').find('div.btnGroupEditable').removeClass("input-warning");
+                        iColWithError = valref; // save to set later the focus
+                        //error_td_input_selector = 'tr#'+editingRowId+' > td:nth-child('+(valref+1)+') > input.editable[type="text"]:first';
+                        td = tr.cells[valref];
+                        if (td) {
+                            $(td).find('input.editable[type="text"]').addClass("input-warning");
+														$(td).find('div.btnGroupEditable').addClass("input-warning");
+                        }
+                    }
+                }
+                return ret;
+            };
+            $.jgrid.hideModal = function (selector,o) {
+                var input, oldOnClose, td,
+                    tr = $(grid_selector)[0].rows.namedItem(jqGridEdit.gridCommData[grid_selector]['editingRowId']);
+                if (tr) {
+                    td = tr.cells[iColWithError];
+                    if (td) {
+                        input = $(td).children('input.editable[type="text"]:first');
+                        if (input.length > 0) {
+                            oldOnClose = o.onClose;
+                            o.onClose = function(s) {
+                                if ($.isFunction(oldOnClose)) {
+                                    oldOnClose.call(s);
+                                }
+                                setTimeout(function(){
+                                    input.focus();
+                                },100);
+                            };
+                        }
+                    }
+                }
+                originalHideModal.call(this,selector,o);
+            };
+
+
 					$(window).triggerHandler('resize.jqGrid');
 					$(document).one('ajaxloadstart.page', function(e) {
 						$.jgrid.gridDestroy(grid_selector);
@@ -235,7 +352,10 @@ jqGridEdit = {
 			  //获得当前最大行号（数据编号）
 			  var rowid = Math.max.apply(Math,ids);
 			  //获得新添加行的行号（数据编号）
-		 		var newrowid = rowid+1;
+		 		//var newrowid = rowid+1;
+				var newrowid = 0;
+				jqGridEdit.gridCommData[grid_selector]['editingRowId'] = newrowid;
+				//editingRowId = editingRowId;
 				var dataRow = jqGridEdit.gridCommData[grid_selector]['emptyRow'];
 				/*{
 				 myac:"",
@@ -257,36 +377,42 @@ jqGridEdit = {
 				console.log(oprate);
 				console.log(rowId);
 				if(oprate == "save"){
+						/*
 						var rowDatas = $(grid_selector).jqGrid('getRowData', rowId);
 						console.log("rowDatas:---------------->");
-						console.log(rowDatas);
-						var myac = rowDatas['myac'];
+						//console.log(rowDatas);
+						var myac = "";//rowDatas['myac'];
 						var op = "edit";
 						if(myac == ""){
 								op = "add";
 						}
+						*/
 						var parameter = {
 							url : jqGridEdit.gridCommData[grid_selector].editurl, //代替jqgrid中的editurl
 							mtype : "POST",
 							extraparam : { // 额外 提交到后台的数据
-										"op" : op
+										//"op" : op
 							 },
 							successfunc : function(XHR) { //在成功请求后触发;事件参数为XHR对象，需要返回true/false;
 									alert(XHR.responseText);//接收后台返回的数据
 									$(grid_selector).trigger("reloadGrid");
+									jqGridEdit.gridCommData[grid_selector]['editingRowId'] = -1;
 							}
 					 };
 					jQuery(grid_selector).saveRow(rowId, parameter);
 				}
 				if(oprate == "delCancel"){
 						$(grid_selector).jqGrid('delRowData',rowId);
+						jqGridEdit.gridCommData[grid_selector]['editingRowId'] = -1;
 				}
 				if(oprate == "cancel"){
 						//$('#grid-table').jqGrid('restoreRow',rowId);
 						//var html =$(this).html();
 						$(grid_selector).trigger("reloadGrid");
+						jqGridEdit.gridCommData[grid_selector]['editingRowId'] = -1;
 				}
 				if(oprate == 'edit'){
+					jqGridEdit.gridCommData[grid_selector]['editingRowId'] = rowId;
 					$(grid_selector).jqGrid('editRow',rowId,{
 								keys : false,        //这里按[enter]保存
 								url: "",

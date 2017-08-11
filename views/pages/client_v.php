@@ -12,6 +12,13 @@ foreach($arrFieldsMain as $val){
 $strListUrl = "/".APP_FOLDER."/sheet_client/getList";
 
  ?>
+ <style>
+  .input-warning{
+    background-color: white !important;
+    color: red !important;
+    border:1px solid red !important;
+  }
+ </style>
 <script type="text/javascript">
   $(function($) {
       var setting = {

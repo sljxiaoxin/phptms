@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-08-09 10:55:21
+-- Generation Time: 2017-08-11 10:49:18
 -- 服务器版本： 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -29,10 +29,58 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbl_base_client` (
   `PK` int(11) NOT NULL,
   `intSubCompanyPK` int(11) NOT NULL DEFAULT '0',
-  `strName` varchar(50) NOT NULL,
-  `strPhone` varchar(25) NOT NULL,
+  `strName` varchar(50) DEFAULT NULL,
+  `strPhone` varchar(25) DEFAULT NULL,
+  `strSubCompanyLinkman` varchar(25) DEFAULT NULL,
+  `intBussCount` varchar(20) DEFAULT NULL,
   `intSaveStatus` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `tbl_base_client`
+--
+
+INSERT INTO `tbl_base_client` (`PK`, `intSubCompanyPK`, `strName`, `strPhone`, `strSubCompanyLinkman`, `intBussCount`, `intSaveStatus`) VALUES
+(1, 1, '张三', '13672051068', '杨建新', NULL, 1),
+(4, 1, 'A', 'D', 'C', NULL, 0),
+(5, 1, '李四', '13920331922', '杨建新', NULL, 2),
+(6, 1, '王五', '1111', '王武林', NULL, 1),
+(7, 1, '刘六', '13920331922', '呜呜呜', NULL, 2),
+(8, 1, '张三', '13672051068', '杨建新', NULL, 1),
+(9, 1, 'A', 'D', 'C', NULL, 0),
+(10, 1, '李四', '13920331922', '杨建新', NULL, 2),
+(11, 1, '王五', '1111', '王武林', NULL, 1),
+(12, 1, '刘六', '13920331922', '呜呜呜', NULL, 2),
+(13, 1, '张三', '13672051068', '杨建新', NULL, 1),
+(14, 1, 'A', 'D', 'C', NULL, 0),
+(15, 1, '李四', '13920331922', '杨建新', NULL, 2),
+(16, 1, '王五', '1111', '王武林', NULL, 1),
+(17, 1, '刘六', '13920331922', '呜呜呜', NULL, 2),
+(18, 1, '张三', '13672051068', '杨建新', NULL, 1),
+(19, 1, 'A', 'D', 'C', NULL, 0),
+(20, 1, '李四', '13920331922', '杨建新', NULL, 2),
+(21, 1, '王五', '1111', '王武林', NULL, 1),
+(22, 1, '刘六', '13920331922', '呜呜呜', NULL, 2),
+(23, 1, '张三', '13672051068', '杨建新', NULL, 1),
+(24, 1, 'A', 'D', 'C', NULL, 0),
+(25, 1, '李四', '13920331922', '杨建新', NULL, 2),
+(26, 1, '王五', '1111', '王武林', NULL, 1),
+(27, 1, '刘六', '13920331922', '呜呜呜', NULL, 2),
+(28, 1, '张三', '13672051068', '杨建新', NULL, 1),
+(29, 1, 'A', 'D', 'C', NULL, 0),
+(30, 1, '李四', '13920331922', '杨建新', NULL, 2),
+(31, 1, '王五', '1111', '王武林', NULL, 1),
+(32, 1, '李七', '13920331922', '呜呜呜', NULL, 2),
+(33, 0, '', '', '', NULL, 0),
+(34, 1, 'A', 'B', 'D', NULL, 1),
+(35, 0, '', '', '', NULL, 0),
+(36, 0, 'A', '', '', NULL, 0),
+(37, 1, 'aaa', 'ddd', 'sdfsdfsdf', NULL, 0),
+(38, 1, 'aaa+1', 'ddd', 'sdfsdfsdf', NULL, 0),
+(39, 1, '客户1', '电话1', 'FFFFF', NULL, 0),
+(40, 1, 'ttttttt', 'ffffff', 'fsdfsfdfdsfs', NULL, 0),
+(41, 1, 'A', '33333333333', 'FFFFFF', '99', 1),
+(42, 1, '客户444', '66666666', 'FFFFF', '3', 0);
 
 -- --------------------------------------------------------
 
@@ -48,6 +96,13 @@ CREATE TABLE `tbl_base_subcompany` (
   `strLinkman` varchar(20) DEFAULT NULL,
   `intSaveStatus` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `tbl_base_subcompany`
+--
+
+INSERT INTO `tbl_base_subcompany` (`PK`, `strName`, `strPhone`, `strAddr`, `strLinkman`, `intSaveStatus`) VALUES
+(1, '北京分公司', '13820052732', '北京市西城区', '杨建新', 1);
 
 -- --------------------------------------------------------
 
@@ -146,26 +201,34 @@ CREATE TABLE `tbl_sys_field` (
   `intTablePK_Ref` int(11) NOT NULL,
   `strTable_Ref` varchar(50) DEFAULT NULL,
   `strField_Ref` varchar(30) DEFAULT NULL,
-  `strFileldShow_Ref` varchar(30) DEFAULT NULL
+  `strFileldShow_Ref` varchar(30) DEFAULT NULL,
+  `isEditable` tinyint(4) NOT NULL DEFAULT '1',
+  `isMustHave` tinyint(4) NOT NULL DEFAULT '0',
+  `strDefaultValue` varchar(50) DEFAULT NULL,
+  `strSelectText` varchar(255) DEFAULT NULL COMMENT '固定下拉显示文本',
+  `strSelectValue` varchar(50) DEFAULT NULL,
+  `intMinValue` varchar(50) NOT NULL DEFAULT '-999999999999',
+  `intMaxValue` varchar(50) NOT NULL DEFAULT '999999999999'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `tbl_sys_field`
 --
 
-INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `strTableStorage`, `strField`, `strName`, `intType`, `intTablePK_Ref`, `strTable_Ref`, `strField_Ref`, `strFileldShow_Ref`) VALUES
-(1, 1, 0, 'tbl_base_subcompany', 'PK', '主键', 8, 0, NULL, NULL, NULL),
-(2, 1, 0, 'tbl_base_subcompany', 'strName', '名称', 2, 0, NULL, NULL, NULL),
-(3, 1, 0, 'tbl_base_subcompany', 'strPhone', '电话', 7, 0, NULL, NULL, NULL),
-(4, 1, 0, 'tbl_base_subcompany', 'strAddr', '地址', 2, 0, NULL, NULL, NULL),
-(5, 1, 0, 'tbl_base_subcompany', 'strLinkman', '联系人', 2, 0, NULL, NULL, NULL),
-(6, 1, 2, 'tbl_base_subcompany', 'intSaveStatus', '保存状态', 13, 0, NULL, NULL, NULL),
-(7, 2, 0, 'tbl_base_client', 'PK', '主键', 8, 0, NULL, NULL, NULL),
-(8, 2, 0, 'tbl_base_client', 'intSubCompanyPK', '分公司名称', 5, 1, 'tbl_base_subcompany', 'PK', 'strName'),
-(9, 2, 0, 'tbl_base_client', 'strName', '客户名称', 2, 0, NULL, NULL, NULL),
-(10, 2, 0, 'tbl_base_client', 'strPhone', '电话', 7, 0, NULL, NULL, NULL),
-(11, 2, 2, 'tbl_base_client', 'intSaveStatus', '保存状态', 13, 0, NULL, NULL, NULL),
-(12, 2, 0, 'tbl_base_client', 'strSubCompanyLinkman', '分公司联系人', 6, 1, 'tbl_base_subcompany', 'PK', 'strLinkman');
+INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `strTableStorage`, `strField`, `strName`, `intType`, `intTablePK_Ref`, `strTable_Ref`, `strField_Ref`, `strFileldShow_Ref`, `isEditable`, `isMustHave`, `strDefaultValue`, `strSelectText`, `strSelectValue`, `intMinValue`, `intMaxValue`) VALUES
+(1, 1, 0, 'tbl_base_subcompany', 'PK', '主键', 8, 0, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(2, 1, 0, 'tbl_base_subcompany', 'strName', '名称', 2, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(3, 1, 0, 'tbl_base_subcompany', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(4, 1, 0, 'tbl_base_subcompany', 'strAddr', '地址', 2, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(5, 1, 0, 'tbl_base_subcompany', 'strLinkman', '联系人', 2, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(6, 1, 2, 'tbl_base_subcompany', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999'),
+(7, 2, 0, 'tbl_base_client', 'PK', '主键', 8, 0, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(8, 2, 0, 'tbl_base_client', 'intSubCompanyPK', '分公司名称', 5, 1, 'tbl_base_subcompany', 'PK', 'strName', 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(9, 2, 0, 'tbl_base_client', 'strName', '客户名称', 2, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(10, 2, 0, 'tbl_base_client', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(11, 2, 2, 'tbl_base_client', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999'),
+(12, 2, 0, 'tbl_base_client', 'strSubCompanyLinkman', '分公司联系人', 6, 1, 'tbl_base_subcompany', 'PK', 'strLinkman', 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999'),
+(13, 2, 0, 'tbl_base_client', 'intBussCount', '业务量', 1, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '0', '100');
 
 -- --------------------------------------------------------
 
@@ -216,7 +279,7 @@ INSERT INTO `tbl_sys_type` (`PK`, `strName`) VALUES
 (10, '附件'),
 (11, '固定下拉'),
 (12, '自定义下拉'),
-(13, '保存状态'),
+(13, '自定义状态'),
 (14, '自生成单号'),
 (15, '人员'),
 (16, '累加');
@@ -329,12 +392,12 @@ ALTER TABLE `user`
 -- 使用表AUTO_INCREMENT `tbl_base_client`
 --
 ALTER TABLE `tbl_base_client`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_subcompany`
 --
 ALTER TABLE `tbl_base_subcompany`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tbl_menu_action`
 --
@@ -354,7 +417,7 @@ ALTER TABLE `tbl_menu_left`
 -- 使用表AUTO_INCREMENT `tbl_sys_field`
 --
 ALTER TABLE `tbl_sys_field`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- 使用表AUTO_INCREMENT `tbl_sys_table`
 --

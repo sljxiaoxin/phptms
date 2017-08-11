@@ -5729,6 +5729,7 @@ $.extend($.jgrid,{
 		}
 	},
 	info_dialog : function(caption, content,c_b, modalopt) {
+		//console.log("-----------info_dialog------------>>");
 		var mopt = {
 			width:290,
 			height:'auto',
@@ -11202,8 +11203,10 @@ $.jgrid.extend({
 		if (!$t.grid ) { return success; }
 		ind = $($t).jqGrid("getInd",rowid,true);
 		if(ind === false) {return success;}
-		var errors = $.jgrid.getRegional(this, 'errors'),
-		edit =$.jgrid.getRegional(this, 'edit'),
+		//var errors = $.jgrid.getRegional(this, 'errors'),
+		//edit =$.jgrid.getRegional(this, 'edit'),
+		var errors = $.jgrid.getRegional($t, 'errors'),
+			edit =$.jgrid.getRegional($t, 'edit'),
 		bfsr = $.isFunction( o.beforeSaveRow ) ?	o.beforeSaveRow.call($t,o, rowid) :  undefined;
 		if( bfsr === undefined ) {
 			bfsr = true;
@@ -11274,8 +11277,13 @@ $.jgrid.extend({
 				}
 			});
 			if (cv[0] === false){
+				//console.log("-------saveRow->info_dialog--------");
 				try {
 					var tr = $($t).jqGrid('getGridRowById', rowid), positions = $.jgrid.findPos(tr);
+					//console.log(errors);
+					//console.log(cv[1]);
+					//console.log(edit.bClose);
+					//console.log({left:positions[0],top:positions[1]+$(tr).outerHeight(), styleUI : $t.p.styleUI });
 					$.jgrid.info_dialog(errors.errcap,cv[1],edit.bClose,{left:positions[0],top:positions[1]+$(tr).outerHeight(), styleUI : $t.p.styleUI });
 				} catch (e) {
 					alert(cv[1]);

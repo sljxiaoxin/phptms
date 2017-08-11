@@ -98,7 +98,12 @@
 						}
 				}
 				print_r($arrValues);
-				$this->objMo->save($_POST['op'], $_POST['id'], $arrValues);
+				$id = $_POST['id'];
+				$op = 'edit';
+				if($id == '0'){
+						$op = 'add';
+				}
+				$this->objMo->save($op, $id, $arrValues);
 				/*
 				Array
 				(
