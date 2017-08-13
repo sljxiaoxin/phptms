@@ -3,16 +3,35 @@
 		private $objMo = null;
 		function __construct($controller, $method){
 				parent::__construct($controller, $method, 2);  //1 is tablePK
-				$this->model("Client_m");
-				$this->objMo = new Client_m(2);
+				$this->model("Basedata_m");
+				$this->objMo = new Basedata_m(2);
 		}
 
 		public function index(){
-				$arrFields = $this->objMo->getFields(2);
+				$arrFields = $this->makeColModel();
 				$data = array(
 						'arrFields' => $arrFields
 				);
 				$this->display('client_v', $data);
+		}
+		//点选页用
+		public function getColModel(){
+				$arrFields = $this->makeColModel();
+				echo json_encode($arrFields);
+		}
+
+		private function makeColModel(){
+				$arrFields = $this->objMo->getFields(2);
+				$arrFieldsMain = $arrFields['mainTable']['fields'];
+				foreach($arrFieldsMain as $val){
+						$arrFieldsInfo[] = $val;
+						$colNamesBase[] = $val['strName'];
+				}
+				return array(
+						'colNamesBase' => $colNamesBase,
+						'arrFieldsInfo' => $arrFieldsInfo
+				);
+
 		}
 
 		public function getList(){

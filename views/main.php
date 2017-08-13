@@ -6,13 +6,18 @@
 						'<script src="/'.APP_FOLDER.'/views/assets/js/bootstrap-datetimepicker.min.js"></script>  '
 				),
 				'subcompany_v' => array(
-					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/assets/js/jqGridEdit.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/assets/js/jqBaseSelectDialog.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>',
 					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
 	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
 				),
 				'client_v' => array(
 					'<script src="/'.APP_FOLDER.'/views/assets/js/jqGridEdit.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/assets/js/jqBaseSelectDialog.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>',
+					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>',
 					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
 	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
 				)
@@ -32,7 +37,7 @@
 	if('ontouchstart' in document.documentElement) document.write("<script src='/<?=APP_FOLDER?>/views/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
 </script>
 <script src="/<?=APP_FOLDER?>/views/components/bootstrap/dist/js/bootstrap.js"></script>
-
+<script src="/<?=APP_FOLDER?>/views/components/jquery-ui/jquery-ui.js"></script>
 	<!-- /section:basics/navbar.layout -->
 	<div class="main-container" id="main-container">
 		<?php
@@ -96,5 +101,6 @@
 				echo '<script src="/'.APP_FOLDER.'/views/pages/js/'.LOADING_VIEWNAME.'.js"></script>';
 			}
 		?>
+
 	</body>
 </html>

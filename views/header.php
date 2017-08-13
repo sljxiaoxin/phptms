@@ -7,14 +7,14 @@
 		 'subcompany_v' => array(
 			 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/tms-add.css"  />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jquery-ui/jquery-ui.css" />',
-			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/bootstrap-datetimepicker.min.css"  />',
+				'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />',
 				'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jqgrid/ui.jqgrid.css" />'
 		 ),
 		 'client_v' => array(
 			 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/tms-add.css"  />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jquery-ui/jquery-ui.css" />',
-			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/assets/css/bootstrap-datetimepicker.min.css"  />',
+				'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />',
 				'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />',
 			 	'<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jqgrid/ui.jqgrid.css" />'
 		 )
@@ -56,7 +56,7 @@
 		<![endif]-->
 
 		<!-- inline styles related to this page -->
-
+		<link rel="stylesheet" href="/<?=APP_FOLDER?>/views/assets/css/phptms.css" />
 		<!-- ace settings handler -->
 		<script src="/<?=APP_FOLDER?>/views/assets/js/ace-extra.js"></script>
 
@@ -66,6 +66,11 @@
 		<script src="/<?=APP_FOLDER?>/views/components/html5shiv/dist/html5shiv.min.js"></script>
 		<script src="/<?=APP_FOLDER?>/views/components/respond/dest/respond.min.js"></script>
 		<![endif]-->
+		<script>
+				var CONST = {
+						APP_FOLDER : "<?php echo APP_FOLDER;?>"
+				};
+		</script>
 
 	</head>
 

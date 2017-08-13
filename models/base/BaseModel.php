@@ -21,6 +21,7 @@
 							}
 					}
 					//echo "start=".$start;
+					//echo "intTablePK = ".$intTablePK."\r\n";
 					$arrFields = $this->getFields($intTablePK);
 					//print_r($arrFields);
 					$strMainTable = $arrFields['mainTable']['tableName'];
@@ -86,8 +87,9 @@
 							$fieldKey = $mainTableAbbr."_".$data[$i]['strField'];
 							$back['mainTable']['fields'][$fieldKey] = $data[$i];
 							$back['mainTable']['fields'][$fieldKey]['id'] = $fieldKey;
-							if($intType != '5'){
+							if($intType != '5' && $intType != '6'){
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = '';
+									$back['mainTable']['fields'][$fieldKey]['strFileldSqlHide'] = '';
 							}else{
 									$intTablePK_Ref = $data[$i]['intTablePK_Ref'];
 									$sql = "select * from tbl_sys_field where intTablePK = '".$intTablePK_Ref."'";
@@ -97,17 +99,20 @@
 									$refTableAbbr = $refTable[0]['strTableAbbr'];
 									$refTable = $refTable[0]['strTable'];
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = $refTableAbbr."_".$data[$i]['strFileldShow_Ref'];
-									$back['joinTables'][$refTable] = array(
-											'abbr' => $refTableAbbr,
-											'joinField' => $mainTableAbbr.".".$data[$i]['strField']." = ".$refTableAbbr.".".$data[$i]['strField_Ref'],
-											'fields' => array()
-									);
-									$fields = array();
-									for($j=0;$j<count($arrRefData);$j++){
-											$refFieldKey = $refTableAbbr."_".$arrRefData[$j]['strField'];
-											$fields[$refFieldKey] = $arrRefData[$j];
+									$back['mainTable']['fields'][$fieldKey]['strFileldSqlHide'] = $refTableAbbr."_".$data[$i]['strField_Ref'];
+									if($intType == '5'){
+											$back['joinTables'][$refTable] = array(
+													'abbr' => $refTableAbbr,
+													'joinField' => $mainTableAbbr.".".$data[$i]['strField']." = ".$refTableAbbr.".".$data[$i]['strField_Ref'],
+													'fields' => array()
+											);
+											$fields = array();
+											for($j=0;$j<count($arrRefData);$j++){
+													$refFieldKey = $refTableAbbr."_".$arrRefData[$j]['strField'];
+													$fields[$refFieldKey] = $arrRefData[$j];
+											}
+											$back['joinTables'][$refTable]['fields'] = $fields;
 									}
-									$back['joinTables'][$refTable]['fields'] = $fields;
 							}
 					}
 					//print_r($back);

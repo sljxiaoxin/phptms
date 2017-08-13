@@ -1,5 +1,6 @@
 
 jqGridEdit = {
+		isGlobalInit : false,
 		gridCommData : {
 				//以grid_selector为key放置外部函数需要访问的数据，防止污染全局空间
 		},
@@ -8,9 +9,12 @@ jqGridEdit = {
 				console.log(setting);
 				var grid_selector  = setting.grid_selector;//"#grid-table";
 				var pager_selector = setting.pager_selector;//"#grid-pager";
+				var height = typeof setting.height == 'undefined'?'350px':setting.height;
 				var url = typeof setting.url == 'undefined'?"":setting.url;
 				var editurl = typeof setting.editurl == 'undefined'?"":setting.editurl;
 				var datatype = typeof setting.datatype == 'undefined'?"local":setting.datatype;
+				var isSelect = typeof setting.isSelect == 'undefined'?false:true;
+				var onSelect = typeof setting.onSelect == 'undefined'?null:setting.onSelect;
 
 				jqGridEdit.gridCommData[grid_selector] = {
 						editingRowId : -1,
@@ -46,11 +50,11 @@ jqGridEdit = {
 										elEdit.html('<span class="ui-icon ui-icon-disk"></span>');
 										elEdit.attr("onclick","jqGridEdit.actionDo('"+grid_selector+"',this,'save'," + options.rowId + ")");
 										elEdit.attr("data-original-title","保存");
-										elEdit.tooltip('hide');
+										elEdit.tooltip('close');
 										elDel.html('<span class="ui-icon ui-icon-cancel"></span>');
 										elDel.attr("onclick","jqGridEdit.actionDo('"+grid_selector+"',this,'cancel'," + options.rowId + ")");
 										elDel.attr("data-original-title","取消");
-										elDel.tooltip('hide');
+										elDel.tooltip('close');
 								}else{
 										//点击新增按钮，出下面的
 										var elSave = $('<div title="保存" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="jqGridEdit.actionDo(\'' + grid_selector + '\',this,\'save\',\'' + options.rowId + '\')"><span class="ui-icon ui-icon-disk"></span></div>&nbsp;&nbsp;');
@@ -64,10 +68,17 @@ jqGridEdit = {
 						createType5Element : function(value, editOptions){
 								console.log('------------------createType5Element---------------------->');
 								var columnArray = $(grid_selector).jqGrid('getGridParam','colModel');
+								console.log(columnArray);
 								var obj = null;
+								var intTablePK_Ref_t = 0;
+								var realValueKey = "";
+								var textValueKey = "";
 								for(var i=0;i<columnArray.length;i++){
 										if(columnArray[i].name == editOptions.name){
 												obj = columnArray[i];
+												intTablePK_Ref_t = columnArray[i].intTablePK_Ref;
+												realValueKey = columnArray[i].strFileldSqlHide;
+												textValueKey = columnArray[i].strFileldSqlShow;
 										}
 								}
 								var arrValues = value.split('|');
@@ -78,10 +89,32 @@ jqGridEdit = {
 								var elInput = $("<input>", {type:"text", readOnly:true, value:textValue, class:"form-control input-sm"});
 								var elBtn = $('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>');
 								var elHidden = $("<input>", {type:"hidden", value:realValue});
+
 								elBtn.click(function(){
-										alert("realValue:"+realValue);
-										elHidden.val(1);
-										elInput.val("北京分公司");
+										jqBaseSelectDialog.showDialog({
+												intTablePK_Ref : intTablePK_Ref_t,
+												callback : function(op, data){
+														if(op =='success'){
+																console.log("data:", data);
+																console.log("columnArray:",columnArray);
+																elHidden.val(data[realValueKey]);
+																elInput.val(data[textValueKey]);
+																for(var i=0;i<columnArray.length;i++){
+																		if(columnArray[i]['valueType'] == '6'){
+																				//带出类型处理
+																				console.log('type 6 field is :',columnArray[i]['strFileldSqlShow']);
+																				if(typeof data[columnArray[i]['strFileldSqlShow']] != 'undefined'){
+																						$(grid_selector).find("input[name='"+columnArray[i]['name']+"']").val(data[columnArray[i]['strFileldSqlShow']]);
+																				}
+																		}
+																}
+														}
+												}
+										});
+										console.log("type5Click:",columnArray);
+										//alert("realValue:"+realValue);
+
+
 								});
 								span.append(elGroup.append(elInput).append(elBtn),elHidden);
 								return span;
@@ -114,10 +147,34 @@ jqGridEdit = {
 								var textValue = $(cell).find("span").html();
 								var realValue = $(cell).find("span").attr("pk");
 								return realValue+"|"+textValue;
+						},
+						undateFormatter : function( cellvalue, options, cell ) {
+							//console.log(cellvalue, options, cell);
+							setTimeout(function(){
+								$(cell).find('input[type=text]').datetimepicker({
+									format : 'yyyy-mm-dd',
+									autoclose:true,
+									minView: "month",
+									todayBtn:true,
+									language :'zh-CN'
+								});
+							}, 0);
+						},
+						undatetimeFormatter : function( cellvalue, options, cell ) {
+							//console.log(cellvalue, options, cell);
+							setTimeout(function(){
+								$(cell).find('input[type=text]').datetimepicker({
+									format : 'yyyy-mm-dd hh:ii:ss',
+									autoclose:true,
+									todayBtn:true,
+									language :'zh-CN'
+								});
+							}, 0);
 						}
 				};
 				//Model生成
 				var colModel = (function(colModelBase){
+						console.log('colModelBase:',colModelBase);
 						var modelRet = [];
 						var emptyRow = {};
 						modelRet.push({
@@ -132,7 +189,10 @@ jqGridEdit = {
 										name  : colModelBase[i]['id'],
 										index : colModelBase[i]['id'],
 										valueType : colModelBase[i]['intType'],
-										width : 80,
+										intTablePK_Ref : colModelBase[i]['intTablePK_Ref'],
+										strFileldSqlHide : colModelBase[i]['strFileldSqlHide'],
+										strFileldSqlShow : colModelBase[i]['strFileldSqlShow'],
+										width : 120,
 										editable : colModelBase[i]['isEditable']=='1'?true:false
 								};
 								if(colModelBase[i]['intType'] == 1 || colModelBase[i]['intType'] == 2){
@@ -152,7 +212,19 @@ jqGridEdit = {
 										obj['editrules'] = rules;
 								}else if(colModelBase[i]['intType'] == 3 || colModelBase[i]['intType'] == '4'){
 										//日期
-
+										var formaterFn = null;
+										if(colModelBase[i]['intType'] == 3){
+												formaterFn = formaters.undateFormatter;
+										}else if(colModelBase[i]['intType'] == 4){
+												formaterFn = formaters.undatetimeFormatter;
+										}
+										obj['edittype'] = 'text';
+										obj['unformat'] =  formaterFn;
+										var rules = {};
+										if(colModelBase[i]['isMustHave'] == '1'){
+												rules['required'] = true;
+										}
+										obj['editrules'] = rules;
 
 								}else if(colModelBase[i]['intType'] == 8){
 										//主键类型
@@ -160,7 +232,7 @@ jqGridEdit = {
 										obj['editable'] = false;
 								}else if(colModelBase[i]['intType'] == 5){
 										//引用类型
-										obj['width'] = 150;
+										obj['width'] = 220;
 										obj['edittype'] = 'custom';
 										obj['editoptions'] = {
 												custom_value : formaters.getType5ElementValue,
@@ -256,12 +328,14 @@ jqGridEdit = {
 				$(grid_selector).jqGrid({
 						url : url,//组件创建完成之后请求数据的url
 						datatype : datatype,
-						height: 250,
+						//height: 220,
 						colNames : colNames,
 						colModel : colModel,
 						viewrecords : true,  // 显示总条数
-						rowNum:15,
-						height : '400px',
+						rowNum:10,
+						height : height,
+						shrinkToFit:false,
+						autoScroll: true,
 						rowList:[10,20,30],
 						pager : pager_selector,
 						altRows: true,
@@ -275,7 +349,19 @@ jqGridEdit = {
 							setTimeout(function(){
 								helperFn.updatePagerIcons(table);
 								helperFn.enableTooltips(table);
+								$( grid_selector ).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'auto' });
 							}, 0);
+						},
+						onSelectRow : function(rowId, iRow,iCol,e){
+								if(rowId<=0)return;
+								if(isSelect){
+										if(onSelect != null){
+												var rowDatas = $(grid_selector).jqGrid('getRowData', rowId);
+												console.log('ondblClickRow', rowDatas);
+												onSelect.call(this, rowDatas);
+										}
+
+								}
 						},
 						editurl: ""//nothing is saved
 						//,caption: "分公司列表"
@@ -285,53 +371,57 @@ jqGridEdit = {
 						高亮显示错误项，经过部分修改，因为链接里面的版本可能跟我用的不一样
 						https://stackoverflow.com/questions/5988767/highlight-error-cell-or-input-when-validation-fails-in-jqgrid
 					*/
-					var originalCheckValues = $.jgrid.checkValues,
-                originalHideModal = $.jgrid.hideModal,
-                iColWithError = 0;
-            $.jgrid.checkValues = function(val, valref, customobject, nam) {
-								console.log("-------$.jgrid.checkValues-----------");
-								console.log(val, valref, g, customobject, nam);
-								var g=this;
-                var tr,td,
-                    ret = originalCheckValues.call(this,val, valref, customobject, nam);
-                if (!ret[0]) {
-                    tr = g.rows.namedItem(jqGridEdit.gridCommData[grid_selector]['editingRowId']);
-                    if (tr) {
-                        $(tr).children('td').children('input.editable[type="text"]').removeClass("input-warning");
-												$(tr).children('td').find('div.btnGroupEditable').removeClass("input-warning");
-                        iColWithError = valref; // save to set later the focus
-                        //error_td_input_selector = 'tr#'+editingRowId+' > td:nth-child('+(valref+1)+') > input.editable[type="text"]:first';
-                        td = tr.cells[valref];
-                        if (td) {
-                            $(td).find('input.editable[type="text"]').addClass("input-warning");
-														$(td).find('div.btnGroupEditable').addClass("input-warning");
-                        }
-                    }
-                }
-                return ret;
-            };
-            $.jgrid.hideModal = function (selector,o) {
-                var input, oldOnClose, td,
-                    tr = $(grid_selector)[0].rows.namedItem(jqGridEdit.gridCommData[grid_selector]['editingRowId']);
-                if (tr) {
-                    td = tr.cells[iColWithError];
-                    if (td) {
-                        input = $(td).children('input.editable[type="text"]:first');
-                        if (input.length > 0) {
-                            oldOnClose = o.onClose;
-                            o.onClose = function(s) {
-                                if ($.isFunction(oldOnClose)) {
-                                    oldOnClose.call(s);
-                                }
-                                setTimeout(function(){
-                                    input.focus();
-                                },100);
-                            };
-                        }
-                    }
-                }
-                originalHideModal.call(this,selector,o);
-            };
+					if(!jqGridEdit.isGlobalInit){
+							var originalCheckValues = $.jgrid.checkValues,
+									originalHideModal = $.jgrid.hideModal,
+									iColWithError = 0;
+							$.jgrid.checkValues = function(val, valref, customobject, nam) {
+									console.log("-------$.jgrid.checkValues-----------");
+									console.log(val, valref, g, customobject, nam);
+									var g=this;
+									var tr,td,
+											ret = originalCheckValues.call(this,val, valref, customobject, nam);
+									if (!ret[0]) {
+											tr = g.rows.namedItem(jqGridEdit.gridCommData[grid_selector]['editingRowId']);
+											if (tr) {
+													$(tr).children('td').children('input.editable[type="text"]').removeClass("input-warning");
+													$(tr).children('td').find('div.btnGroupEditable').removeClass("input-warning");
+													iColWithError = valref; // save to set later the focus
+													//error_td_input_selector = 'tr#'+editingRowId+' > td:nth-child('+(valref+1)+') > input.editable[type="text"]:first';
+													td = tr.cells[valref];
+													if (td) {
+															$(td).find('input.editable[type="text"]').addClass("input-warning");
+															$(td).find('div.btnGroupEditable').addClass("input-warning");
+													}
+											}
+									}
+									return ret;
+							};
+							$.jgrid.hideModal = function (selector,o) {
+									var input, oldOnClose, td,
+											tr = $(grid_selector)[0].rows.namedItem(jqGridEdit.gridCommData[grid_selector]['editingRowId']);
+									if (tr) {
+											td = tr.cells[iColWithError];
+											if (td) {
+													input = $(td).children('input.editable[type="text"]:first');
+													if (input.length > 0) {
+															oldOnClose = o.onClose;
+															o.onClose = function(s) {
+																	if ($.isFunction(oldOnClose)) {
+																			oldOnClose.call(s);
+																	}
+																	setTimeout(function(){
+																			input.focus();
+																	},100);
+															};
+													}
+											}
+									}
+									originalHideModal.call(this,selector,o);
+							};
+							jqGridEdit.isGlobalInit = true;
+					}
+
 
 
 					$(window).triggerHandler('resize.jqGrid');
@@ -373,7 +463,7 @@ jqGridEdit = {
 				$(grid_selector).jqGrid('editRow', newrowid, false);
 		},
 		actionDo : function(grid_selector, obj, oprate, rowId){
-				$(obj).tooltip('hide');
+				$(obj).tooltip('close');
 				console.log(oprate);
 				console.log(rowId);
 				if(oprate == "save"){
