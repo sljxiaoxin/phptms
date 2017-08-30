@@ -78,8 +78,8 @@ var jqBaseSelectDialog = {
 								text: "取消",
 								"class" : "btn btn-minier",
 								click: function() {
-									//$( this ).dialog( "close" );
-									 $(this).dialog('destroy');
+									 $( this ).dialog( "close" );
+									 //$(this).dialog('destroy');
 								}
 							},
 							{
