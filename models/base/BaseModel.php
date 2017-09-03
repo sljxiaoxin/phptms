@@ -68,7 +68,7 @@
 
 			//根据intTablePK获取单据的描述数据，元数据
 			public function getFields($intTablePK){
-					$sql = "select * from tbl_sys_field where intTablePK = '".$intTablePK."'";
+					$sql = "select * from tbl_sys_field where intTablePK = '".$intTablePK."' order by intOrder";
 					$data = $this->db->query($sql);
 					$sql = "select strTableAbbr,strTable from tbl_sys_table where PK = '".$intTablePK."'";
 					$sysTable = $this->db->query($sql);
@@ -87,7 +87,9 @@
 							$fieldKey = $mainTableAbbr."_".$data[$i]['strField'];
 							$back['mainTable']['fields'][$fieldKey] = $data[$i];
 							$back['mainTable']['fields'][$fieldKey]['id'] = $fieldKey;
-							if($intType != '5' && $intType != '6'){
+							//echo $data[$i]['strField_Ref']."@".$data[$i]['strFileldShow_Ref']."<br>";
+							//if($intType != '5' && $intType != '6' && $intType != '17'){
+							if($data[$i]['intTablePK_Ref'] == '0'){
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = '';
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlHide'] = '';
 							}else{
@@ -100,7 +102,7 @@
 									$refTable = $refTable[0]['strTable'];
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = $refTableAbbr."_".$data[$i]['strFileldShow_Ref'];
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlHide'] = $refTableAbbr."_".$data[$i]['strField_Ref'];
-									if($intType == '5'){
+									if($intType == '5' || $intType == '17'){
 											$back['joinTables'][$refTable] = array(
 													'abbr' => $refTableAbbr,
 													'joinField' => $mainTableAbbr.".".$data[$i]['strField']." = ".$refTableAbbr.".".$data[$i]['strField_Ref'],

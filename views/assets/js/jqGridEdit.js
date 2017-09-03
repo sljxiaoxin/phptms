@@ -86,7 +86,7 @@ jqGridEdit = {
 								var realValue = arrValues[0];
 								var span = $("<span />");
 								var elGroup = $("<div />", {style : "width:200px;", class:"btnGroupEditable input-group date"});
-								var elInput = $("<input>", {type:"text", readOnly:true, value:textValue, class:"form-control input-sm"});
+								var elInput = $("<input>", {/*val: "加载中。。。", */ type:"text", readOnly:true, value:textValue, class:"form-control input-sm"});
 								var elBtn = $('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>');
 								var elHidden = $("<input>", {type:"hidden", value:realValue});
 
@@ -100,11 +100,15 @@ jqGridEdit = {
 																elHidden.val(data[realValueKey]);
 																elInput.val(data[textValueKey]);
 																for(var i=0;i<columnArray.length;i++){
-																		if(columnArray[i]['valueType'] == '6'){
+																		if(columnArray[i]['isDragOut'] == '1'){
 																				//带出类型处理
 																				console.log('type 6 field is :',columnArray[i]['strFileldSqlShow']);
 																				if(typeof data[columnArray[i]['strFileldSqlShow']] != 'undefined'){
-																						$(grid_selector).find("input[name='"+columnArray[i]['name']+"']").val(data[columnArray[i]['strFileldSqlShow']]);
+																						if(columnArray[i]['valueType'] != '5' && columnArray[i]['valueType'] != '17'){
+																								//非引用类型，直接置值
+																								$(grid_selector).find("input[name='"+columnArray[i]['name']+"']").val(data[columnArray[i]['strFileldSqlShow']]);
+																						}
+
 																				}
 																		}
 																}
@@ -148,6 +152,73 @@ jqGridEdit = {
 								var realValue = $(cell).find("span").attr("pk");
 								return realValue+"|"+textValue;
 						},
+						createType17Element : function(value, editOptions){
+								console.log('------------------createType17Element---------------------->');
+								var columnArray = $(grid_selector).jqGrid('getGridParam','colModel');
+								console.log(columnArray);
+								var obj = null;
+								var intTablePK_Ref_t = 0;
+								var realValueKey = "";
+								var textValueKey = "";
+								var strField = "";
+								for(var i=0;i<columnArray.length;i++){
+										if(columnArray[i].name == editOptions.name){
+												obj = columnArray[i];
+												intTablePK_Ref_t = columnArray[i].intTablePK_Ref;
+												realValueKey = columnArray[i].strFileldSqlHide;
+												textValueKey = columnArray[i].strFileldSqlShow;
+												strField = columnArray[i].strField;
+										}
+								}
+								var arrValues = value.split('|');
+								var textValue = arrValues[1];
+								var realValue = arrValues[0];
+								var span = $("<span />");
+								/*
+								var elGroup = $("<div />", {style : "width:200px;", class:"btnGroupEditable input-group date"});
+								var elInput = $("<input>", {type:"text", readOnly:true, value:textValue, class:"form-control input-sm"});
+								var elBtn = $('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>');
+								var elHidden = $("<input>", {type:"hidden", value:realValue});
+								*/
+								var elSelect = $('<select class="chosen-select form-control"  data-placeholder="请选择"><option value=""> </option><option value="2">测试2</option></option><option value="1">测试</option></select>');
+								span.append(elSelect);
+								elSelect.chosen({allow_single_deselect:true}).on('change',function(){
+										alert(111);
+								});
+								elSelect.next().css({'width': 150});
+								$(this).find("td").css({'overflow':'visible'});
+								jqRefManager.load(elSelect, strField, realValue);
+								return span;
+						},
+						getType17ElementValue : function(elem, oper, value){
+								console.log('------------------getType17ElementValue---------------------->');
+								if (oper === "set") {
+
+								}
+								if (oper === "get") {
+										var textValue = $(elem).find("input:text").val();
+										var realValue = $(elem).find("input:hidden").val();
+										return realValue+"|"+textValue;
+								}
+						},
+						type17Formatter : function(cellvalue, options, rowObject){
+								console.log('------------------type17Formatter---------------------->');
+								if(cellvalue == ""){
+									var textValue = '';
+									var realValue = '';
+								}else{
+									var arrValues = cellvalue.split('|');
+									var textValue = arrValues[1];
+									var realValue = arrValues[0];
+								}
+								return "<span pk='"+realValue+"'>"+textValue+"</span>";
+						},
+						untype17Formatter : function(cellvalue, options, cell){
+								console.log('------------------untype17Formatter---------------------->');
+								var textValue = $(cell).find("span").html();
+								var realValue = $(cell).find("span").attr("pk");
+								return realValue+"|"+textValue;
+						},
 						undateFormatter : function( cellvalue, options, cell ) {
 							//console.log(cellvalue, options, cell);
 							setTimeout(function(){
@@ -187,11 +258,13 @@ jqGridEdit = {
 								emptyRow[colModelBase[i]['id']] = "";
 								var obj = {
 										name  : colModelBase[i]['id'],
+										strField : colModelBase[i]['strField'],
 										index : colModelBase[i]['id'],
 										valueType : colModelBase[i]['intType'],
 										intTablePK_Ref : colModelBase[i]['intTablePK_Ref'],
 										strFileldSqlHide : colModelBase[i]['strFileldSqlHide'],
 										strFileldSqlShow : colModelBase[i]['strFileldSqlShow'],
+										isDragOut : colModelBase[i]['isDragOut'],
 										width : 120,
 										editable : colModelBase[i]['isEditable']=='1'?true:false
 								};
@@ -241,6 +314,27 @@ jqGridEdit = {
 										var modelBase = colModelBase[i];
 										obj['formatter'] =  formaters.type5Formatter;
 										obj['unformat'] =  formaters.untype5Formatter;
+										obj['editrules'] = {
+												custom: true,
+												custom_func: function (val, nm, valref) {
+														console.log('----------editrules--------->>>');
+														if(modelBase.isEditable == '1' && modelBase.isMustHave=='1' && val == '|'){
+																return [false, "请填写"+modelBase.strName+"!"];
+														}
+														return [true, ""];
+												}
+										};
+								}else if(colModelBase[i]['intType'] == 17){
+										//引用单选下拉
+										obj['width'] = 220;
+										obj['edittype'] = 'custom';
+										obj['editoptions'] = {
+												custom_value : formaters.getType17ElementValue,
+												custom_element : formaters.createType17Element
+										};
+										var modelBase = colModelBase[i];
+										obj['formatter'] =  formaters.type17Formatter;
+										obj['unformat'] =  formaters.untype17Formatter;
 										obj['editrules'] = {
 												custom: true,
 												custom_func: function (val, nm, valref) {

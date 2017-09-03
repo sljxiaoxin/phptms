@@ -1,26 +1,24 @@
 <?php
 	require_once("header.php");
+	$arrBaseDataPageJs = array(
+		'<script src="/'.APP_FOLDER.'/views/assets/js/jqRefManager.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/assets/js/jqGridEdit.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/assets/js/jqBaseSelectDialog.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/components/chosen/chosen.jquery.js"></script>'
+	);
 	$arrPageJs = array(
 			'dashboard' => array(
 						'<script src="/'.APP_FOLDER.'/views/assets/js/moment-with-locales.min.js"></script> ',
 						'<script src="/'.APP_FOLDER.'/views/assets/js/bootstrap-datetimepicker.min.js"></script>  '
 				),
-				'subcompany_v' => array(
-					'<script src="/'.APP_FOLDER.'/views/assets/js/jqGridEdit.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/assets/js/jqBaseSelectDialog.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
-	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
-				),
-				'client_v' => array(
-					'<script src="/'.APP_FOLDER.'/views/assets/js/jqGridEdit.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/assets/js/jqBaseSelectDialog.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>',
-					'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
-	 				'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>'
-				)
+				'subcompany_v' => $arrBaseDataPageJs,
+				'client_v' => $arrBaseDataPageJs,
+				'goods_v' => $arrBaseDataPageJs,
+				'receiver_v' => $arrBaseDataPageJs
 	);
 ?>
 <!-- basic scripts -->
