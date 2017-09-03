@@ -5,9 +5,16 @@
 		private $strField = '';
 		private $strRefFilter = '';
 		private $config = array(
-				//货物=》的基本计量单位
+				//货物=》的
 				'4' => array(
+						'intUnitgroupPK' => array(
+								//计量单位组
+								'strShowField' =>'TBUG_strGroupName',
+								'strValueField' => 'TBUG_PK',
+								'table' => "tbl_base_unit_group"
+						),
 						'intDefaultUnitPK' => array(
+								//基本计量单位
 								'strShowField' =>'TBU_strName',
 								'strValueField' => 'TBUCD_intUnitPK',
 								'table' => "tbl_base_unit_convert_detail",
@@ -37,6 +44,10 @@
 
 		public function getData(){
 				echo "test";
+				//TODO $strRefFilter过滤条件预处理
+				
+				$arrSqlCfg = $this->config[$this->intTablePK][$this->strField];
+				$this->objMo->getData($arrSqlCfg, $strRefFilter);
 		}
 	}
 ?>
