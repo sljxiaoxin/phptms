@@ -198,8 +198,10 @@ jqGridEdit = {
 
 								}
 								if (oper === "get") {
-										var textValue = $(elem).find("input:text").val();
-										var realValue = $(elem).find("input:hidden").val();
+										var textValue = $(elem).find("select").find("option:selected").text();;
+										var realValue = $(elem).find("select").val();
+										console.log(realValue+"|"+textValue);
+										console.log('------------------getType17ElementValue end---------------------->');
 										return realValue+"|"+textValue;
 								}
 						},
