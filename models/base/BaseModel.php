@@ -39,7 +39,7 @@
 							}
 					}
 					foreach ($arrFields['joinTables'] as $key => $val) {
-							$arrJoinTable[] = " left join ".$key." as ".$val['abbr']." on ".$val['joinField'];
+							$arrJoinTable[] = " left join ".$val['tableName']." as ".$val['abbr']." on ".$val['joinField'];
 							//所有关联表的
 							foreach($val['fields'] as $key2 => $val2){
 									$arrQueryFields[] = $val['abbr'].".".$val2['strField']." as ".$key2;
@@ -80,7 +80,8 @@
 									'abbr' => $mainTableAbbr,
 									'fields' => array()
 							),
-							'joinTables' => array()
+							'joinTables' => array(),
+							'joinedTable' => array()
 					);
 					for($i=0;$i<count($data);$i++){
 							$intType = $data[$i]['intType'];
@@ -100,10 +101,22 @@
 									$refTable = $this->db->query($sql);
 									$refTableAbbr = $refTable[0]['strTableAbbr'];
 									$refTable = $refTable[0]['strTable'];
+									//可带出的栏位也会进到这
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = $refTableAbbr."_".$data[$i]['strFileldShow_Ref'];
 									$back['mainTable']['fields'][$fieldKey]['strFileldSqlHide'] = $refTableAbbr."_".$data[$i]['strField_Ref'];
 									if($intType == '5' || $intType == '17'){
-											$back['joinTables'][$refTable] = array(
+											$endFix = "";
+											if(isset($back['joinedTable'][$refTable])){
+													//主表连该基本表两次
+													$endFix = "_".$data[$i]['PK'];
+													$refTableAbbr = $refTableAbbr.$endFix;
+											}else{
+													$back['joinedTable'][$refTable] = true;
+											}
+											$back['mainTable']['fields'][$fieldKey]['strFileldSqlShow'] = $refTableAbbr."_".$data[$i]['strFileldShow_Ref'];
+											$back['mainTable']['fields'][$fieldKey]['strFileldSqlHide'] = $refTableAbbr."_".$data[$i]['strField_Ref'];
+											$back['joinTables'][$data[$i]['PK']] = array(
+													'tableName' => $refTable,
 													'abbr' => $refTableAbbr,
 													'joinField' => $mainTableAbbr.".".$data[$i]['strField']." = ".$refTableAbbr.".".$data[$i]['strField_Ref'],
 													'fields' => array()
@@ -113,7 +126,7 @@
 													$refFieldKey = $refTableAbbr."_".$arrRefData[$j]['strField'];
 													$fields[$refFieldKey] = $arrRefData[$j];
 											}
-											$back['joinTables'][$refTable]['fields'] = $fields;
+											$back['joinTables'][$data[$i]['PK']]['fields'] = $fields;
 									}
 							}
 					}
