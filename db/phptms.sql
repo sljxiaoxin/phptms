@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-09-03 15:27:00
--- 服务器版本： 10.1.19-MariaDB
--- PHP Version: 5.6.28
+-- Generation Time: 2017-09-04 11:05:59
+-- 服务器版本： 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -235,7 +235,9 @@ CREATE TABLE `tbl_base_unit_convert_group` (
 --
 
 INSERT INTO `tbl_base_unit_convert_group` (`PK`, `intUnitgroupPK`, `strConvertgroupName`) VALUES
-(1, 1, '长城润滑脂');
+(1, 1, '长城润滑脂'),
+(2, 1, '奇瑞润滑脂'),
+(3, 2, '鞍钢');
 
 -- --------------------------------------------------------
 
@@ -409,7 +411,6 @@ CREATE TABLE `tbl_sys_field` (
   `strRefFilter` varchar(255) DEFAULT NULL COMMENT '引用类型过滤条件，多个分号分割。点选表字段=[当前表字段名] ；点选表字段={系统预定量}；点选表字段=具体值；程序中替换处理',
   `isEditable` tinyint(4) NOT NULL DEFAULT '1',
   `isMustHave` tinyint(4) NOT NULL DEFAULT '0',
-  `isLoadInit` tinyint(4) NOT NULL DEFAULT '0' COMMENT '如引用单选下拉类型，页面初始化是否出发下拉数据初始化',
   `strDefaultValue` varchar(50) DEFAULT NULL,
   `strSelectText` varchar(255) DEFAULT NULL COMMENT '固定下拉显示文本',
   `strSelectValue` varchar(50) DEFAULT NULL,
@@ -423,53 +424,53 @@ CREATE TABLE `tbl_sys_field` (
 -- 转存表中的数据 `tbl_sys_field`
 --
 
-INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `strTableStorage`, `strField`, `strName`, `intType`, `intTablePK_Ref`, `strTable_Ref`, `strField_Ref`, `strFileldShow_Ref`, `strRefTrigger`, `strRefFilter`, `isEditable`, `isMustHave`, `isLoadInit`, `strDefaultValue`, `strSelectText`, `strSelectValue`, `intMinValue`, `intMaxValue`, `intOrder`, `isDragOut`) VALUES
-(1, 1, 0, 'tbl_base_subcompany', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(2, 1, 0, 'tbl_base_subcompany', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(3, 1, 0, 'tbl_base_subcompany', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(4, 1, 0, 'tbl_base_subcompany', 'strAddr', '地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(5, 1, 0, 'tbl_base_subcompany', 'strLinkman', '联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(6, 1, 2, 'tbl_base_subcompany', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
-(7, 2, 0, 'tbl_base_client', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(8, 2, 0, 'tbl_base_client', 'intSubCompanyPK', '分公司名称', 5, 1, 'tbl_base_subcompany', 'PK', 'strName', NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(9, 2, 0, 'tbl_base_client', 'strName', '客户名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(10, 2, 0, 'tbl_base_client', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(11, 2, 2, 'tbl_base_client', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
-(12, 2, 0, 'tbl_base_client', 'strSubCompanyLinkman', '分公司联系人', 2, 1, 'tbl_base_subcompany', 'PK', 'strLinkman', NULL, NULL, 1, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 1),
-(13, 2, 0, 'tbl_base_client', 'intBussCount', '业务量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '0', '100', 0, 0),
-(14, 2, 0, 'tbl_base_client', 'dtDate', '日期', 4, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(18, 3, 0, 'tbl_base_receiver', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(19, 3, 0, 'tbl_base_receiver', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(20, 3, 0, 'tbl_base_receiver', 'strReceiverName', '收货方名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(21, 3, 0, 'tbl_base_receiver', 'strLinkMan', '收货方联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(22, 3, 0, 'tbl_base_receiver', 'strPhone', '联系电话', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(23, 3, 0, 'tbl_base_receiver', 'strAddress', '送货地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(24, 3, 0, 'tbl_base_receiver', 'intMileage', '里程', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(25, 3, 0, 'tbl_base_receiver', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, '1', '停用,启用', '0,1', '-999999999999.00 ', '999999999999', 0, 0),
-(26, 4, 0, 'tbl_base_goods', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 1, 0),
-(27, 4, 0, 'tbl_base_goods', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 4, 0),
-(28, 4, 0, 'tbl_base_goods', 'intUnitgroupPK', '计量单位组', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', 'load', NULL, 1, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 9, 0),
-(29, 4, 0, 'tbl_base_goods', 'intUnitConvertgroupPK', '计量单位转换率组', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', 'intUnitgroupPK', 'intUnitgroupPK=[intUnitgroupPK]', 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 10, 0),
-(30, 4, 0, 'tbl_base_goods', 'intDefaultUnitPK', '基本计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK];TBUCD.isBaseUnit = 1', 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 11, 0),
-(31, 4, 0, 'tbl_base_goods', 'intOrderDefaultUnitPK', '订单常用计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK]', 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 12, 0),
-(32, 4, 0, 'tbl_base_goods', 'strGoodsNo', '货物编号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 2, 0),
-(33, 4, 0, 'tbl_base_goods', 'strGoodsName', '货物名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 3, 0),
-(34, 4, 0, 'tbl_base_goods', 'strGoodsModel', '型号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 5, 0),
-(35, 4, 0, 'tbl_base_goods', 'strGoodsSpec', '规格', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 6, 0),
-(36, 4, 0, 'tbl_base_goods', 'intWeight', '重量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 7, 0),
-(37, 4, 0, 'tbl_base_goods', 'intVolume', '体积', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 8, 0),
-(38, 5, 0, 'tbl_base_unit', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(39, 5, 0, 'tbl_base_unit', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(40, 6, 0, 'tbl_base_unit_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(41, 6, 0, 'tbl_base_unit_group', 'strGroupName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(42, 7, 0, 'tbl_base_unit_convert_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(43, 7, 0, 'tbl_base_unit_convert_group', 'intUnitgroupPK', '计量单位组名称', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', NULL, NULL, 1, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(44, 7, 0, 'tbl_base_unit_convert_group', 'strConvertgroupName', '转换率组名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(45, 8, 0, 'tbl_base_unit_convert_detail', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(46, 8, 0, 'tbl_base_unit_convert_detail', 'intConvertgroupPK', '转换率组名称', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', NULL, NULL, 1, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(47, 8, 0, 'tbl_base_unit_convert_detail', 'intUnitPK', '计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(48, 8, 0, 'tbl_base_unit_convert_detail', 'isBaseUnit', '是否基本计量单位', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, '0', '否,是', '0,1', '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(49, 8, 0, 'tbl_base_unit_convert_detail', 'intConvertRate', '转换率', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0);
+INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `strTableStorage`, `strField`, `strName`, `intType`, `intTablePK_Ref`, `strTable_Ref`, `strField_Ref`, `strFileldShow_Ref`, `strRefTrigger`, `strRefFilter`, `isEditable`, `isMustHave`, `strDefaultValue`, `strSelectText`, `strSelectValue`, `intMinValue`, `intMaxValue`, `intOrder`, `isDragOut`) VALUES
+(1, 1, 0, 'tbl_base_subcompany', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(2, 1, 0, 'tbl_base_subcompany', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(3, 1, 0, 'tbl_base_subcompany', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(4, 1, 0, 'tbl_base_subcompany', 'strAddr', '地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(5, 1, 0, 'tbl_base_subcompany', 'strLinkman', '联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(6, 1, 2, 'tbl_base_subcompany', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
+(7, 2, 0, 'tbl_base_client', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(8, 2, 0, 'tbl_base_client', 'intSubCompanyPK', '分公司名称', 5, 1, 'tbl_base_subcompany', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(9, 2, 0, 'tbl_base_client', 'strName', '客户名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(10, 2, 0, 'tbl_base_client', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(11, 2, 2, 'tbl_base_client', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
+(12, 2, 0, 'tbl_base_client', 'strSubCompanyLinkman', '分公司联系人', 2, 1, 'tbl_base_subcompany', 'PK', 'strLinkman', NULL, NULL, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 1),
+(13, 2, 0, 'tbl_base_client', 'intBussCount', '业务量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '0', '100', 0, 0),
+(14, 2, 0, 'tbl_base_client', 'dtDate', '日期', 4, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(18, 3, 0, 'tbl_base_receiver', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(19, 3, 0, 'tbl_base_receiver', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(20, 3, 0, 'tbl_base_receiver', 'strReceiverName', '收货方名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(21, 3, 0, 'tbl_base_receiver', 'strLinkMan', '收货方联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(22, 3, 0, 'tbl_base_receiver', 'strPhone', '联系电话', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(23, 3, 0, 'tbl_base_receiver', 'strAddress', '送货地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(24, 3, 0, 'tbl_base_receiver', 'intMileage', '里程', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(25, 3, 0, 'tbl_base_receiver', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999.00 ', '999999999999', 0, 0),
+(26, 4, 0, 'tbl_base_goods', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 1, 0),
+(27, 4, 0, 'tbl_base_goods', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 4, 0),
+(28, 4, 0, 'tbl_base_goods', 'intUnitgroupPK', '计量单位组', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', 'load', NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 9, 0),
+(29, 4, 0, 'tbl_base_goods', 'intUnitConvertgroupPK', '计量单位转换率组', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', 'intUnitgroupPK', 'intUnitgroupPK=[intUnitgroupPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 10, 0),
+(30, 4, 0, 'tbl_base_goods', 'intDefaultUnitPK', '基本计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK];TBUCD.isBaseUnit = 1', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 11, 0),
+(31, 4, 0, 'tbl_base_goods', 'intOrderDefaultUnitPK', '订单常用计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 12, 0),
+(32, 4, 0, 'tbl_base_goods', 'strGoodsNo', '货物编号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 2, 0),
+(33, 4, 0, 'tbl_base_goods', 'strGoodsName', '货物名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 3, 0),
+(34, 4, 0, 'tbl_base_goods', 'strGoodsModel', '型号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 5, 0),
+(35, 4, 0, 'tbl_base_goods', 'strGoodsSpec', '规格', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 6, 0),
+(36, 4, 0, 'tbl_base_goods', 'intWeight', '重量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 7, 0),
+(37, 4, 0, 'tbl_base_goods', 'intVolume', '体积', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 8, 0),
+(38, 5, 0, 'tbl_base_unit', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(39, 5, 0, 'tbl_base_unit', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(40, 6, 0, 'tbl_base_unit_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(41, 6, 0, 'tbl_base_unit_group', 'strGroupName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(42, 7, 0, 'tbl_base_unit_convert_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(43, 7, 0, 'tbl_base_unit_convert_group', 'intUnitgroupPK', '计量单位组名称', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(44, 7, 0, 'tbl_base_unit_convert_group', 'strConvertgroupName', '转换率组名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(45, 8, 0, 'tbl_base_unit_convert_detail', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(46, 8, 0, 'tbl_base_unit_convert_detail', 'intConvertgroupPK', '转换率组名称', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(47, 8, 0, 'tbl_base_unit_convert_detail', 'intUnitPK', '计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(48, 8, 0, 'tbl_base_unit_convert_detail', 'isBaseUnit', '是否基本计量单位', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '0', '否,是', '0,1', '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(49, 8, 0, 'tbl_base_unit_convert_detail', 'intConvertRate', '转换率', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -718,7 +719,7 @@ ALTER TABLE `tbl_base_unit_convert_detail`
 -- 使用表AUTO_INCREMENT `tbl_base_unit_convert_group`
 --
 ALTER TABLE `tbl_base_unit_convert_group`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_unit_group`
 --

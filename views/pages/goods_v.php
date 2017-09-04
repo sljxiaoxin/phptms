@@ -19,6 +19,7 @@ $strListUrl = "/".APP_FOLDER."/sheet_goods/getList";
 <script type="text/javascript">
   $(function($) {
       var setting = {
+          intTablePK : 4,
           url : '<?php echo $strListUrl;?>',
           datatype : 'json',
           editurl : "/<?php echo APP_FOLDER;?>/sheet_goods/save",
@@ -27,7 +28,6 @@ $strListUrl = "/".APP_FOLDER."/sheet_goods/getList";
           colNamesBase : <?php echo json_encode($arrFields['colNamesBase']);?>,
           colModelBase : <?php echo json_encode($arrFields['arrFieldsInfo']);?>
       };
-      jqRefManager.init(4, setting.colModelBase);
       jqGridEdit.createGrid(setting);
   });
 </script>

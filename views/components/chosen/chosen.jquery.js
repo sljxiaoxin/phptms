@@ -124,6 +124,7 @@
     AbstractChosen.prototype.set_default_values = function() {
       var _this = this;
       this.click_test_action = function(evt) {
+		  console.log("chosen:","click_test_action");
         return _this.test_active_click(evt);
       };
       this.activate_action = function(evt) {
@@ -427,6 +428,7 @@
     };
 
     AbstractChosen.prototype.choices_click = function(evt) {
+		console.log("chosen:", "choices_click");
       evt.preventDefault();
       if (!(this.results_showing || this.is_disabled)) {
         return this.results_show();
@@ -650,6 +652,7 @@
     Chosen.prototype.register_observers = function() {
       var _this = this;
       this.container.bind('touchstart.chosen', function(evt) {
+			console.log("chosen:","touchstart.chosen");
         _this.container_mousedown(evt);
         return evt.preventDefault();
       });
@@ -658,74 +661,96 @@
         return evt.preventDefault();
       });
       this.container.bind('mousedown.chosen', function(evt) {
+		 console.log("chosen:","mousedown.chosen");
         _this.container_mousedown(evt);
       });
       this.container.bind('mouseup.chosen', function(evt) {
+		   console.log("chosen:","mouseup.chosen");
         _this.container_mouseup(evt);
       });
       this.container.bind('mouseenter.chosen', function(evt) {
+		  console.log("chosen:","mouseenter.chosen");
         _this.mouse_enter(evt);
       });
       this.container.bind('mouseleave.chosen', function(evt) {
+		  console.log("chosen:","mouseleave.chosen");
         _this.mouse_leave(evt);
       });
       this.search_results.bind('mouseup.chosen', function(evt) {
+		  console.log("chosen:","mouseup.chosen");
         _this.search_results_mouseup(evt);
       });
       this.search_results.bind('mouseover.chosen', function(evt) {
+		  console.log("chosen:","mouseover.chosen");
         _this.search_results_mouseover(evt);
       });
       this.search_results.bind('mouseout.chosen', function(evt) {
+		  console.log("chosen:","mouseout.chosen");
         _this.search_results_mouseout(evt);
       });
       this.search_results.bind('mousewheel.chosen DOMMouseScroll.chosen', function(evt) {
+		   console.log("chosen:","mousewheel.chosen DOMMouseScroll.chosen");
         _this.search_results_mousewheel(evt);
       });
       this.search_results.bind('touchstart.chosen', function(evt) {
+		   console.log("chosen:","touchstart");
         _this.search_results_touchstart(evt);
       });
       this.search_results.bind('touchmove.chosen', function(evt) {
+		  console.log("chosen:","touchmove");
         _this.search_results_touchmove(evt);
       });
       this.search_results.bind('touchend.chosen', function(evt) {
+		  console.log("chosen:","touchend");
         _this.search_results_touchend(evt);
       });
       this.form_field_jq.bind("chosen:updated.chosen", function(evt) {
+		  console.log("chosen:","chosen:updated");
         _this.results_update_field(evt);
       });
       this.form_field_jq.bind("chosen:activate.chosen", function(evt) {
+		  console.log("chosen:","activate.chosen");
         _this.activate_field(evt);
       });
       this.form_field_jq.bind("chosen:open.chosen", function(evt) {
+		  console.log("chosen:","chosen:open.chosen");
         _this.container_mousedown(evt);
       });
       this.form_field_jq.bind("chosen:close.chosen", function(evt) {
         _this.input_blur(evt);
       });
       this.search_field.bind('blur.chosen', function(evt) {
+		  console.log("chosen:","blur.chosen");
         _this.input_blur(evt);
       });
       this.search_field.bind('keyup.chosen', function(evt) {
+		  console.log("chosen:","keyup.chosen");
         _this.keyup_checker(evt);
       });
       this.search_field.bind('keydown.chosen', function(evt) {
+		  console.log("chosen:","keydown.chosen");
         _this.keydown_checker(evt);
       });
       this.search_field.bind('focus.chosen', function(evt) {
+		  console.log("chosen:","focus.chosen");
         _this.input_focus(evt);
       });
       this.search_field.bind('cut.chosen', function(evt) {
+		  console.log("chosen:","cut.chosen");
         _this.clipboard_event_checker(evt);
       });
       this.search_field.bind('paste.chosen', function(evt) {
+		  console.log("chosen:","paste.chosen");
         _this.clipboard_event_checker(evt);
       });
       if (this.is_multiple) {
         return this.search_choices.bind('click.chosen', function(evt) {
+			console.log("chosen:","click.chosen A");
           _this.choices_click(evt);
         });
       } else {
         return this.container.bind('click.chosen', function(evt) {
+			console.log("chosen:","click.chosen");
           evt.preventDefault();
         });
       }
@@ -760,27 +785,34 @@
     };
 
     Chosen.prototype.container_mousedown = function(evt) {
+		console.log("chosen:","container_mousedown");
       if (!this.is_disabled) {
         if (evt && evt.type === "mousedown" && !this.results_showing) {
+			console.log("chosen:","AAA");
           evt.preventDefault();
         }
         if (!((evt != null) && ($(evt.target)).hasClass("search-choice-close"))) {
           if (!this.active_field) {
+			  console.log("chosen:","BBB");
             if (this.is_multiple) {
+				console.log("chosen:","CCC");
               this.search_field.val("");
             }
             $(this.container[0].ownerDocument).bind('click.chosen', this.click_test_action);
             this.results_show();
           } else if (!this.is_multiple && evt && (($(evt.target)[0] === this.selected_item[0]) || $(evt.target).parents("a.chosen-single").length)) {
-            evt.preventDefault();
+            console.log("chosen:","DDD");
+			evt.preventDefault();
             this.results_toggle();
           }
+		  console.log("chosen:","EEE");
           return this.activate_field();
         }
       }
     };
 
     Chosen.prototype.container_mouseup = function(evt) {
+		console.log("chosen:","container_mouseup");
       if (evt.target.nodeName === "ABBR" && !this.is_disabled) {
         return this.results_reset(evt);
       }
@@ -824,6 +856,7 @@
     };
 
     Chosen.prototype.test_active_click = function(evt) {
+		console.log("chosen:","test_active_click");
       var active_container;
       active_container = $(evt.target).closest('.chosen-container');
       if (active_container.length && this.container[0] === active_container[0]) {

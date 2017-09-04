@@ -48,6 +48,7 @@ var jqBaseSelectDialog = {
 										var backData = $.parseJSON(data);
 										if(status == 'success'){
 												var setting = {
+														intTablePK : intTablePK_Ref,
 														url : arrMap[intTablePK_Ref]['url'],
 														height : '280px',
 														datatype : 'json',

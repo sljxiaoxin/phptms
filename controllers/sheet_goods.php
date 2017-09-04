@@ -37,7 +37,7 @@
 		public function getList(){
 				//print_r($_GET);
 				$arrFields = $this->objMo->getFields(4);
-			//	print_r($arrFields);
+				//print_r($arrFields);
 				$rows = $_GET["rows"];   //每次请求多少行
 				$page = $_GET["page"];   //第几页
 				$start = ($page - 1)*$rows;

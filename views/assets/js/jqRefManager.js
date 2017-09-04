@@ -51,9 +51,12 @@ jqRefManager = {
 				console.log("----------loadDetail--------------");
 				for(var i=0;i<this.loadEl.length;i++){
 						var strField = this.loadEl[i];
+						this.loadOne('load', strField);
+						/*
 						var value = this.refDatas[strField]['value'];
 						$.post(this.url, {
 								intTablePK : this.intTablePK,
+								intType :  this.colModel[strField]['intType'],
 								strField : strField,
 								strRefFilter : this.colModel[strField]['strRefFilter']
 						},function(result){
@@ -66,41 +69,97 @@ jqRefManager = {
 										jqRefManager.loadCheck(strField);
 								}
 						});
+						*/
 
 				}
 		},
 		//一个fieldload完成后，检测是否出发其他字段load
-		loadCheck : function(strTriggerField){
+		loadCheck : function(triggerType, strTriggerField){
 				var obj = this.refDatas;
 				var self = this;
 				$.each(obj,function(key, val){
-						if(!val['isLoad']){
+						//if(!val['isLoad']){
 								//检测是否是参数所属的出发字段
 								if(self.colModel[key]['strRefTrigger'] == strTriggerField){
-										self.loadOne(key);
+										if(triggerType == 'change'){
+												self.refDatas[key]['value'] = '';
+										}
+										self.loadOne(triggerType, key);
 								}
-						}
+						//}
 				});
 		},
-		loadOne : function(strField){
+		loadOne : function(triggerType, strField){
 				var value = this.refDatas[strField]['value'];
+				var self = this;
 				$.post(this.url, {
 						intTablePK : this.intTablePK,
+						intType :  this.colModel[strField]['intType'],
 						strField : strField,
-						strRefFilter : this.colModel[strField]['strRefFilter']   //TODO 需要解析[]中的栏位为具体值带进去
+						strRefFilter : this.filterHelper(this.colModel[strField]['strRefFilter'])   //TODO 需要解析[]中的栏位为具体值带进去
 				},function(result){
-						//TODO 元素置值
 						console.log(strField,'loadOne result is :',result);
-
-						jqRefManager.refDatas[strField]['isLoad'] = true;
-						//
-						if(value != ''){
-								jqRefManager.loadCheck(strField);
+						if(result != '' && result != 'null'){
+								var objResult = $.parseJSON(result);
+								console.log(strField,'loadOne obj is :',objResult);
+								jqRefManager.refDatas[strField]['isLoad'] = true;     //load过后标记
+								//el元素设置值
+								var html = ["<option value=''></option>"];
+								for(var i=0;i<objResult.data.length;i++){
+										var selected = "";
+										var opVal =objResult.data[i][objResult['strValueField']];
+										var opName =objResult.data[i][objResult['strShowField']];
+										if(opVal == value){
+												selected = "selected";
+										}
+										/*
+										if(selected == ""){
+												//手动change后，它所触发的栏位，需要重置值
+												self.refDatas[strField]['value'] = '';
+										}
+										*/
+										var itemHtml = "<option value="+opVal+" "+selected+">"+opName+"</option>";
+										html.push(itemHtml);
+								}
+								var el = jqRefManager.refDatas[strField]['el'];   //select 或者点选 对象
+								el.html(html.join(''));
+								el.trigger("chosen:updated");
+								console.log('html:',html);
+								if(value != '' || triggerType == 'change'){
+										jqRefManager.loadCheck(triggerType, strField);
+								}
 						}
 				});
 		},
 		//每个字段change或者做值设定的时候调用，包括load的时候设置值也要调用
 		change : function(strField, val){
-
+				console.log("---------jqRefManager change-----------");
+				console.log(strField);
+				console.log(val);
+				this.refDatas[strField]['value'] = val;   //先变更该字段值
+				this.loadCheck('change', strField);									//然后触发联动
+		},
+		filterHelper : function(strFilter){
+				console.log("strFilter:",strFilter);
+				if(strFilter == '' || strFilter == null){
+						return '';
+				}
+				var arr = strFilter.split(";");
+				var arrBack = [];
+				for(var i=0;i<arr.length;i++){
+						var arrDetail = arr[i].split("=");
+						var val = $.trim(arrDetail[1]);
+						var valLeft = val.substr(0,1);
+						var valRight = val.substr(-1,1);
+						var strField = val.substring(1,val.length-1);
+						if(valLeft == '['){
+								if(typeof this.refDatas[strField] != 'undefined'){
+										arrBack.push(arrDetail[0]+" = '"+this.refDatas[strField]['value']+"'");
+										continue;
+								}
+						}
+						arrBack.push(arr[i]);
+				}
+				return arrBack.join(";");
 		}
 };

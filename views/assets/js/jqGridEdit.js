@@ -17,8 +17,10 @@ jqGridEdit = {
 				var onSelect = typeof setting.onSelect == 'undefined'?null:setting.onSelect;
 
 				jqGridEdit.gridCommData[grid_selector] = {
+						intTablePK : setting.intTablePK,
 						editingRowId : -1,
-						editurl : editurl
+						editurl : editurl,
+						colModelBase : setting.colModelBase
 				};
 				var colNames = (function(colNamesBase){
 						colNamesBase.splice(0, 0, '<span class="ui-action-span" style="margin-left: 10px;" title="新增" onclick="jqGridEdit.addRow(\''+grid_selector+'\')"><i class="ace-icon fa fa-plus  bigger-150 blue" ></i></span>');
@@ -180,14 +182,14 @@ jqGridEdit = {
 								var elBtn = $('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>');
 								var elHidden = $("<input>", {type:"hidden", value:realValue});
 								*/
-								var elSelect = $('<select class="chosen-select form-control"  data-placeholder="请选择"><option value=""> </option><option value="2">测试2</option></option><option value="1">测试</option></select>');
+								var elSelect = $('<select class="chosen-select form-control"  data-placeholder="请选择"></select>');
 								span.append(elSelect);
-								elSelect.chosen({allow_single_deselect:true}).on('change',function(){
-										alert(111);
+								elSelect.chosen({allow_single_deselect:true}).on('change',function(evt, params){
+										jqRefManager.change(strField, params['selected']);
 								});
 								elSelect.next().css({'width': 150});
 								$(this).find("td").css({'overflow':'visible'});
-								jqRefManager.load(elSelect, strField, realValue);
+								jqRefManager.load(elSelect, strField, realValue);   //引用类型辅助
 								return span;
 						},
 						getType17ElementValue : function(elem, oper, value){
@@ -532,6 +534,8 @@ jqGridEdit = {
 				};
 		},
 		addRow : function(grid_selector){
+				//新增和修改 初始化引用和引用下拉辅助方法
+				jqRefManager.init(jqGridEdit.gridCommData[grid_selector]['intTablePK'], jqGridEdit.gridCommData[grid_selector]['colModelBase']);
 				var ids = jQuery(grid_selector).jqGrid('getDataIDs');
 			  //获得当前最大行号（数据编号）
 			  var rowid = Math.max.apply(Math,ids);
@@ -596,6 +600,7 @@ jqGridEdit = {
 						jqGridEdit.gridCommData[grid_selector]['editingRowId'] = -1;
 				}
 				if(oprate == 'edit'){
+					jqRefManager.init(jqGridEdit.gridCommData[grid_selector]['intTablePK'], jqGridEdit.gridCommData[grid_selector]['colModelBase']);
 					jqGridEdit.gridCommData[grid_selector]['editingRowId'] = rowId;
 					$(grid_selector).jqGrid('editRow',rowId,{
 								keys : false,        //这里按[enter]保存

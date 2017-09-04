@@ -18,6 +18,7 @@ $strListUrl = "/".APP_FOLDER."/sheet_receiver/getList";
 <script type="text/javascript">
   $(function($) {
       var setting = {
+          intTablePK : 3,
           url : '<?php echo $strListUrl;?>',
           datatype : 'json',
           editurl : "/<?php echo APP_FOLDER;?>/sheet_receiver/save",
