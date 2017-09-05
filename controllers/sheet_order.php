@@ -6,7 +6,7 @@
 		}
 
 		public function index(){
-				$this->display('order_v', $data);
+				$this->display('order_list_v', $data);
 		}
 
 		public function add(){

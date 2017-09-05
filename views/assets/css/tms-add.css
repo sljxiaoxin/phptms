@@ -3,7 +3,7 @@
 	margin:0 auto;
 	display:flex;
 	width:1020px;
-	height:300px;
+	height:320px;
 	border:1px solid #ccc;
 	flex-direction:row;
 	justify-content:center;
@@ -30,19 +30,19 @@
 }
 
 .tmstpl-add-row{
-	margin-top:5px;
+	margin-top:3px;
 }
 
 .tmstpl-add-container .info-bar{
-	font: 14px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
+	font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
 	display:flex;
 	flex-direction:column;
 	justify-content:center;
-	height:30px;
+	height:22px;
 	color:white;
 }
 .tmstpl-add-container .color-orange{
-	background-color:#FF9900;
+	background-color:#ab782d;
 }
 /*灰色*/
 .tmstpl-add-container .color-gray{

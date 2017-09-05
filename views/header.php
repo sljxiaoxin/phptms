@@ -15,7 +15,9 @@
 		 'subcompany_v' => $arrBaseDataPageCss,
 		 'client_v' => $arrBaseDataPageCss,
 		 'goods_v' => $arrBaseDataPageCss,
-		 'receiver_v' => $arrBaseDataPageCss
+		 'receiver_v' => $arrBaseDataPageCss,
+		  //单据
+		 'order_v' => $arrBaseDataPageCss
 	);
 ?>
 <!DOCTYPE html>

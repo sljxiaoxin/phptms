@@ -18,7 +18,9 @@
 				'subcompany_v' => $arrBaseDataPageJs,
 				'client_v' => $arrBaseDataPageJs,
 				'goods_v' => $arrBaseDataPageJs,
-				'receiver_v' => $arrBaseDataPageJs
+				'receiver_v' => $arrBaseDataPageJs,
+				//单据
+				'order_v' => $arrBaseDataPageJs
 	);
 ?>
 <!-- basic scripts -->
