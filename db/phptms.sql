@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-09-04 11:05:59
+-- Generation Time: 2017-09-05 11:53:32
 -- 服务器版本： 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -30,6 +30,7 @@ CREATE TABLE `tbl_base_client` (
   `PK` int(11) NOT NULL,
   `intSubCompanyPK` int(11) NOT NULL DEFAULT '0',
   `strName` varchar(50) DEFAULT NULL,
+  `strLinkman` varchar(50) DEFAULT NULL COMMENT '客户联系人',
   `strPhone` varchar(25) DEFAULT NULL,
   `strSubCompanyLinkman` varchar(25) DEFAULT NULL,
   `intBussCount` varchar(20) DEFAULT NULL,
@@ -41,56 +42,56 @@ CREATE TABLE `tbl_base_client` (
 -- 转存表中的数据 `tbl_base_client`
 --
 
-INSERT INTO `tbl_base_client` (`PK`, `intSubCompanyPK`, `strName`, `strPhone`, `strSubCompanyLinkman`, `intBussCount`, `dtDate`, `intSaveStatus`) VALUES
-(1, 1, '张三', '13672051068', '杨建新', NULL, NULL, 1),
-(4, 1, 'A', 'D', 'C', NULL, NULL, 0),
-(5, 1, '李四', '13920331922', '杨建新', NULL, NULL, 2),
-(6, 1, '王五', '1111', '王武林', NULL, NULL, 1),
-(7, 1, '刘六', '13920331922', '呜呜呜', NULL, NULL, 2),
-(8, 1, '张三', '13672051068', '杨建新', NULL, NULL, 1),
-(9, 1, 'A', 'D', 'C', NULL, NULL, 0),
-(10, 1, '李四', '13920331922', '杨建新', NULL, NULL, 2),
-(11, 1, '王五', '1111', '王武林', NULL, NULL, 1),
-(12, 1, '刘六', '13920331922', '呜呜呜', NULL, NULL, 2),
-(13, 1, '张三', '13672051068', '杨建新', NULL, NULL, 1),
-(14, 1, 'A', 'D', 'C', NULL, NULL, 0),
-(15, 1, '李四', '13920331922', '杨建新', NULL, NULL, 2),
-(16, 1, '王五', '1111', '王武林', NULL, NULL, 1),
-(17, 1, '刘六', '13920331922', '呜呜呜', NULL, NULL, 2),
-(18, 1, '张三', '13672051068', '杨建新', NULL, NULL, 1),
-(19, 1, 'A', 'D', 'C', NULL, NULL, 0),
-(20, 1, '李四', '13920331922', '杨建新', NULL, NULL, 2),
-(21, 1, '王五', '1111', '王武林', NULL, NULL, 1),
-(22, 1, '刘六', '13920331922', '呜呜呜', NULL, NULL, 2),
-(23, 1, '张三', '13672051068', '杨建新', NULL, NULL, 1),
-(24, 1, 'A', 'D', 'C', NULL, NULL, 0),
-(25, 1, '李四', '13920331922', '杨建新', NULL, NULL, 2),
-(26, 1, '王五', '1111', '王武林', NULL, NULL, 1),
-(27, 1, '刘六', '13920331922', '呜呜呜', NULL, NULL, 2),
-(28, 1, '张三', '13672051068', '杨建新', NULL, NULL, 1),
-(29, 1, 'A', 'D', 'C', NULL, NULL, 0),
-(30, 1, '李四', '13920331922', '杨建新', NULL, NULL, 2),
-(31, 1, '王五', '1111', '王武林', NULL, NULL, 1),
-(32, 1, '李七', '13920331922', '呜呜呜', NULL, NULL, 2),
-(33, 0, '', '', '', NULL, NULL, 0),
-(34, 1, 'A', 'B', 'D', NULL, NULL, 1),
-(35, 0, '', '', '', NULL, NULL, 0),
-(36, 0, 'A', '', '', NULL, NULL, 0),
-(37, 1, 'aaa', 'ddd', 'sdfsdfsdf', NULL, NULL, 0),
-(38, 1, 'aaa+1', 'ddd', 'sdfsdfsdf', NULL, NULL, 0),
-(39, 1, '客户1', '电话1', 'FFFFF', NULL, NULL, 0),
-(40, 1, 'ttttttt', 'ffffff', 'fsdfsfdfdsfs', NULL, NULL, 0),
-(41, 1, 'A', '33333333333', 'FFFFFF', '99', NULL, 1),
-(42, 1, '客户444', '66666666', 'FFFFF', '3', NULL, 0),
-(43, 1, 'GGG', '33333333', 'GGGS', '33', NULL, 1),
-(44, 1, '555', '33', '222', '0', NULL, 0),
-(45, 1, 'FF', 'SFDSDF', 'FSFDDSF', '3', NULL, 1),
-(46, 1, '3', '3', '3', '3', '0000-00-00 00:00:00', 1),
-(47, 1, '2', '2', '2', '6', '2018-01-05 12:00:00', 1),
-(48, 1, 'ff', '33333', '杨建新', '50', '2017-08-13 08:47:20', 0),
-(49, 2, '吉利汽车', '13520011111', '王艳芳', '90', '2017-08-16 15:15:51', 1),
-(50, 2, '奇瑞 汽车', '1955665555', '王艳芳', '20', '2017-08-15 15:20:09', 1),
-(51, 4, '长城汽车', '22867777', '王伟', '20', '2017-08-21 15:25:20', 1);
+INSERT INTO `tbl_base_client` (`PK`, `intSubCompanyPK`, `strName`, `strLinkman`, `strPhone`, `strSubCompanyLinkman`, `intBussCount`, `dtDate`, `intSaveStatus`) VALUES
+(1, 1, '张三', NULL, '13672051068', '杨建新', NULL, NULL, 1),
+(4, 1, 'A', NULL, 'D', 'C', NULL, NULL, 0),
+(5, 1, '李四', NULL, '13920331922', '杨建新', NULL, NULL, 2),
+(6, 1, '王五', NULL, '1111', '王武林', NULL, NULL, 1),
+(7, 1, '刘六', NULL, '13920331922', '呜呜呜', NULL, NULL, 2),
+(8, 1, '张三', NULL, '13672051068', '杨建新', NULL, NULL, 1),
+(9, 1, 'A', NULL, 'D', 'C', NULL, NULL, 0),
+(10, 1, '李四', NULL, '13920331922', '杨建新', NULL, NULL, 2),
+(11, 1, '王五', NULL, '1111', '王武林', NULL, NULL, 1),
+(12, 1, '刘六', NULL, '13920331922', '呜呜呜', NULL, NULL, 2),
+(13, 1, '张三', NULL, '13672051068', '杨建新', NULL, NULL, 1),
+(14, 1, 'A', NULL, 'D', 'C', NULL, NULL, 0),
+(15, 1, '李四', NULL, '13920331922', '杨建新', NULL, NULL, 2),
+(16, 1, '王五', NULL, '1111', '王武林', NULL, NULL, 1),
+(17, 1, '刘六', NULL, '13920331922', '呜呜呜', NULL, NULL, 2),
+(18, 1, '张三', NULL, '13672051068', '杨建新', NULL, NULL, 1),
+(19, 1, 'A', NULL, 'D', 'C', NULL, NULL, 0),
+(20, 1, '李四', NULL, '13920331922', '杨建新', NULL, NULL, 2),
+(21, 1, '王五', NULL, '1111', '王武林', NULL, NULL, 1),
+(22, 1, '刘六', NULL, '13920331922', '呜呜呜', NULL, NULL, 2),
+(23, 1, '张三', NULL, '13672051068', '杨建新', NULL, NULL, 1),
+(24, 1, 'A', NULL, 'D', 'C', NULL, NULL, 0),
+(25, 1, '李四', NULL, '13920331922', '杨建新', NULL, NULL, 2),
+(26, 1, '王五', NULL, '1111', '王武林', NULL, NULL, 1),
+(27, 1, '刘六', NULL, '13920331922', '呜呜呜', NULL, NULL, 2),
+(28, 1, '张三', NULL, '13672051068', '杨建新', NULL, NULL, 1),
+(29, 1, 'A', NULL, 'D', 'C', NULL, NULL, 0),
+(30, 1, '李四', NULL, '13920331922', '杨建新', NULL, NULL, 2),
+(31, 1, '王五', NULL, '1111', '王武林', NULL, NULL, 1),
+(32, 1, '李七', NULL, '13920331922', '呜呜呜', NULL, NULL, 2),
+(33, 0, '', NULL, '', '', NULL, NULL, 0),
+(34, 1, 'A', NULL, 'B', 'D', NULL, NULL, 1),
+(35, 0, '', NULL, '', '', NULL, NULL, 0),
+(36, 0, 'A', NULL, '', '', NULL, NULL, 0),
+(37, 1, 'aaa', NULL, 'ddd', 'sdfsdfsdf', NULL, NULL, 0),
+(38, 1, 'aaa+1', NULL, 'ddd', 'sdfsdfsdf', NULL, NULL, 0),
+(39, 1, '客户1', NULL, '电话1', 'FFFFF', NULL, NULL, 0),
+(40, 1, 'ttttttt', NULL, 'ffffff', 'fsdfsfdfdsfs', NULL, NULL, 0),
+(41, 1, 'A', NULL, '33333333333', 'FFFFFF', '99', NULL, 1),
+(42, 1, '客户444', NULL, '66666666', 'FFFFF', '3', NULL, 0),
+(43, 1, 'GGG', NULL, '33333333', 'GGGS', '33', NULL, 1),
+(44, 1, '555', NULL, '33', '222', '0', NULL, 0),
+(45, 1, 'FF', NULL, 'SFDSDF', 'FSFDDSF', '3', NULL, 1),
+(46, 1, '3', NULL, '3', '3', '3', '0000-00-00 00:00:00', 1),
+(47, 1, '2', NULL, '2', '2', '6', '2018-01-05 12:00:00', 1),
+(48, 1, 'ff', NULL, '33333', '杨建新', '50', '2017-08-13 08:47:20', 0),
+(49, 2, '吉利汽车', NULL, '13520011111', '王艳芳', '90', '2017-08-16 15:15:51', 1),
+(50, 2, '奇瑞 汽车', NULL, '1955665555', '王艳芳', '20', '2017-08-15 15:20:09', 1),
+(51, 4, '长城汽车', NULL, '22867777', '王伟', '20', '2017-08-21 15:25:20', 1);
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,18 @@ CREATE TABLE `tbl_base_goods` (
 --
 
 INSERT INTO `tbl_base_goods` (`PK`, `intClientPK`, `intUnitgroupPK`, `intUnitConvertgroupPK`, `intDefaultUnitPK`, `intOrderDefaultUnitPK`, `strGoodsNo`, `strGoodsName`, `strGoodsModel`, `strGoodsSpec`, `intWeight`, `intVolume`) VALUES
-(1, 51, 1, 1, 1, 1, '3', 'A', 'A', 'C', '2.00', '3.00');
+(1, 51, 1, 1, 1, 1, '3', 'A', 'A', 'C', '2.00', '3.00'),
+(2, 51, 1, 1, 1, 2, 'a', 'a', 'a', 'a', '3.00', '3.00'),
+(3, 45, 0, 0, 0, 0, '2', '2', '2', '2', '2.00', '2.00'),
+(4, 48, 0, 0, 0, 0, '2', '2', '2', '2', '2.00', '2.00'),
+(5, 48, 0, 0, 0, 0, '4', '4', '4', '4', '4.00', '4.00'),
+(6, 48, 0, 0, 0, 0, '4', '4', '4', '4', '4.00', '4.00'),
+(7, 48, 0, 0, 0, 0, '4', '4', '4', '4', '4.00', '4.00'),
+(8, 49, 0, 0, 0, 0, '5', '5', '5', '5', '5.00', '5.00'),
+(9, 49, 0, 0, 0, 0, '6', '6', '6', '6', '6.00', '6.00'),
+(10, 49, 0, 0, 0, 0, '7', '7', '7', '7', '7.00', '7.00'),
+(11, 49, 0, 0, 0, 0, '8', '8', '8', '8', '8.00', '8.00'),
+(12, 49, 1, 1, 1, 2, '1', '1', '1', '1', '1.00', '1.00');
 
 -- --------------------------------------------------------
 
@@ -168,6 +180,26 @@ INSERT INTO `tbl_base_subcompany` (`PK`, `strName`, `strPhone`, `strAddr`, `strL
 (2, '天津分公司', '13920331922', '天津市北辰区', '王艳芳', 1),
 (3, '上海分公司', '13788889999', '上海中心路', '杨建国', 1),
 (4, '重庆分公司', '13699999999', '重庆一支路', '王伟', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_base_truck`
+--
+
+CREATE TABLE `tbl_base_truck` (
+  `PK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆信息表';
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_base_truck_type`
+--
+
+CREATE TABLE `tbl_base_truck_type` (
+  `PK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆型号表';
 
 -- --------------------------------------------------------
 
@@ -377,8 +409,9 @@ CREATE TABLE `tbl_sheet_order` (
 
 CREATE TABLE `tbl_sheet_order_detail` (
   `PK` int(11) NOT NULL,
-  `strSheetNo` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `strSheetNo_Detail` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `intGoodsPK` int(11) DEFAULT '0',
+  `strGoodsName` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '货物名称',
   `strGoodsModel` varchar(50) DEFAULT NULL,
   `strGoodsSpec` varchar(50) DEFAULT NULL,
   `intCounts` decimal(11,2) NOT NULL DEFAULT '0.00',
@@ -397,8 +430,9 @@ CREATE TABLE `tbl_sheet_order_detail` (
 
 CREATE TABLE `tbl_sys_field` (
   `PK` int(11) NOT NULL,
-  `intTablePK` int(11) NOT NULL,
+  `intTablePK` int(11) NOT NULL COMMENT '逻辑表PK',
   `intFieldClass` tinyint(4) NOT NULL DEFAULT '0' COMMENT '字段类别：0表头，1明细，2状态',
+  `intTableStoragePK` int(11) NOT NULL DEFAULT '0' COMMENT '存储表PK',
   `strTableStorage` varchar(30) NOT NULL,
   `strField` varchar(25) NOT NULL,
   `strName` varchar(50) NOT NULL,
@@ -424,53 +458,82 @@ CREATE TABLE `tbl_sys_field` (
 -- 转存表中的数据 `tbl_sys_field`
 --
 
-INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `strTableStorage`, `strField`, `strName`, `intType`, `intTablePK_Ref`, `strTable_Ref`, `strField_Ref`, `strFileldShow_Ref`, `strRefTrigger`, `strRefFilter`, `isEditable`, `isMustHave`, `strDefaultValue`, `strSelectText`, `strSelectValue`, `intMinValue`, `intMaxValue`, `intOrder`, `isDragOut`) VALUES
-(1, 1, 0, 'tbl_base_subcompany', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(2, 1, 0, 'tbl_base_subcompany', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(3, 1, 0, 'tbl_base_subcompany', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(4, 1, 0, 'tbl_base_subcompany', 'strAddr', '地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(5, 1, 0, 'tbl_base_subcompany', 'strLinkman', '联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(6, 1, 2, 'tbl_base_subcompany', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
-(7, 2, 0, 'tbl_base_client', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(8, 2, 0, 'tbl_base_client', 'intSubCompanyPK', '分公司名称', 5, 1, 'tbl_base_subcompany', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(9, 2, 0, 'tbl_base_client', 'strName', '客户名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(10, 2, 0, 'tbl_base_client', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(11, 2, 2, 'tbl_base_client', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
-(12, 2, 0, 'tbl_base_client', 'strSubCompanyLinkman', '分公司联系人', 2, 1, 'tbl_base_subcompany', 'PK', 'strLinkman', NULL, NULL, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 1),
-(13, 2, 0, 'tbl_base_client', 'intBussCount', '业务量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '0', '100', 0, 0),
-(14, 2, 0, 'tbl_base_client', 'dtDate', '日期', 4, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
-(18, 3, 0, 'tbl_base_receiver', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(19, 3, 0, 'tbl_base_receiver', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(20, 3, 0, 'tbl_base_receiver', 'strReceiverName', '收货方名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(21, 3, 0, 'tbl_base_receiver', 'strLinkMan', '收货方联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(22, 3, 0, 'tbl_base_receiver', 'strPhone', '联系电话', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(23, 3, 0, 'tbl_base_receiver', 'strAddress', '送货地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(24, 3, 0, 'tbl_base_receiver', 'intMileage', '里程', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
-(25, 3, 0, 'tbl_base_receiver', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999.00 ', '999999999999', 0, 0),
-(26, 4, 0, 'tbl_base_goods', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 1, 0),
-(27, 4, 0, 'tbl_base_goods', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 4, 0),
-(28, 4, 0, 'tbl_base_goods', 'intUnitgroupPK', '计量单位组', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', 'load', NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 9, 0),
-(29, 4, 0, 'tbl_base_goods', 'intUnitConvertgroupPK', '计量单位转换率组', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', 'intUnitgroupPK', 'intUnitgroupPK=[intUnitgroupPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 10, 0),
-(30, 4, 0, 'tbl_base_goods', 'intDefaultUnitPK', '基本计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK];TBUCD.isBaseUnit = 1', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 11, 0),
-(31, 4, 0, 'tbl_base_goods', 'intOrderDefaultUnitPK', '订单常用计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 12, 0),
-(32, 4, 0, 'tbl_base_goods', 'strGoodsNo', '货物编号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 2, 0),
-(33, 4, 0, 'tbl_base_goods', 'strGoodsName', '货物名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 3, 0),
-(34, 4, 0, 'tbl_base_goods', 'strGoodsModel', '型号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 5, 0),
-(35, 4, 0, 'tbl_base_goods', 'strGoodsSpec', '规格', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 6, 0),
-(36, 4, 0, 'tbl_base_goods', 'intWeight', '重量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 7, 0),
-(37, 4, 0, 'tbl_base_goods', 'intVolume', '体积', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 8, 0),
-(38, 5, 0, 'tbl_base_unit', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(39, 5, 0, 'tbl_base_unit', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(40, 6, 0, 'tbl_base_unit_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(41, 6, 0, 'tbl_base_unit_group', 'strGroupName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(42, 7, 0, 'tbl_base_unit_convert_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(43, 7, 0, 'tbl_base_unit_convert_group', 'intUnitgroupPK', '计量单位组名称', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(44, 7, 0, 'tbl_base_unit_convert_group', 'strConvertgroupName', '转换率组名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(45, 8, 0, 'tbl_base_unit_convert_detail', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(46, 8, 0, 'tbl_base_unit_convert_detail', 'intConvertgroupPK', '转换率组名称', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(47, 8, 0, 'tbl_base_unit_convert_detail', 'intUnitPK', '计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(48, 8, 0, 'tbl_base_unit_convert_detail', 'isBaseUnit', '是否基本计量单位', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '0', '否,是', '0,1', '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(49, 8, 0, 'tbl_base_unit_convert_detail', 'intConvertRate', '转换率', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0);
+INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `intTableStoragePK`, `strTableStorage`, `strField`, `strName`, `intType`, `intTablePK_Ref`, `strTable_Ref`, `strField_Ref`, `strFileldShow_Ref`, `strRefTrigger`, `strRefFilter`, `isEditable`, `isMustHave`, `strDefaultValue`, `strSelectText`, `strSelectValue`, `intMinValue`, `intMaxValue`, `intOrder`, `isDragOut`) VALUES
+(1, 1, 0, 1, 'tbl_base_subcompany', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(2, 1, 0, 1, 'tbl_base_subcompany', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(3, 1, 0, 1, 'tbl_base_subcompany', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(4, 1, 0, 1, 'tbl_base_subcompany', 'strAddr', '地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(5, 1, 0, 1, 'tbl_base_subcompany', 'strLinkman', '联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(6, 1, 2, 1, 'tbl_base_subcompany', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
+(7, 2, 0, 2, 'tbl_base_client', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(8, 2, 0, 2, 'tbl_base_client', 'intSubCompanyPK', '分公司名称', 5, 1, 'tbl_base_subcompany', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(9, 2, 0, 2, 'tbl_base_client', 'strName', '客户名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(10, 2, 0, 2, 'tbl_base_client', 'strPhone', '电话', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(11, 2, 2, 2, 'tbl_base_client', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999', '999999999999', 0, 0),
+(12, 2, 0, 2, 'tbl_base_client', 'strSubCompanyLinkman', '分公司联系人', 2, 1, 'tbl_base_subcompany', 'PK', 'strLinkman', NULL, NULL, 1, 0, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 1),
+(13, 2, 0, 2, 'tbl_base_client', 'intBussCount', '业务量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '0', '100', 0, 0),
+(14, 2, 0, 2, 'tbl_base_client', 'dtDate', '日期', 4, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(18, 3, 0, 3, 'tbl_base_receiver', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(19, 3, 0, 3, 'tbl_base_receiver', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(20, 3, 0, 3, 'tbl_base_receiver', 'strReceiverName', '收货方名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(21, 3, 0, 3, 'tbl_base_receiver', 'strLinkMan', '收货方联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(22, 3, 0, 3, 'tbl_base_receiver', 'strPhone', '联系电话', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(23, 3, 0, 3, 'tbl_base_receiver', 'strAddress', '送货地址', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(24, 3, 0, 3, 'tbl_base_receiver', 'intMileage', '里程', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999', 0, 0),
+(25, 3, 0, 3, 'tbl_base_receiver', 'intSaveStatus', '状态', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '停用,启用', '0,1', '-999999999999.00 ', '999999999999', 0, 0),
+(26, 4, 0, 4, 'tbl_base_goods', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 1, 0),
+(27, 4, 0, 4, 'tbl_base_goods', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 4, 0),
+(28, 4, 0, 4, 'tbl_base_goods', 'intUnitgroupPK', '计量单位组', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', 'load', NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 9, 0),
+(29, 4, 0, 4, 'tbl_base_goods', 'intUnitConvertgroupPK', '计量单位转换率组', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', 'intUnitgroupPK', 'intUnitgroupPK=[intUnitgroupPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 10, 0),
+(30, 4, 0, 4, 'tbl_base_goods', 'intDefaultUnitPK', '基本计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK];TBUCD.isBaseUnit = 1', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 11, 0),
+(31, 4, 0, 4, 'tbl_base_goods', 'intOrderDefaultUnitPK', '订单常用计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intUnitConvertgroupPK', 'TBUCD.intConvertgroupPK=[intUnitConvertgroupPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 12, 0),
+(32, 4, 0, 4, 'tbl_base_goods', 'strGoodsNo', '货物编号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 2, 0),
+(33, 4, 0, 4, 'tbl_base_goods', 'strGoodsName', '货物名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 3, 0),
+(34, 4, 0, 4, 'tbl_base_goods', 'strGoodsModel', '型号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 5, 0),
+(35, 4, 0, 4, 'tbl_base_goods', 'strGoodsSpec', '规格', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 6, 0),
+(36, 4, 0, 4, 'tbl_base_goods', 'intWeight', '重量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 7, 0),
+(37, 4, 0, 4, 'tbl_base_goods', 'intVolume', '体积', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 8, 0),
+(38, 5, 0, 5, 'tbl_base_unit', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(39, 5, 0, 5, 'tbl_base_unit', 'strName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(40, 6, 0, 6, 'tbl_base_unit_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(41, 6, 0, 6, 'tbl_base_unit_group', 'strGroupName', '名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(42, 7, 0, 7, 'tbl_base_unit_convert_group', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(43, 7, 0, 7, 'tbl_base_unit_convert_group', 'intUnitgroupPK', '计量单位组名称', 17, 6, 'tbl_base_unit_group', 'PK', 'strGroupName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(44, 7, 0, 7, 'tbl_base_unit_convert_group', 'strConvertgroupName', '转换率组名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(45, 8, 0, 8, 'tbl_base_unit_convert_detail', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(46, 8, 0, 8, 'tbl_base_unit_convert_detail', 'intConvertgroupPK', '转换率组名称', 17, 7, 'tbl_base_unit_convert_group', 'PK', 'strConvertgroupName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(47, 8, 0, 8, 'tbl_base_unit_convert_detail', 'intUnitPK', '计量单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(48, 8, 0, 8, 'tbl_base_unit_convert_detail', 'isBaseUnit', '是否基本计量单位', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '0', '否,是', '0,1', '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(49, 8, 0, 8, 'tbl_base_unit_convert_detail', 'intConvertRate', '转换率', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(50, 21, 0, 20, 'tbl_sheet_order', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(51, 21, 0, 20, 'tbl_sheet_order', 'strSheetNo', '订单编号', 14, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(52, 21, 0, 20, 'tbl_sheet_order', 'dtDate', '开单日期', 3, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(53, 21, 0, 20, 'tbl_sheet_order', 'intSubmiterPK', '开单人', 17, 11, 'tbl_base_user', 'PK', 'strUserName', 'load', 'TBU.PK = {LOGIN_USER_PK}', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(54, 21, 0, 20, 'tbl_sheet_order', 'intSubcompanyPK', '分公司', 5, 1, 'tbl_base_subcompany', 'PK', 'strName', 'load', 'TBS.PK in {SUBCOMPANY_RIGHT}', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(55, 21, 0, 20, 'tbl_sheet_order', 'intClientPK', '客户名称', 5, 2, 'tbl_base_client', 'PK', 'strName', NULL, 'TBC.intSubCompanyPK = [intSubcompanyPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(56, 21, 0, 20, 'tbl_sheet_order', 'intReceiverPK', '收货方', 5, 3, 'tbl_base_receiver', 'PK', 'strReceiverName', NULL, 'TBR.intClientPK = [intClientPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(57, 21, 0, 20, 'tbl_sheet_order', 'strClientLinkman', '客户联系人', 2, 2, 'tbl_base_client', 'PK', 'strLinkman', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(58, 21, 0, 20, 'tbl_sheet_order', 'strReceiverLinkman', '收货方联系人', 2, 3, 'tbl_base_receiver', 'PK', 'strLinkMan', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(59, 21, 0, 20, 'tbl_sheet_order', 'strReceiverPhone', '收货方电话', 2, 3, 'tbl_base_receiver', 'PK', 'strPhone', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(60, 21, 0, 20, 'tbl_sheet_order', 'strReceiverAddress', '送达地址', 2, 3, 'tbl_base_receiver', 'PK', 'strAddress', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(61, 21, 0, 20, 'tbl_sheet_order', 'intReceiverMileage', '里程', 1, 3, 'tbl_base_receiver', 'PK', 'intMileage', NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(62, 21, 0, 20, 'tbl_sheet_order', 'dtRequireDate', '要求送达日期', 3, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(63, 21, 0, 20, 'tbl_sheet_order', 'intTotalWeight', '总重量', 16, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(64, 21, 0, 20, 'tbl_sheet_order', 'intTotalVolume', '总体积', 16, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(65, 21, 0, 20, 'tbl_sheet_order', 'strMemo', '备注', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(66, 21, 1, 21, 'tbl_sheet_order_detail', 'PK', '明细主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(67, 21, 1, 21, 'tbl_sheet_order_detail', 'strSheetNo_Detail', '订单编号', 14, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(68, 21, 1, 21, 'tbl_sheet_order_detail', 'intGoodsPK', '货物编号', 5, 4, 'tbl_base_goods', 'PK', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(69, 21, 1, 21, 'tbl_sheet_order_detail', 'strGoodsName', '货物名称', 2, 4, 'tbl_base_goods', 'PK', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(70, 21, 1, 21, 'tbl_sheet_order_detail', 'strGoodsModel', '货物型号', 2, 4, 'tbl_base_goods', 'PK', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(71, 21, 1, 21, 'tbl_sheet_order_detail', 'strGoodsSpec', '货物规格', 2, 4, 'tbl_base_goods', 'PK', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 1),
+(72, 21, 1, 21, 'tbl_sheet_order_detail', 'intCounts', '数量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(73, 21, 1, 21, 'tbl_sheet_order_detail', 'intUnitPK', '单位', 17, 5, 'tbl_base_unit', 'PK', 'strName', 'intGoodsPK', 'TBG.PK = [intGoodsPK]', 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(74, 21, 1, 21, 'tbl_sheet_order_detail', 'intWeight', '重量', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(75, 21, 1, 21, 'tbl_sheet_order_detail', 'intVolume', '体积', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(76, 21, 1, 21, 'tbl_sheet_order_detail', 'intTotalWeight', '总重量', 19, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(77, 21, 1, 21, 'tbl_sheet_order_detail', 'intTotalVolume', '总体积', 19, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(78, 2, 0, 2, 'tbl_base_client', 'strLinkman', '客户联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -482,22 +545,29 @@ CREATE TABLE `tbl_sys_table` (
   `PK` int(11) NOT NULL,
   `strTable` varchar(50) DEFAULT NULL,
   `strName` varchar(50) DEFAULT NULL,
-  `strTableAbbr` varchar(10) DEFAULT NULL
+  `strTableAbbr` varchar(10) DEFAULT NULL,
+  `strSheetIndex` varchar(50) DEFAULT NULL COMMENT '表头和明细链接条件，一般是单号字段'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `tbl_sys_table`
 --
 
-INSERT INTO `tbl_sys_table` (`PK`, `strTable`, `strName`, `strTableAbbr`) VALUES
-(1, 'tbl_base_subcompany', '分公司', 'TBSC'),
-(2, 'tbl_base_client', '客户', 'TBC'),
-(3, 'tbl_base_receiver', '收货方', 'TBR'),
-(4, 'tbl_base_goods', '货物', 'TBG'),
-(5, 'tbl_base_unit', '基础计量单位', 'TBU'),
-(6, 'tbl_base_unit_group', '计量单位组', 'TBUG'),
-(7, 'tbl_base_unit_convert_group', '计量单位转换率组', 'TBUCG'),
-(8, 'tbl_base_unit_convert_detail', '计量单位转换率明细', 'TBUCD');
+INSERT INTO `tbl_sys_table` (`PK`, `strTable`, `strName`, `strTableAbbr`, `strSheetIndex`) VALUES
+(1, 'tbl_base_subcompany', '分公司', 'TBSC', NULL),
+(2, 'tbl_base_client', '客户', 'TBC', NULL),
+(3, 'tbl_base_receiver', '收货方', 'TBR', NULL),
+(4, 'tbl_base_goods', '货物', 'TBG', NULL),
+(5, 'tbl_base_unit', '基础计量单位', 'TBU', NULL),
+(6, 'tbl_base_unit_group', '计量单位组', 'TBUG', NULL),
+(7, 'tbl_base_unit_convert_group', '计量单位转换率组', 'TBUCG', NULL),
+(8, 'tbl_base_unit_convert_detail', '计量单位转换率明细', 'TBUCD', NULL),
+(9, 'tbl_base_truck', '车辆表', 'TBT', NULL),
+(10, 'tbl_base_truck_type', '车辆类型表', 'TBTT', NULL),
+(11, 'tbl_base_user', '用户表', 'TBU', NULL),
+(12, 'tbl_base_user_role', '角色表', 'TBUR', NULL),
+(20, 'tbl_sheet_order', '订单表头', 'TSO', 'strSheetNo'),
+(21, 'tbl_sheet_order_detail', '订单明细表', 'TSOD', 'strSheetNo_Detail');
 
 -- --------------------------------------------------------
 
@@ -531,7 +601,9 @@ INSERT INTO `tbl_sys_type` (`PK`, `strName`) VALUES
 (14, '自生成单号'),
 (15, '人员'),
 (16, '累加'),
-(17, '引用单选下拉');
+(17, '引用单选下拉'),
+(18, '引用多选下拉'),
+(19, '统计');
 
 -- --------------------------------------------------------
 
@@ -594,6 +666,18 @@ ALTER TABLE `tbl_base_receiver`
 -- Indexes for table `tbl_base_subcompany`
 --
 ALTER TABLE `tbl_base_subcompany`
+  ADD PRIMARY KEY (`PK`);
+
+--
+-- Indexes for table `tbl_base_truck`
+--
+ALTER TABLE `tbl_base_truck`
+  ADD PRIMARY KEY (`PK`);
+
+--
+-- Indexes for table `tbl_base_truck_type`
+--
+ALTER TABLE `tbl_base_truck_type`
   ADD PRIMARY KEY (`PK`);
 
 --
@@ -694,7 +778,7 @@ ALTER TABLE `tbl_base_client`
 -- 使用表AUTO_INCREMENT `tbl_base_goods`
 --
 ALTER TABLE `tbl_base_goods`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_receiver`
 --
@@ -705,6 +789,16 @@ ALTER TABLE `tbl_base_receiver`
 --
 ALTER TABLE `tbl_base_subcompany`
   MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `tbl_base_truck`
+--
+ALTER TABLE `tbl_base_truck`
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `tbl_base_truck_type`
+--
+ALTER TABLE `tbl_base_truck_type`
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_unit`
 --
@@ -754,17 +848,17 @@ ALTER TABLE `tbl_sheet_order_detail`
 -- 使用表AUTO_INCREMENT `tbl_sys_field`
 --
 ALTER TABLE `tbl_sys_field`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 --
 -- 使用表AUTO_INCREMENT `tbl_sys_table`
 --
 ALTER TABLE `tbl_sys_table`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- 使用表AUTO_INCREMENT `tbl_sys_type`
 --
 ALTER TABLE `tbl_sys_type`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- 使用表AUTO_INCREMENT `tbl_sys_value`
 --

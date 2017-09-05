@@ -66,7 +66,7 @@
 
 			}
 
-			//根据intTablePK获取单据的描述数据，元数据
+			//获取只有表头信息的表单字段，如基础数据的
 			public function getFields($intTablePK){
 					$sql = "select * from tbl_sys_field where intTablePK = '".$intTablePK."' order by intOrder";
 					$data = $this->db->query($sql);
@@ -171,16 +171,77 @@
 									)
 							),
 							'joinTables' => array(
-									'tbl_base_subcompany' => array(
+									'主表关联字段的PK' => array(
+											'tableName' => 'tbl_base_subcompany',
 											'abbr' => 'TBSC',
 											'joinField' => 'TBC.TBC_intSubCompanyPK = TBSC.TBSC_PK',
 											'fields' => array(
 													//结构同上，此处是关联表的所有关联字段
 											)
 									),
-									'tbl_base_subcompany1' => array(
+									'主表关联字段的PK' => array(
 											...
+											如果关联两次同样的基础表，则会abbr加后缀来避免
 									)
+							),
+					);
+					*/
+			}
+
+			//获取带有表头和明细，这种单据类型的字段信息
+			public function getSheetFields($intTablePK){
+					//结构信息
+					/*
+					return array(
+							'headerTable' => array(
+									'tableName' => 'tbl_sheet_order',
+									'abbr' => 'TSO',
+									'strSheetIndex' => 'strSheetNo',
+									'fields' => array(
+											'TSO_PK' => array(
+													'strField' => PK,
+													'strName' => '主键',
+													'intType' => 8,
+													'intTablePK_Ref' =>0,
+													'strFileldSql' => 'TBC_PK'
+													'strFileldSqlShow' => '',
+													'intFieldClass' => '0表头，1明细，2状态',
+													'isUsed' => 1
+											),
+											'TSO_intSubCompanyPK'=>array(
+													'strField' => intSubCompanyPK,
+													'strName' => 分公司名称,
+													'intType' => 5,
+													'intTablePK_Ref' =>1,
+													'strFileldSql' => 'TBC_intSubCompanyPK'
+													'strFileldSqlShow' => 'TBSC_strName',
+													'intFieldClass' => '0表头，1明细，2状态',
+													'isUsed' => 1
+											)
+									),
+									'joinTables' => array(
+											'主表关联字段的PK' => array(
+													'tableName' => 'tbl_base_subcompany',
+													'abbr' => 'TBSC',
+													'joinField' => 'TBC.TBC_intSubCompanyPK = TBSC.TBSC_PK',
+													'fields' => array(
+															//结构同上，此处是关联表的所有关联字段
+													)
+											),
+											array(
+												...
+												如果关联两次同样的基础表，则会abbr加后缀来避免
+											)
+									)
+							),
+							'detailTable' => array(
+									//与上面结构相同
+									'tableName' => 'tbl_sheet_order_detail',
+									'abbr' => 'TSOD',
+									'strSheetIndex' => 'strSheetNo_Detail',
+									'fields' => array(//与上面结构相同),
+									'joinTables' => array(//与上面结构相同)
+
 							),
 					);
 					*/
