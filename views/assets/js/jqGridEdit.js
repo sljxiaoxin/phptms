@@ -489,7 +489,7 @@ jqGridEdit = {
 														return function (val, nm, valref) {
 															console.log('----------editrules--------->>>',_isEditable,"#",_isMustHave,"#",val,",",nm,",",valref);
 															if(_isEditable == '1' && _isMustHave=='1' && $.trim(val) == '|'){
-																	//return [false, "请选择"+nm+"!"];
+																	return [false, "请选择"+nm+"!"];
 															}
 															return [true, ""];
 														}
@@ -631,6 +631,7 @@ jqGridEdit = {
 													$(tr).children('td').children('input.editable[type="text"]').removeClass("input-warning");
 													$(tr).children('td').find('div.btnGroupEditable').removeClass("input-warning");
 													$(tr).children('td').find('div.chosen-container').removeClass("input-warning");
+													$(tr).children('td').find('div.btn-group').removeClass("input-warning");
 													iColWithError = valref; // save to set later the focus
 													//error_td_input_selector = 'tr#'+editingRowId+' > td:nth-child('+(valref+1)+') > input.editable[type="text"]:first';
 													td = tr.cells[valref];
@@ -638,6 +639,7 @@ jqGridEdit = {
 															$(td).find('input.editable[type="text"]').addClass("input-warning");
 															$(td).find('div.btnGroupEditable').addClass("input-warning");
 															$(td).find('div.chosen-container').addClass("input-warning");
+															$(td).find('div.btn-group').addClass("input-warning");
 													}
 											}
 									}
