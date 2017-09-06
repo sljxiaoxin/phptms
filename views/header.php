@@ -16,6 +16,10 @@
 		 'client_v' => $arrBaseDataPageCss,
 		 'goods_v' => $arrBaseDataPageCss,
 		 'receiver_v' => $arrBaseDataPageCss,
+		 'truck_v' => $arrBaseDataPageCss,
+		 'trucktype_v' => $arrBaseDataPageCss,
+		 'user_v' => $arrBaseDataPageCss,
+		 'role_v' => $arrBaseDataPageCss,
 		  //单据
 		 'order_v' => $arrBaseDataPageCss
 	);

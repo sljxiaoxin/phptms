@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-09-05 11:53:32
+-- Generation Time: 2017-09-06 05:37:45
 -- 服务器版本： 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -188,8 +188,22 @@ INSERT INTO `tbl_base_subcompany` (`PK`, `strName`, `strPhone`, `strAddr`, `strL
 --
 
 CREATE TABLE `tbl_base_truck` (
-  `PK` int(11) NOT NULL
+  `PK` int(11) NOT NULL,
+  `strPlateNo` varchar(20) DEFAULT NULL COMMENT '车牌号',
+  `intTruckTypePK` int(11) NOT NULL DEFAULT '0' COMMENT '车型',
+  `strOwner` varchar(20) DEFAULT NULL,
+  `strOwnerPhone` varchar(50) DEFAULT NULL,
+  `strDriver` varchar(20) DEFAULT NULL,
+  `strDriverPhone` varchar(50) DEFAULT NULL,
+  `intUseType` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆信息表';
+
+--
+-- 转存表中的数据 `tbl_base_truck`
+--
+
+INSERT INTO `tbl_base_truck` (`PK`, `strPlateNo`, `intTruckTypePK`, `strOwner`, `strOwnerPhone`, `strDriver`, `strDriverPhone`, `intUseType`) VALUES
+(1, '津A xxxx', 1, '3', '3', '3', '3', 0);
 
 -- --------------------------------------------------------
 
@@ -198,8 +212,17 @@ CREATE TABLE `tbl_base_truck` (
 --
 
 CREATE TABLE `tbl_base_truck_type` (
-  `PK` int(11) NOT NULL
+  `PK` int(11) NOT NULL,
+  `strModel` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆型号表';
+
+--
+-- 转存表中的数据 `tbl_base_truck_type`
+--
+
+INSERT INTO `tbl_base_truck_type` (`PK`, `strModel`) VALUES
+(1, '前四后八'),
+(2, '4.8米箱货');
 
 -- --------------------------------------------------------
 
@@ -294,6 +317,43 @@ INSERT INTO `tbl_base_unit_group` (`PK`, `strGroupName`, `strUnitPKs`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `tbl_base_user`
+--
+
+CREATE TABLE `tbl_base_user` (
+  `PK` int(11) NOT NULL,
+  `strUserID` varchar(20) DEFAULT NULL,
+  `strPassword` char(32) DEFAULT NULL,
+  `strUserName` varchar(20) DEFAULT NULL,
+  `intSubcompanyPKs` varchar(100) DEFAULT NULL,
+  `intRolePKs` varchar(100) DEFAULT NULL,
+  `strPhone` varchar(50) DEFAULT NULL,
+  `strEmail` varchar(30) DEFAULT NULL,
+  `isWorking` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='基础用户/员工表';
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_base_user_role`
+--
+
+CREATE TABLE `tbl_base_user_role` (
+  `PK` int(11) NOT NULL,
+  `strRoleName` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';
+
+--
+-- 转存表中的数据 `tbl_base_user_role`
+--
+
+INSERT INTO `tbl_base_user_role` (`PK`, `strRoleName`) VALUES
+(1, '计划调度'),
+(2, '值班调度');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `tbl_menu_action`
 --
 
@@ -316,7 +376,11 @@ INSERT INTO `tbl_menu_action` (`PK`, `intLeftmenuPK`, `intTablePK`, `strName`, `
 (4, 13, 10, '订单新增', 'sheet_order', 'add'),
 (5, 6, 2, '客户维护', 'sheet_client', 'index'),
 (6, 8, 3, '收货方维护', 'sheet_receiver', 'index'),
-(7, 20, 4, '货物维护', 'sheet_goods', 'index');
+(7, 20, 4, '货物维护', 'sheet_goods', 'index'),
+(8, 22, 9, '车辆维护', 'sheet_truck', 'index'),
+(9, 23, 10, '车型维护', 'sheet_trucktype', 'index'),
+(10, 25, 11, '用户维护', 'sheet_user', 'index'),
+(11, 26, 12, '角色维护', 'sheet_role', 'index');
 
 -- --------------------------------------------------------
 
@@ -336,8 +400,9 @@ CREATE TABLE `tbl_menu_big` (
 --
 
 INSERT INTO `tbl_menu_big` (`PK`, `strName`, `intDefaultActionPK`, `strLeftPK`) VALUES
-(1, '基础数据', 1, '1,2,3,19,14'),
-(2, '订单管理', 3, '10,11');
+(1, '基础数据', 1, '1,2,3,19,14,21'),
+(2, '订单管理', 3, '10'),
+(3, '系统管理', 10, '24');
 
 -- --------------------------------------------------------
 
@@ -365,7 +430,6 @@ INSERT INTO `tbl_menu_left` (`PK`, `intTopParent`, `intParentPK`, `strName`, `in
 (6, 2, 2, '维护', 2),
 (8, 3, 3, '维护', 2),
 (10, 10, 0, '订单管理', 1),
-(11, 11, 0, '客服管理', 1),
 (12, 10, 10, '查询', 2),
 (13, 10, 10, '新增', 2),
 (14, 14, 0, '计量单位管理', 1),
@@ -374,7 +438,13 @@ INSERT INTO `tbl_menu_left` (`PK`, `intTopParent`, `intParentPK`, `strName`, `in
 (17, 14, 14, '计量单位转换率组', 2),
 (18, 14, 14, '转换率设置', 2),
 (19, 19, 0, '货物管理', 1),
-(20, 19, 19, '维护', 2);
+(20, 19, 19, '维护', 2),
+(21, 21, 0, '车辆管理', 1),
+(22, 21, 21, '车辆', 2),
+(23, 21, 21, '车型', 2),
+(24, 24, 0, '用户管理', 1),
+(25, 24, 24, '用户', 2),
+(26, 24, 24, '角色', 2);
 
 -- --------------------------------------------------------
 
@@ -533,7 +603,27 @@ INSERT INTO `tbl_sys_field` (`PK`, `intTablePK`, `intFieldClass`, `intTableStora
 (75, 21, 1, 21, 'tbl_sheet_order_detail', 'intVolume', '体积', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
 (76, 21, 1, 21, 'tbl_sheet_order_detail', 'intTotalWeight', '总重量', 19, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
 (77, 21, 1, 21, 'tbl_sheet_order_detail', 'intTotalVolume', '总体积', 19, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
-(78, 2, 0, 2, 'tbl_base_client', 'strLinkman', '客户联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0);
+(78, 2, 0, 2, 'tbl_base_client', 'strLinkman', '客户联系人', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999', '999999999999', 0, 0),
+(79, 9, 0, 9, 'tbl_base_truck', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(80, 9, 0, 9, 'tbl_base_truck', 'strPlateNo', '车牌号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(81, 9, 0, 9, 'tbl_base_truck', 'intTruckTypePK', '车型', 17, 10, 'tbl_base_truck_type', 'PK', 'strModel', 'load', NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(82, 9, 0, 9, 'tbl_base_truck', 'strOwner', '车主', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(83, 9, 0, 9, 'tbl_base_truck', 'strOwnerPhone', '车主电话', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(84, 9, 0, 9, 'tbl_base_truck', 'strDriver', '司机', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(85, 9, 0, 9, 'tbl_base_truck', 'strDriverPhone', '司机电话', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(86, 9, 0, 9, 'tbl_base_truck', 'intUseType', '车辆所属', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '0', '自营车,外调车', '0,1', '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(87, 10, 0, 10, 'tbl_base_truck_type', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(88, 10, 0, 10, 'tbl_base_truck_type', 'strModel', '车型', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(89, 11, 0, 11, 'tbl_base_user', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(90, 11, 0, 11, 'tbl_base_user', 'strUserID', '用户账号', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(91, 11, 0, 11, 'tbl_base_user', 'strUserName', '用户名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(92, 11, 0, 11, 'tbl_base_user', 'intSubcompanyPKs', '分公司权限', 18, 1, 'tbl_base_subcompany', 'PK', 'strName', 'load', NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(93, 11, 0, 11, 'tbl_base_user', 'intRolePKs', '角色', 18, 12, 'tbl_base_user_role', 'PK', 'strRoleName', 'load', NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(94, 11, 0, 11, 'tbl_base_user', 'strPhone', '手机号', 7, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(95, 11, 0, 11, 'tbl_base_user', 'strEmail', '邮件', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(96, 11, 0, 11, 'tbl_base_user', 'isWorking', '在职', 11, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, '1', '在职,离职', '1,0', '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(97, 12, 0, 12, 'tbl_base_user_role', 'PK', '主键', 8, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0),
+(98, 12, 0, 12, 'tbl_base_user_role', 'strRoleName', '角色名称', 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, '-999999999999.00 ', '999999999999.00 ', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -705,6 +795,18 @@ ALTER TABLE `tbl_base_unit_group`
   ADD PRIMARY KEY (`PK`);
 
 --
+-- Indexes for table `tbl_base_user`
+--
+ALTER TABLE `tbl_base_user`
+  ADD PRIMARY KEY (`PK`);
+
+--
+-- Indexes for table `tbl_base_user_role`
+--
+ALTER TABLE `tbl_base_user_role`
+  ADD PRIMARY KEY (`PK`);
+
+--
 -- Indexes for table `tbl_menu_action`
 --
 ALTER TABLE `tbl_menu_action`
@@ -793,12 +895,12 @@ ALTER TABLE `tbl_base_subcompany`
 -- 使用表AUTO_INCREMENT `tbl_base_truck`
 --
 ALTER TABLE `tbl_base_truck`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_truck_type`
 --
 ALTER TABLE `tbl_base_truck_type`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_unit`
 --
@@ -820,20 +922,30 @@ ALTER TABLE `tbl_base_unit_convert_group`
 ALTER TABLE `tbl_base_unit_group`
   MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- 使用表AUTO_INCREMENT `tbl_base_user`
+--
+ALTER TABLE `tbl_base_user`
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `tbl_base_user_role`
+--
+ALTER TABLE `tbl_base_user_role`
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- 使用表AUTO_INCREMENT `tbl_menu_action`
 --
 ALTER TABLE `tbl_menu_action`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- 使用表AUTO_INCREMENT `tbl_menu_big`
 --
 ALTER TABLE `tbl_menu_big`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- 使用表AUTO_INCREMENT `tbl_menu_left`
 --
 ALTER TABLE `tbl_menu_left`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- 使用表AUTO_INCREMENT `tbl_sheet_order`
 --
@@ -848,7 +960,7 @@ ALTER TABLE `tbl_sheet_order_detail`
 -- 使用表AUTO_INCREMENT `tbl_sys_field`
 --
 ALTER TABLE `tbl_sys_field`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 --
 -- 使用表AUTO_INCREMENT `tbl_sys_table`
 --

@@ -178,7 +178,9 @@ jqGridEdit = {
 								var span = $("<span />");
 								var elSelect = $('<select class="chosen-select form-control"  data-placeholder="请选择"></select>');
 								span.append(elSelect);
-								elSelect.chosen({allow_single_deselect:true}).on('change',function(evt, params){
+								elSelect.chosen({
+										allow_single_deselect:true
+								}).on('change',function(evt, params){
 										jqRefManager.change(strField, params['selected']);
 								});
 								elSelect.next().css({'width': 150});
