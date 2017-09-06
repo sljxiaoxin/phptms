@@ -5,7 +5,8 @@
 		 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/chosen/chosen.css" />',
 		 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />',
 		 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />',
-		 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jqgrid/ui.jqgrid.css" />'
+		 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/_mod/jqgrid/ui.jqgrid.css" />',
+		 '<link rel="stylesheet" href="/'.APP_FOLDER.'/views/components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />'
 	);
 	$arrPageCss = array(
 		'dashboard' => array(

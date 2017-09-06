@@ -111,7 +111,7 @@
 				foreach($arrFieldsInfo as $key=>$val){
 						if(isset($_POST[$key])){
 								$arrValues[$val['strField']] = $_POST[$key];
-								if($val['intType'] == '5' || $val['intType'] == '17'){
+								if($val['intType'] == '5' || $val['intType'] == '17' || $val['intType'] == '18'){
 										$arrV = explode('|', $_POST[$key]);
 										$arrValues[$val['strField']] = $arrV[0];
 								}

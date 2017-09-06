@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-09-06 05:37:45
+-- Generation Time: 2017-09-06 09:42:24
 -- 服务器版本： 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -179,7 +179,7 @@ INSERT INTO `tbl_base_subcompany` (`PK`, `strName`, `strPhone`, `strAddr`, `strL
 (1, '北京分公司', '13820052732', '北京市西城区', '杨建新', 1),
 (2, '天津分公司', '13920331922', '天津市北辰区', '王艳芳', 1),
 (3, '上海分公司', '13788889999', '上海中心路', '杨建国', 1),
-(4, '重庆分公司', '13699999999', '重庆一支路', '王伟', 1);
+(4, '广东分公司', '13699999999', '重庆一支路', '王伟', 1);
 
 -- --------------------------------------------------------
 
@@ -331,6 +331,13 @@ CREATE TABLE `tbl_base_user` (
   `strEmail` varchar(30) DEFAULT NULL,
   `isWorking` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='基础用户/员工表';
+
+--
+-- 转存表中的数据 `tbl_base_user`
+--
+
+INSERT INTO `tbl_base_user` (`PK`, `strUserID`, `strPassword`, `strUserName`, `intSubcompanyPKs`, `intRolePKs`, `strPhone`, `strEmail`, `isWorking`) VALUES
+(1, '1', NULL, '1', '1', '1,2', '1', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -925,7 +932,7 @@ ALTER TABLE `tbl_base_unit_group`
 -- 使用表AUTO_INCREMENT `tbl_base_user`
 --
 ALTER TABLE `tbl_base_user`
-  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tbl_base_user_role`
 --

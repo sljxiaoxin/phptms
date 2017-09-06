@@ -8,7 +8,8 @@
 		'<script src="/'.APP_FOLDER.'/views/components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>',
 		'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/jquery.jqGrid.js"></script>',
 		'<script src="/'.APP_FOLDER.'/views/components/jqGrid/js/i18n/grid.locale-cn.js"></script>',
-		'<script src="/'.APP_FOLDER.'/views/components/chosen/chosen.jquery.js"></script>'
+		'<script src="/'.APP_FOLDER.'/views/components/chosen/chosen.jquery.js"></script>',
+		'<script src="/'.APP_FOLDER.'/views/components/_mod/bootstrap-multiselect/bootstrap-multiselect.js"></script>'
 	);
 	$arrPageJs = array(
 			'dashboard' => array(

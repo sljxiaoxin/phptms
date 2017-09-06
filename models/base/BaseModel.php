@@ -13,6 +13,7 @@
 					$limit = null;
 					$order = null;
 					$where = null;
+					$arrType18BaseDatas = array();    //多选下拉基础数据表 key => value
 					if(isset($arrSetting['start'])){
 							$start = $arrSetting['start'];
 							$limit = 10;
@@ -32,9 +33,19 @@
 					foreach ($arrFields['mainTable']['fields'] as $key => $val) {
 							$arrQueryFields[] = $strMainTableAbbr.".".$val['strField']." as ".$key;
 							if($val['intType'] == '8'){
+									//主键
 									$strMainKey = $key;
 									if($order === null){
 											$order = " order by ".$strMainTableAbbr.".".$val['strField']." desc ";
+									}
+							}
+							if($val['intType'] == '18'){
+									//多选下拉需要特殊处理
+									$arrType18BaseDatas[$key] = array();
+									$sqlTmp = "select * from ".$val['strTable_Ref'];
+									$dataTmp = $this->db->query($sqlTmp);
+									for($i=0;$i<count($dataTmp);$i++){
+											$arrType18BaseDatas[$key][$dataTmp[$i][$val['strField_Ref']]] = $dataTmp[$i][$val['strFileldShow_Ref']];
 									}
 							}
 					}
@@ -59,6 +70,20 @@
 					//echo $sql;
 					$data = $this->db->query($sql);
 					//print_r($data);
+					for($i=0;$i<count($data);$i++){
+							//引用多选下拉处理
+							foreach($arrType18BaseDatas as $strFieldName=>$arrVal){
+									if($data[$i][$strFieldName] != ''){
+											$arrPKs = explode(",", $data[$i][$strFieldName]);
+											$arrNames = array();
+											for($j=0;$j<count($arrPKs);$j++){
+													$arrNames[] = $arrVal[$arrPKs[$j]];
+											}
+											//引用多选下拉，填充下拉名称
+											$data[$i][$strFieldName] = $data[$i][$strFieldName]."|".implode(",", $arrNames);
+									}
+							}
+					}
 					return array(
 							'strMainKey' => $strMainKey,
 							'rows' => $data

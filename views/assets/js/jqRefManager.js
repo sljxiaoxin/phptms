@@ -17,7 +17,7 @@ jqRefManager = {
 				for(var i=0;i<colModelBase.length;i++){
 						this.colModel[colModelBase[i]['strField']] = colModelBase[i];
 						//if(colModelBase[i]['intType'] == '5' || colModelBase[i]['intType'] == '17'){
-						if(colModelBase[i]['intType'] == '17'){
+						if(colModelBase[i]['intType'] == '17' || colModelBase[i]['intType'] == '18'){
 								this.refDatas[colModelBase[i]['strField']] = {
 										el : null,
 										value : '',
@@ -33,7 +33,7 @@ jqRefManager = {
 				console.log("load:",strField);
 				var fieldInfo = this.colModel[strField];
 				//if(fieldInfo['intType']!= '5' && fieldInfo['intType']!= '17'){
-				if(fieldInfo['intType']!= '17'){
+				if(fieldInfo['intType']!= '17' && fieldInfo['intType']!= '18'){
 						return;
 				}
 				this.refDatas[strField]['el'] = el;
@@ -52,25 +52,6 @@ jqRefManager = {
 				for(var i=0;i<this.loadEl.length;i++){
 						var strField = this.loadEl[i];
 						this.loadOne('load', strField);
-						/*
-						var value = this.refDatas[strField]['value'];
-						$.post(this.url, {
-								intTablePK : this.intTablePK,
-								intType :  this.colModel[strField]['intType'],
-								strField : strField,
-								strRefFilter : this.colModel[strField]['strRefFilter']
-						},function(result){
-								//TODO 元素置值
-								console.log(strField,'loadDetail result is :',result);
-
-								jqRefManager.refDatas[strField]['isLoad'] = true;
-								//
-								if(value != ''){
-										jqRefManager.loadCheck(strField);
-								}
-						});
-						*/
-
 				}
 		},
 		//一个fieldload完成后，检测是否出发其他字段load
@@ -89,12 +70,14 @@ jqRefManager = {
 						//}
 				});
 		},
+		//triggerType目前可能为：load / change :字段值change触发，置空也会进来触发后面的联动置空
 		loadOne : function(triggerType, strField){
 				var value = this.refDatas[strField]['value'];
+				var intType = this.colModel[strField]['intType'];
 				var self = this;
 				$.post(this.url, {
 						intTablePK : this.intTablePK,
-						intType :  this.colModel[strField]['intType'],
+						intType :  intType,
 						strField : strField,
 						strRefFilter : this.filterHelper(this.colModel[strField]['strRefFilter'])   //TODO 需要解析[]中的栏位为具体值带进去
 				},function(result){
@@ -103,28 +86,45 @@ jqRefManager = {
 								var objResult = $.parseJSON(result);
 								console.log(strField,'loadOne obj is :',objResult);
 								jqRefManager.refDatas[strField]['isLoad'] = true;     //load过后标记
-								//el元素设置值
-								var html = ["<option value=''></option>"];
-								for(var i=0;i<objResult.data.length;i++){
-										var selected = "";
-										var opVal =objResult.data[i][objResult['strValueField']];
-										var opName =objResult.data[i][objResult['strShowField']];
-										if(opVal == value){
-												selected = "selected";
+								if(intType == 17){
+										//el元素设置值
+										var html = ["<option value=''></option>"];
+										for(var i=0;i<objResult.data.length;i++){
+												var selected = "";
+												var opVal =objResult.data[i][objResult['strValueField']];
+												var opName =objResult.data[i][objResult['strShowField']];
+												if(opVal == value){
+														selected = "selected";
+												}
+												var itemHtml = "<option value="+opVal+" "+selected+">"+opName+"</option>";
+												html.push(itemHtml);
 										}
-										/*
-										if(selected == ""){
-												//手动change后，它所触发的栏位，需要重置值
-												self.refDatas[strField]['value'] = '';
+										var el = jqRefManager.refDatas[strField]['el'];   //select 或者点选 对象
+										el.html(html.join(''));
+										el.trigger("chosen:updated");
+										console.log('html:',html);
+								}else if(intType == 18){
+										var html = [];
+										var arrValue = value.split(",");
+										for(var i=0;i<objResult.data.length;i++){
+												var selected = "";
+												var opVal =objResult.data[i][objResult['strValueField']];
+												var opName =objResult.data[i][objResult['strShowField']];
+												//if(opVal == value){
+												console.log("-------------type18----------->>>",opVal,arrValue);
+												if($.inArray(opVal.toString(), arrValue) >= 0){
+														selected = "selected";
+												}
+												var itemHtml = "<option value="+opVal+" "+selected+">"+opName+"</option>";
+												html.push(itemHtml);
 										}
-										*/
-										var itemHtml = "<option value="+opVal+" "+selected+">"+opName+"</option>";
-										html.push(itemHtml);
+										var el = jqRefManager.refDatas[strField]['el'];   //select 或者点选 对象
+										el.html(html.join(''));
+										el.multiselect('rebuild');
+										console.log('html:',html);
 								}
-								var el = jqRefManager.refDatas[strField]['el'];   //select 或者点选 对象
-								el.html(html.join(''));
-								el.trigger("chosen:updated");
-								console.log('html:',html);
+
+
 								if(value != '' || triggerType == 'change'){
 										jqRefManager.loadCheck(triggerType, strField);
 								}
@@ -139,6 +139,7 @@ jqRefManager = {
 				this.refDatas[strField]['value'] = val;   //先变更该字段值
 				this.loadCheck('change', strField);									//然后触发联动
 		},
+		//过滤条件[]中的字段替换为目前的字段值
 		filterHelper : function(strFilter){
 				console.log("strFilter:",strFilter);
 				if(strFilter == '' || strFilter == null){

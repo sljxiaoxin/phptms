@@ -154,6 +154,7 @@ jqGridEdit = {
 								var realValue = $(cell).find("span").attr("pk");
 								return realValue+"|"+textValue;
 						},
+						//引用单选下拉
 						createType17Element : function(value, editOptions){
 								console.log('------------------createType17Element---------------------->');
 								var columnArray = $(grid_selector).jqGrid('getGridParam','colModel');
@@ -194,7 +195,7 @@ jqGridEdit = {
 
 								}
 								if (oper === "get") {
-										var textValue = $(elem).find("select").find("option:selected").text();;
+										var textValue = $(elem).find("select").find("option:selected").text();
 										var realValue = $(elem).find("select").val();
 										if(realValue == null || realValue == 'null'){
 												realValue = "";
@@ -218,6 +219,105 @@ jqGridEdit = {
 						},
 						untype17Formatter : function(cellvalue, options, cell){
 								console.log('------------------untype17Formatter---------------------->');
+								var textValue = $(cell).find("span").html();
+								var realValue = $(cell).find("span").attr("pk");
+								return realValue+"|"+textValue;
+						},
+						//多选下拉
+						createType18Element : function(value, editOptions){
+								console.log('------------------createType18Element---------------------->');
+								var columnArray = $(grid_selector).jqGrid('getGridParam','colModel');
+								console.log(columnArray);
+								var obj = null;
+								var intTablePK_Ref_t = 0;
+								var realValueKey = "";
+								var textValueKey = "";
+								var strField = "";
+								for(var i=0;i<columnArray.length;i++){
+										if(columnArray[i].name == editOptions.name){
+												obj = columnArray[i];
+												intTablePK_Ref_t = columnArray[i].intTablePK_Ref;
+												realValueKey = columnArray[i].strFileldSqlHide;
+												textValueKey = columnArray[i].strFileldSqlShow;
+												strField = columnArray[i].strField;
+										}
+								}
+								//多选下拉 值格式如： 1,2,3|客服,计划调度,值班调度
+								var arrValues = value.split('|');
+								var textValue = arrValues[1];
+								var realValue = arrValues[0];
+								var span = $("<span />");
+								var elSelect = $('<select class="multiselect"  multiple="multiple"></select>');
+								span.append(elSelect);
+								elSelect.multiselect({
+									 //includeSelectAllOption: true,
+									 //selectAllValue: 'select-all-value',
+									 buttonWidth:'150px',
+									 allSelectedText:'已选所有',
+									 nonSelectedText:'请选择',
+									 enableFiltering: true,
+									 enableHTML: true,
+									 buttonClass: 'btn btn-white btn-primary',
+									 templates: {
+												button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
+												ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+												filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+												filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+												li: '<li><a tabindex="0"><label></label></a></li>',
+								        divider: '<li class="multiselect-item divider"></li>',
+								        liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
+									 }
+								});
+								/*
+								elSelect.chosen({
+										allow_single_deselect:true
+								}).on('change',function(evt, params){
+										jqRefManager.change(strField, params['selected']);
+								});
+								elSelect.next().css({'width': 150});
+								*/
+								$(this).find("td").css({'overflow':'visible'});
+								jqRefManager.load(elSelect, strField, realValue);   //引用类型辅助
+								return span;
+						},
+						getType18ElementValue : function(elem, oper, value){
+								console.log('------------------getType18ElementValue---------------------->');
+								if (oper === "set") {
+
+								}
+								if (oper === "get") {
+										//var textValue = $(elem).find("select").find("option:selected").text();
+										var optionsReal = [];
+										var optionsText = [];
+										$(elem).find("select").find("option:selected").each(function(){
+											 	optionsReal.push($(this).val());
+												optionsText.push($(this).html())
+										});
+										var textValue = optionsText.join(',');
+										var realValue = optionsReal.join(',');
+										//var realValue = $(elem).find("select").val();
+										if(realValue == null || realValue == 'null'){
+												realValue = "";
+										}
+										console.log(realValue+"|"+textValue);
+										console.log('------------------getType18ElementValue end---------------------->');
+										return realValue+"|"+textValue;
+								}
+						},
+						type18Formatter : function(cellvalue, options, rowObject){
+								console.log('------------------type18Formatter---------------------->');
+								if(cellvalue == ""){
+									var textValue = '';
+									var realValue = '';
+								}else{
+									var arrValues = cellvalue.split('|');
+									var textValue = arrValues[1];
+									var realValue = arrValues[0];
+								}
+								return "<span pk='"+realValue+"'>"+textValue+"</span>";
+						},
+						untype18Formatter : function(cellvalue, options, cell){
+								console.log('------------------untype18Formatter---------------------->');
 								var textValue = $(cell).find("span").html();
 								var realValue = $(cell).find("span").attr("pk");
 								return realValue+"|"+textValue;
@@ -360,6 +460,36 @@ jqGridEdit = {
 															console.log('----------editrules--------->>>',_isEditable,"#",_isMustHave,"#",val,",",nm,",",valref);
 															if(_isEditable == '1' && _isMustHave=='1' && $.trim(val) == '|'){
 																	return [false, "请选择"+nm+"!"];
+															}
+															return [true, ""];
+														}
+												})()
+										};
+								}else if(colModelBase[i]['intType'] == 18){
+										//引用单选下拉
+										obj['width'] = 220;
+										obj['edittype'] = 'custom';
+										obj['editoptions'] = {
+												custom_value : formaters.getType18ElementValue,
+												custom_element : formaters.createType18Element
+										};
+										var modelBase = colModelBase[i];
+										var isEditable = modelBase.isEditable;
+										var isMustHave = modelBase.isMustHave;
+										//var strName = modelBase.strName;
+										//console.log("17--->strName:", strName,"--->isMustHave:",isMustHave);
+										obj['formatter'] =  formaters.type18Formatter;
+										obj['unformat'] =  formaters.untype18Formatter;
+										obj['editrules'] = {
+												custom: true,
+												custom_func: (function(){
+														var _isEditable = isEditable;
+														var _isMustHave = isMustHave;
+														//console.log("17--->strName:", strName,"--->isMustHave:",isMustHave);
+														return function (val, nm, valref) {
+															console.log('----------editrules--------->>>',_isEditable,"#",_isMustHave,"#",val,",",nm,",",valref);
+															if(_isEditable == '1' && _isMustHave=='1' && $.trim(val) == '|'){
+																	//return [false, "请选择"+nm+"!"];
 															}
 															return [true, ""];
 														}
