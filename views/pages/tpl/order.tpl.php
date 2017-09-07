@@ -103,13 +103,44 @@
 					</div>
 				</div>
 				<div class='tmstpl-add-row row'>
-					<div class='col-sm-6'>
+					<div class='col-sm-12'>
 						<div class='tmstpl-form-group'>
 							<label for="phone" class="control-label">线路里程：</label>
 							<input type="text" class="form-control input-sm" id="phone" placeholder="">
 						</div>
 					</div>
-					<div class='col-sm-6'>
+				</div>
+				<!--  独占一行
+				<div class='tmstpl-add-row row'>
+					<div class='col-sm-12'>
+						<div class='tmstpl-form-group-2'>
+							<label for="addr" class="control-label">备注：</label>
+							<input type="text" class="form-control input-sm" id="addr" placeholder="">
+						</div>
+					</div>
+				</div>
+				-->
+			</div>
+			<div class="tmstpl-add-center">
+				<div class='tmstpl-add-row info-bar color-gray'>4、 信息类型</div>
+				<div class='tmstpl-add-row row'>
+						<div class='col-sm-12'>
+							<div class='tmstpl-form-group'>
+								<label for="weight" class="control-label">累计重量：</label>
+								<input type="text" class="form-control input-sm" id="weight" placeholder="">
+							</div>
+						</div>
+				</div>
+				<div class='tmstpl-add-row row'>
+						<div class='col-sm-12'>
+							<div class='tmstpl-form-group'>
+								<label for="column" class="control-label">累计体积：</label>
+								<input type="text" class="form-control input-sm" id="column" placeholder="">
+							</div>
+						</div>
+				</div>
+				<div class='tmstpl-add-row row'>
+						<div class='col-sm-12'>
 							<div class='tmstpl-form-group'>
 								<label for="datetimepicker3" class="control-label">要求送达日期：</label>
 								<div class='input-group date' id='datetimepicker3'>
@@ -119,19 +150,41 @@
 									</span>
 								</div>
 							</div>
-					</div>
+						</div>
 				</div>
 				<div class='tmstpl-add-row row'>
-					<div class='col-sm-12'>
-						<div class='tmstpl-form-group-2'>
-							<label for="addr" class="control-label">备注：</label>
-							<input type="text" class="form-control input-sm" id="addr" placeholder="">
+						<div class='col-sm-12'>
+							<div class='tmstpl-form-group'>
+									<label for="form-field-9">备  注：</label>
+									<textarea class="form-control limited" id="form-field-9" maxlength="50"></textarea>
+									<!--inputlimiter
+									<script src="../components/jquery-inputlimiter/jquery.inputlimiter.js"></script>
+									$('textarea.limited').inputlimiter({
+											remText: '%n character%s remaining...',
+											limitText: 'max allowed : %n.'
+									});
+								 	-->
+							</div>
 						</div>
-					</div>
 				</div>
 			</div>
 			<div class="tmstpl-add-right">
-				<div class='tmstpl-add-row info-bar color-gray'>4、 信息类型</div>
+				<div class='tmstpl-add-row info-bar color-gray' style="width:100%">5、 操作</div>
+				<button class="btn btn-app btn-light btn-xs radius-4">
+					<i class="ace-icon fa fa-floppy-o bigger-160"></i>
+					暂存
+					<span class="badge badge-transparent">
+						<i class="light-red ace-icon fa fa-asterisk"></i>
+					</span>
+				</button>
+				<button class="btn btn-app btn-primary btn-xs radius-4">
+					<i class="ace-icon fa fa-floppy-o bigger-160"></i>
+					保存
+				</button>
+				<button class="btn btn-app btn-warning btn-xs radius-4">
+					<i class="ace-icon fa fa-undo bigger-160"></i>
+					取消
+				</button>
 			</div>
 		</div>
 

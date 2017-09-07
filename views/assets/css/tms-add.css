@@ -3,7 +3,7 @@
 	margin:0 auto;
 	display:flex;
 	width:1020px;
-	height:320px;
+	/*height:320px;*/
 	border:1px solid #ccc;
 	flex-direction:row;
 	justify-content:center;
@@ -16,7 +16,16 @@
 	border-bottom:0px solid #ccc;
 	width: 600px;
 	margin: 0px;
-	padding:0px 5px;
+	padding:0px 5px 3px 5px;
+}
+.tmstpl-add-center{
+	border-top:0px solid #ccc;
+	border-left:0px solid #ccc;
+	border-right:1px solid #ccc;
+	border-bottom:0px solid #ccc;
+	width: 300px;
+	margin: 0px;
+	padding:0px 5px 3px 5px;
 }
 
 .tmstpl-add-right{
@@ -24,9 +33,13 @@
 	border-left:0px solid #ccc;
 	border-right:0px solid #ccc;
 	border-bottom:0px solid #ccc;
-	width: 420px;
+	width: 120px;
 	margin: 0px;
-	padding:0px 5px;
+	padding:0px 5px 3px 5px;
+	display: flex;
+	flex-direction:column;
+	justify-content:flex-start;
+	align-items:center;
 }
 
 .tmstpl-add-row{
@@ -35,9 +48,6 @@
 
 .tmstpl-add-container .info-bar{
 	font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
-	display:flex;
-	flex-direction:column;
-	justify-content:center;
 	height:22px;
 	color:white;
 }
@@ -58,7 +68,7 @@
 	text-align:left;
 }
 
-.tmstpl-form-group > input, .tmstpl-form-group > div {
+.tmstpl-form-group > input,.tmstpl-form-group > textarea, .tmstpl-form-group > div {
 	width:180px;
 }
 
